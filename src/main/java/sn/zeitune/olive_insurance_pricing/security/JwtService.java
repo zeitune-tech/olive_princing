@@ -53,6 +53,26 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    public Claims extractAllClaims(String token) throws Exception {
+        // Essayer d'abord avec la clé utilisateur, puis avec la clé admin
+        try {
+            PublicKey publicKey = keyProvider.getPublicKey(UserRole.USER);
+            return Jwts.parser()
+                    .verifyWith(publicKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (Exception e) {
+            // Si échec avec la clé utilisateur, essayer avec la clé admin
+            PublicKey publicKey = keyProvider.getPublicKey(UserRole.ADMIN);
+            return Jwts.parser()
+                    .verifyWith(publicKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        }
+    }
+
     public Claims extractAllClaims(String token, UserRole userType) throws Exception {
         PublicKey publicKey = keyProvider.getPublicKey(userType);
         return Jwts.parser()

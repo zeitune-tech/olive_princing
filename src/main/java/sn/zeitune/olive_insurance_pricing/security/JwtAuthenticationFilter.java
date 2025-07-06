@@ -1,6 +1,5 @@
 package sn.zeitune.olive_insurance_pricing.security;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -13,13 +12,10 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import sn.zeitune.olive_insurance_pricing.enums.UserRole;
-import sn.zeitune.olive_insurance_pricing.security.Admin;
-import sn.zeitune.olive_insurance_pricing.security.Employee;
-import sn.zeitune.olive_insurance_pricing.security.JwtService;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,42 +49,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = authorizationHeader.substring(7);
         try {
-
-            UserRole userType = jwtService.extractUserRoleWithoutValidation(token);
-
-            log.info("Extracted UserType: {}", userType);
-
-            String username = jwtService.extractUsername(token, userType);
-            Claims claims = jwtService.extractAllClaims(token, userType);
-            List<SimpleGrantedAuthority> authorities = jwtService.extractAuthorities(claims);
-
-            UserDetails userDetails;
-            if (userType == UserRole.ADMIN) {
-                userDetails = Admin.builder()
-                        .username(username)
-                        .authorities(authorities)
-                        .build();
-            } else {
-                String managementEntity = claims.get("managementEntity", String.class);
-                userDetails = Employee.builder()
-                        .username(username)
-                        .authorities(authorities)
-                        .managementEntity(UUID.fromString(managementEntity))
-                        .build();
+            final Claims claims = jwtService.extractAllClaims(token);
+            
+            if (claims != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                String userIdStr = claims.getSubject();
+                String role = claims.get("role", String.class);
+                String userType = claims.get("userType", String.class);
+                
+                // Support both "role" and "userType" fields
+                String effectiveRole = role != null ? role : userType;
+                
+                if (userIdStr != null && effectiveRole != null) {
+                    // Handle both UUID and email subjects
+                    String username = userIdStr;
+                    try {
+                        UUID userId = UUID.fromString(userIdStr);
+                        username = userId.toString();
+                    } catch (IllegalArgumentException e) {
+                        // userIdStr is not a UUID, use as is (probably an email)
+                        username = userIdStr;
+                    }
+                    
+                    UserDetails userDetails = User.builder()
+                            .username(username)
+                            .password("")
+                            .authorities(List.of(new SimpleGrantedAuthority("ROLE_" + effectiveRole)))
+                            .build();
+                    
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authToken);
-
-        } catch (JwtException | IllegalArgumentException ex) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            response.getWriter().write(
-                    "{\"error\": \"Unauthorized\", \"message\": \"" + ex.getMessage() + "\"}"
-            );
-            return;
+        } catch (JwtException e) {
+            log.error("JWT validation error: {}", e.getMessage());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Authentication error: {}", e.getMessage());
         }
         filterChain.doFilter(request, response);
     }

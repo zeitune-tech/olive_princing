@@ -16,7 +16,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.zeitune.olive_insurance_pricing.app.dtos.FieldValueDto;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FieldValueRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FieldResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FieldValueResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.FieldValueService;
 
 import java.util.List;
@@ -35,14 +37,14 @@ public class FieldValueController {
     @Operation(summary = "Créer une nouvelle valeur de champ", description = "Crée une nouvelle valeur de champ avec les données fournies")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Valeur de champ créée avec succès",
-                    content = @Content(schema = @Schema(implementation = FieldValueDto.class))),
+                    content = @Content(schema = @Schema(implementation = FieldValueResponseDTO.class))),
             @ApiResponse(responseCode = "400", description = "Données invalides",
                     content = @Content),
             @ApiResponse(responseCode = "409", description = "Valeur de champ déjà existante",
                     content = @Content)
     })
-    public ResponseEntity<FieldValueDto> create(@Valid @RequestBody FieldValueDto fieldValueDto) {
-        log.info("REST request to create field value: {}", fieldValueDto.getName());
+    public ResponseEntity<FieldValueResponseDTO> create(@Valid @RequestBody FieldValueRequestDTO fieldValueRequestDTO) {
+        log.info("REST request to create field value: {}", fieldValueRequestDTO.value());
         return null;
     }
 
@@ -50,11 +52,11 @@ public class FieldValueController {
     @Operation(summary = "Récupérer une valeur de champ par ID", description = "Récupère une valeur de champ spécifique par son identifiant")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Valeur de champ trouvée",
-                    content = @Content(schema = @Schema(implementation = FieldValueDto.class))),
+                    content = @Content(schema = @Schema(implementation = FieldValueResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Valeur de champ non trouvée",
                     content = @Content)
     })
-    public ResponseEntity<FieldValueDto> getById(@Parameter(description = "ID de la valeur de champ") @PathVariable Long id) {
+    public ResponseEntity<FieldValueResponseDTO> getById(@Parameter(description = "ID de la valeur de champ") @PathVariable Long id) {
         log.info("REST request to get field value by ID: {}", id);
         return null;
     }
@@ -65,7 +67,7 @@ public class FieldValueController {
             @ApiResponse(responseCode = "200", description = "Liste des valeurs de champs récupérée avec succès",
                     content = @Content(schema = @Schema(implementation = Page.class)))
     })
-    public ResponseEntity<Page<FieldValueDto>> getAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<FieldValueResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
         log.info("REST request to get all field values with pagination");
         return null;
     }
@@ -74,11 +76,11 @@ public class FieldValueController {
     @Operation(summary = "Récupérer une valeur de champ par nom", description = "Récupère une valeur de champ spécifique par son nom")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Valeur de champ trouvée",
-                    content = @Content(schema = @Schema(implementation = FieldValueDto.class))),
+                    content = @Content(schema = @Schema(implementation = FieldResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Valeur de champ non trouvée",
                     content = @Content)
     })
-    public ResponseEntity<FieldValueDto> getByName(@Parameter(description = "Nom de la valeur de champ") @PathVariable String name) {
+    public ResponseEntity<FieldResponseDTO> getByName(@Parameter(description = "Nom de la valeur de champ") @PathVariable String name) {
         log.info("REST request to get field value by name: {}", name);
         return null;
     }
@@ -89,7 +91,7 @@ public class FieldValueController {
             @ApiResponse(responseCode = "200", description = "Liste des valeurs de champs trouvées",
                     content = @Content(schema = @Schema(implementation = List.class)))
     })
-    public ResponseEntity<List<FieldValueDto>> searchByName(@Parameter(description = "Nom à rechercher") @RequestParam String name) {
+    public ResponseEntity<List<FieldResponseDTO>> searchByName(@Parameter(description = "Nom à rechercher") @RequestParam String name) {
         log.info("REST request to search field values by name: {}", name);
         return null;
     }
@@ -98,13 +100,13 @@ public class FieldValueController {
     @Operation(summary = "Mettre à jour une valeur de champ", description = "Met à jour une valeur de champ existante avec les nouvelles données")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Valeur de champ mise à jour avec succès",
-                    content = @Content(schema = @Schema(implementation = FieldValueDto.class))),
+                    content = @Content(schema = @Schema(implementation = FieldResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Valeur de champ non trouvée",
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Données invalides",
                     content = @Content)
     })
-    public ResponseEntity<FieldValueDto> update(@Parameter(description = "ID de la valeur de champ") @PathVariable Long id, @Valid @RequestBody FieldValueDto fieldValueDto) {
+    public ResponseEntity<FieldResponseDTO> update(@Parameter(description = "ID de la valeur de champ") @PathVariable Long id, @Valid @RequestBody FieldValueRequestDTO fieldValueRequestDTO) {
         log.info("REST request to update field value with ID: {}", id);
         return null;
     }

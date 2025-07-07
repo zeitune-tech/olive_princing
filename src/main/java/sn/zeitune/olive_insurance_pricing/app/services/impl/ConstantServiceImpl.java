@@ -1,5 +1,6 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.ConstantRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.ConstantResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.Constant;
+import sn.zeitune.olive_insurance_pricing.app.mappers.ConstantMapper;
+import sn.zeitune.olive_insurance_pricing.app.repositories.ConstantRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.ConstantService;
 
 import java.util.List;
@@ -16,9 +20,14 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class ConstantServiceImpl implements ConstantService {
+
+    private final ConstantRepository constantRepository;
+
     @Override
     public ConstantResponseDTO create(ConstantRequestDTO constantRequestDTO) {
-        return null;
+        Constant constant = ConstantMapper.toEntity(constantRequestDTO);
+        constant = constantRepository.save(constant);
+        return ConstantMapper.toResponseDTO(constant);
     }
 
     @Override
@@ -28,7 +37,9 @@ public class ConstantServiceImpl implements ConstantService {
 
     @Override
     public ConstantResponseDTO findByUuid(UUID uuid) {
-        return null;
+        Constant constant = constantRepository.findByUuid(uuid).orElse(null);
+        if (constant == null) throw new EntityNotFoundException("Constant with uuid " + uuid + " not found");
+        return ConstantMapper.map(constant);
     }
 
     @Override
@@ -38,7 +49,7 @@ public class ConstantServiceImpl implements ConstantService {
 
     @Override
     public Page<ConstantResponseDTO> findAll(Pageable pageable) {
-        return null;
+        return constantRepository.findAll(pageable).map(ConstantMapper::map);
     }
 
     @Override

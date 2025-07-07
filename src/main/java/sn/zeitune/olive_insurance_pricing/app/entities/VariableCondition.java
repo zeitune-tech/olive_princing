@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@DiscriminatorValue("variable_condition")
+@Table(name = "variable_condition")
 public class VariableCondition extends VariableItem {
 
     @Builder.Default

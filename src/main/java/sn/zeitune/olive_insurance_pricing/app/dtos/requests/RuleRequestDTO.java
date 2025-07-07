@@ -24,7 +24,7 @@ public record RuleRequestDTO(
 
         Boolean toReturn,
 
-        String managementEntity,
+        UUID managementEntity,
 
         UUID product,
 

@@ -23,7 +23,7 @@ public record ConstantRequestDTO(
 
         Boolean toReturn,
 
-        String managementEntity,
+        UUID managementEntity,
 
         UUID product,
 

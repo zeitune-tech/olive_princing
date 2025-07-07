@@ -12,7 +12,7 @@ public record FormulaResponseDTO(
         String variableName,
         String expression,
         Boolean toReturn,
-        String managementEntity,
+        UUID managementEntity,
         UUID product,
         UUID coverage
 ) {}

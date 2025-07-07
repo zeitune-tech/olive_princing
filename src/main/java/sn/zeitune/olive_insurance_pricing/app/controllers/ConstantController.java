@@ -9,7 +9,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.zeitune.olive_insurance_pricing.app.dtos.ConstantDto;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.ConstantRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.ConstantResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.ConstantService;
 
 import java.util.List;
@@ -24,42 +25,42 @@ public class ConstantController {
     private final ConstantService constantService;
 
     @PostMapping
-    public ResponseEntity<ConstantDto> create(@Valid @RequestBody ConstantDto constantDto) {
-        return null;
+    public ResponseEntity<ConstantResponseDTO> create(@Valid @RequestBody ConstantRequestDTO constantRequestDTO) {
+        return ResponseEntity.ok(constantService.create(constantRequestDTO));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ConstantDto> getById(@PathVariable Long id) {
-        return null;
+    public ResponseEntity<ConstantResponseDTO> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(constantService.findByUuid(id));
     }
 
     @GetMapping
-    public ResponseEntity<Page<ConstantDto>> getAll(@PageableDefault(size = 20) Pageable pageable) {
-        return null;
+    public ResponseEntity<Page<ConstantResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(constantService.findAll(pageable));
     }
 
     @GetMapping("/by-value/{value}")
-    public ResponseEntity<List<ConstantDto>> getByValue(@PathVariable Double value) {
+    public ResponseEntity<List<ConstantResponseDTO>> getByValue(@PathVariable Double value) {
         return null;
     }
 
     @GetMapping("/by-value-range")
-    public ResponseEntity<List<ConstantDto>> getByValueRange(@RequestParam Double minValue, @RequestParam Double maxValue) {
+    public ResponseEntity<List<ConstantResponseDTO>> getByValueRange(@RequestParam Double minValue, @RequestParam Double maxValue) {
         return null;
     }
 
     @GetMapping("/by-product/{product}")
-    public ResponseEntity<List<ConstantDto>> getByProduct(@PathVariable UUID product) {
+    public ResponseEntity<List<ConstantResponseDTO>> getByProduct(@PathVariable UUID product) {
         return null;
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<ConstantDto>> searchByLabel(@RequestParam String label) {
+    public ResponseEntity<List<ConstantResponseDTO>> searchByLabel(@RequestParam String label) {
         return null;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ConstantDto> update(@PathVariable Long id, @Valid @RequestBody ConstantDto constantDto) {
+    public ResponseEntity<ConstantResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ConstantRequestDTO constantRequestDTO) {
         return null;
     }
 

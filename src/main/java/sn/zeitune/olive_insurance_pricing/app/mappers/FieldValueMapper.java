@@ -9,7 +9,7 @@ public class FieldValueMapper {
     public static FieldValueResponseDTO toResponseDTO(FieldValue fieldValue) {
         return FieldValueResponseDTO.builder()
                 .id(fieldValue.getId())
-                .name(fieldValue.getName())
+                .name(fieldValue.getValue())
                 .description(fieldValue.getDescription())
                 .value(fieldValue.getValue())
                 .build();
@@ -17,16 +17,16 @@ public class FieldValueMapper {
 
     public static FieldValue toEntity(FieldValueRequestDTO requestDTO) {
         return FieldValue.builder()
-                .name(requestDTO.getName())
-                .description(requestDTO.getDescription())
-                .value(requestDTO.getValue())
+                .name(requestDTO.value())
+                .description(requestDTO.description())
+                .value(requestDTO.value())
                 .build();
     }
 
     public static void updateEntityFromRequestDTO(FieldValue fieldValue, FieldValueRequestDTO requestDTO) {
-        fieldValue.setName(requestDTO.getName());
-        fieldValue.setDescription(requestDTO.getDescription());
-        fieldValue.setValue(requestDTO.getValue());
+        fieldValue.setName(requestDTO.value());
+        fieldValue.setDescription(requestDTO.description());
+        fieldValue.setValue(requestDTO.value());
     }
 
     // Backward compatibility

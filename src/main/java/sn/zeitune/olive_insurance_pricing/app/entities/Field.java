@@ -12,7 +12,7 @@ import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@DiscriminatorValue("field")
+@Table(name = "field")
 public class Field extends VariableItem {
 
     private FieldType type;

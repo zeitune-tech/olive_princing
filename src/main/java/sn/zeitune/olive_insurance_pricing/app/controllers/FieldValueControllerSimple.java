@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.zeitune.olive_insurance_pricing.app.dtos.FieldValueDto;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FieldValueResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.FieldValueService;
 
 @RestController
@@ -23,14 +23,14 @@ public class FieldValueControllerSimple {
 
     @GetMapping
     @Operation(summary = "Récupérer toutes les valeurs de champs")
-    public ResponseEntity<Page<FieldValueDto>> getAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<FieldValueResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
         log.info("REST request to get all field values with pagination");
         return null;
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Récupérer une valeur de champ par ID")
-    public ResponseEntity<FieldValueDto> getById(@PathVariable Long id) {
+    public ResponseEntity<FieldValueResponseDTO> getById(@PathVariable Long id) {
         log.info("REST request to get field value by ID: {}", id);
         return null;
     }

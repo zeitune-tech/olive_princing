@@ -9,7 +9,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.zeitune.olive_insurance_pricing.app.dtos.FieldDto;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FieldRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FieldResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.FieldService;
 import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 
@@ -25,37 +26,37 @@ public class FieldController {
     private final FieldService fieldService;
 
     @PostMapping
-    public ResponseEntity<FieldDto> create(@Valid @RequestBody FieldDto fieldDto) {
+    public ResponseEntity<FieldResponseDTO> create(@Valid @RequestBody FieldRequestDTO fieldRequestDTO) {
         return null;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FieldDto> getById(@PathVariable Long id) {
+    public ResponseEntity<FieldResponseDTO> getById(@PathVariable Long id) {
         return null;
     }
 
     @GetMapping
-    public ResponseEntity<Page<FieldDto>> getAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<FieldResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
         return null;
     }
 
     @GetMapping("/by-type/{type}")
-    public ResponseEntity<List<FieldDto>> getByType(@PathVariable FieldType type) {
+    public ResponseEntity<List<FieldResponseDTO>> getByType(@PathVariable FieldType type) {
         return null;
     }
 
     @GetMapping("/by-product/{product}")
-    public ResponseEntity<List<FieldDto>> getByProduct(@PathVariable UUID product) {
+    public ResponseEntity<List<FieldResponseDTO>> getByProduct(@PathVariable UUID product) {
         return null;
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<FieldDto>> searchByLabel(@RequestParam String label) {
+    public ResponseEntity<List<FieldResponseDTO>> searchByLabel(@RequestParam String label) {
         return null;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FieldDto> update(@PathVariable Long id, @Valid @RequestBody FieldDto fieldDto) {
+    public ResponseEntity<FieldResponseDTO> update(@PathVariable Long id, @Valid @RequestBody FieldRequestDTO fieldRequestDTO) {
         return null;
     }
 

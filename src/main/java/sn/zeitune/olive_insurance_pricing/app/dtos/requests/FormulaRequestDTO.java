@@ -24,7 +24,7 @@ public record FormulaRequestDTO(
 
         Boolean toReturn,
 
-        String managementEntity,
+        UUID managementEntity,
 
         UUID product,
 

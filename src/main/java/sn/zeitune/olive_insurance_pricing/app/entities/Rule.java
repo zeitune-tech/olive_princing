@@ -15,7 +15,7 @@ import java.util.Set;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@DiscriminatorValue("regle")
+@Table(name = "rule")
 public class Rule extends VariableItem {
 
     private Double value;

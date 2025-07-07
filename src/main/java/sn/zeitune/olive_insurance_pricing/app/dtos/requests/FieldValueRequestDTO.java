@@ -8,19 +8,16 @@ import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class FieldValueRequestDTO {
+public record FieldValueRequestDTO (
     
     @NotBlank(message = "Name is required")
     @Size(max = 100, message = "Name must not exceed 100 characters")
-    private String name;
+    String name,
     
     @Size(max = 500, message = "Description must not exceed 500 characters")
-    private String description;
+    String description,
     
     @Size(max = 255, message = "Value must not exceed 255 characters")
-    private String value;
-}
+    String value
+){}

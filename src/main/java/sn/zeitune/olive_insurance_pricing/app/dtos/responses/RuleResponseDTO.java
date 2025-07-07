@@ -13,7 +13,7 @@ public record RuleResponseDTO(
         String variableName,
         Double value,
         Boolean toReturn,
-        String managementEntity,
+        UUID managementEntity,
         UUID product,
         UUID coverage,
         Set<ConditionResponseDTO> conditions

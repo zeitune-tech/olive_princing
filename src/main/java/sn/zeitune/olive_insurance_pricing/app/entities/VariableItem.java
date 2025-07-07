@@ -16,13 +16,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "variable_item")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "visibilite", discriminatorType = DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class VariableItem {
 
     @Id
     @Column(name = "code_variable")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "variable_item_seq")
+    @SequenceGenerator(name = "variable_item_seq", sequenceName = "variable_item_sequence", allocationSize = 1)
     private Long id;
 
     @Column(name = "uuid", nullable = false, unique = true, updatable = false)
@@ -48,7 +48,7 @@ public abstract class VariableItem {
     private Boolean toReturn;
 
     @Column(name = "management_entity")
-    private String managementEntity;
+    private UUID managementEntity;
 
     @Column
     private UUID product;

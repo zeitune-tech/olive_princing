@@ -2,19 +2,26 @@ package sn.zeitune.olive_insurance_pricing.app.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
-@Data
-@Entity(name = "variable_item")
+@Getter
+@Setter
+@Entity
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "variable_item")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "visibilite", discriminatorType = DiscriminatorType.STRING)
 public abstract class VariableItem {
 
     @Id
+    @Column(name = "code_variable")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -48,4 +55,5 @@ public abstract class VariableItem {
 
     @Column
     private UUID coverage;
+
 }

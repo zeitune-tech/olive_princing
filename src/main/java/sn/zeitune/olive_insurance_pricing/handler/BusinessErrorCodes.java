@@ -14,7 +14,23 @@ public enum BusinessErrorCodes {
     BAD_CREDENTIALS(304, "Bad credentials", HttpStatus.UNAUTHORIZED),
     USER_NOT_FOUND(305, "User not found", HttpStatus.NOT_FOUND),
     DUPLICATE_EMAIL(306, "Email already exists", HttpStatus.BAD_REQUEST),
-    DUPLICATE_USERNAME(307, "Username already exists", HttpStatus.BAD_REQUEST);
+    DUPLICATE_USERNAME(307, "Username already exists", HttpStatus.BAD_REQUEST),
+    
+    // Field Value errors
+    FIELD_VALUE_NOT_FOUND(400, "Field value not found", HttpStatus.NOT_FOUND),
+    FIELD_VALUE_ALREADY_EXISTS(401, "Field value already exists", HttpStatus.BAD_REQUEST),
+    
+    // Field errors
+    FIELD_NOT_FOUND(410, "Field not found", HttpStatus.NOT_FOUND),
+    FIELD_ALREADY_EXISTS(411, "Field already exists", HttpStatus.BAD_REQUEST),
+    
+    // Constant errors
+    CONSTANT_NOT_FOUND(420, "Constant not found", HttpStatus.NOT_FOUND),
+    CONSTANT_ALREADY_EXISTS(421, "Constant already exists", HttpStatus.BAD_REQUEST),
+    
+    // Formula errors
+    FORMULA_NOT_FOUND(430, "Formula not found", HttpStatus.NOT_FOUND),
+    FORMULA_ALREADY_EXISTS(431, "Formula already exists", HttpStatus.BAD_REQUEST);
 
     private final int code;
     private final String description;

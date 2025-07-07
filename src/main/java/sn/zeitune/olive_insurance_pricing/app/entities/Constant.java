@@ -8,18 +8,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@DiscriminatorValue("formula")
-public class Formula extends VariableItem {
+@DiscriminatorValue("constant")
+public class Constant extends VariableItem {
 
-    @Column(name = "expression", nullable = false, columnDefinition = "TEXT")
-    private String expression;
+    @Column(name = "value", nullable = false)
+    private Double value;
 
-//    private List<VariableItem> variables;
 }

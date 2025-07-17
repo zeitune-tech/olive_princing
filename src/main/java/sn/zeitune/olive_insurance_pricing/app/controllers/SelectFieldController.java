@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/app/fields")
+@RequestMapping("/app/select-fields")
 @RequiredArgsConstructor
 @Slf4j
-public class FieldController {
+public class SelectFieldController {
 
     private final SelectFieldService selectFieldService;
 
@@ -37,11 +37,6 @@ public class FieldController {
     @GetMapping
     public ResponseEntity<Page<SelectFieldResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
         return ResponseEntity.ok(selectFieldService.findAll(pageable));
-    }
-
-    @GetMapping("/by-type/{type}")
-    public ResponseEntity<List<SelectFieldResponseDTO>> getByType(@PathVariable FieldType type) {
-        return ResponseEntity.ok(selectFieldService.findByType(type));
     }
 
     @GetMapping("/by-product/{product}")

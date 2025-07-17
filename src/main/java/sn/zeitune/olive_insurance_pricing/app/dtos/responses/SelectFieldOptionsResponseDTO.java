@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Builder
-public record FieldValueResponseDTO(
+public record SelectFieldOptionsResponseDTO(
         UUID id,
         String label,
         String name,
         String description,
-        List<FieldPossibilitiesValueResponseDTO> possibilities
+        List<SelectFieldOptionValueResponseDTO> possibilities
 ) {}

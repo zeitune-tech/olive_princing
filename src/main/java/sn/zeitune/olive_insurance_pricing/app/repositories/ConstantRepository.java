@@ -15,7 +15,7 @@ public interface ConstantRepository extends JpaRepository<Constant, Long> {
     
     boolean existsByUuid(UUID uuid);
     
-    List<Constant> findByValue(Double value);
+    List<Constant> findAllByValue(Double value);
     
     List<Constant> findByLabelContainingIgnoreCase(String label);
     

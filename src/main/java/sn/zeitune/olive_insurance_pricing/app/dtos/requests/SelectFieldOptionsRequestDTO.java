@@ -1,9 +1,6 @@
 package sn.zeitune.olive_insurance_pricing.app.dtos.requests;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,7 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Builder
-public record FieldValueRequestDTO (
+public record SelectFieldOptionsRequestDTO(
     String label,
 
     @NotBlank(message = "Name is required")

@@ -2,17 +2,18 @@ package sn.zeitune.olive_insurance_pricing.app.services.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.Field;
-import sn.zeitune.olive_insurance_pricing.app.mappers.SelectedFieldMapper;
-import sn.zeitune.olive_insurance_pricing.app.repositories.FieldRepository;
-import sn.zeitune.olive_insurance_pricing.app.services.FieldService;
-import sn.zeitune.olive_insurance_pricing.enums.FieldType;
+import sn.zeitune.olive_insurance_pricing.app.entities.SelectField;
+import sn.zeitune.olive_insurance_pricing.app.mappers.SelectFieldMapper;
+import sn.zeitune.olive_insurance_pricing.app.repositories.SelectFieldRepository;
+import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionsService;
+import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldService;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,123 +21,135 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FieldServiceImpl implements FieldService {
+@Slf4j
+public class SelectFieldServiceImpl implements SelectFieldService {
 
-    private final FieldRepository fieldRepository;
+    private final SelectFieldRepository selectFieldRepository;
+    private final SelectFieldOptionsService selectFieldOptionsService;
 
     @Override
     public SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO) {
         // Vérifier si un champ avec le même nom de variable existe déjà
-        if (fieldRepository.existsByVariableName(selectFieldRequestDTO.variableName())) {
+        if (selectFieldRepository.existsByVariableName(selectFieldRequestDTO.variableName()))
             throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.variableName() + "' existe déjà");
-        }
-        
-        Field field = SelectedFieldMapper.map(selectFieldRequestDTO);
-        field = fieldRepository.save(field);
-        return SelectedFieldMapper.map(field);
+
+
+        if (selectFieldOptionsService.findByUuid(selectFieldRequestDTO.options()) == null)
+            throw new IllegalArgumentException("Options are not defined");
+
+        SelectField field = SelectFieldMapper.map(selectFieldRequestDTO);
+
+        if (selectFieldRequestDTO.options() != null)
+            field.setOptions(selectFieldOptionsService.getEntityByUuid(selectFieldRequestDTO.options()));
+
+        System.out.println(field);
+        log.info(field.toString());
+
+        field = selectFieldRepository.save(field);
+        return SelectFieldMapper.map(field);
     }
 
     @Override
     public SelectFieldResponseDTO findById(Long id) {
-        Field field = fieldRepository.findById(id)
+        SelectField field = selectFieldRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'ID : " + id));
-        return SelectedFieldMapper.map(field);
+        return SelectFieldMapper.map(field);
     }
 
     @Override
     public SelectFieldResponseDTO findByUuid(UUID uuid) {
-        Field field = fieldRepository.findByUuid(uuid)
+        SelectField field = selectFieldRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
-        return SelectedFieldMapper.map(field);
+        return SelectFieldMapper.map(field);
     }
 
     @Override
     public List<SelectFieldResponseDTO> findAll() {
-        return fieldRepository.findAll()
+        return selectFieldRepository.findAll()
                 .stream()
-                .map(SelectedFieldMapper::map)
+                .map(SelectFieldMapper::map)
                 .toList();
     }
 
     @Override
     public Page<SelectFieldResponseDTO> findAll(Pageable pageable) {
-        return fieldRepository.findAll(pageable)
-                .map(SelectedFieldMapper::map);
-    }
-
-    @Override
-    public List<SelectFieldResponseDTO> findByType(FieldType type) {
-        return fieldRepository.findByType(type)
-                .stream()
-                .map(SelectedFieldMapper::map)
-                .toList();
+        return selectFieldRepository.findAll(pageable)
+                .map(SelectFieldMapper::map);
     }
 
     @Override
     public List<SelectFieldResponseDTO> findByProduct(UUID product) {
-        return fieldRepository.findByProduct(product)
+        return selectFieldRepository.findByProduct(product)
                 .stream()
-                .map(SelectedFieldMapper::map)
+                .map(SelectFieldMapper::map)
                 .toList();
     }
 
     @Override
     public List<SelectFieldResponseDTO> searchByLabel(String label) {
-        return fieldRepository.findByLabelContainingIgnoreCase(label)
+        return selectFieldRepository.findByLabelContainingIgnoreCase(label)
                 .stream()
-                .map(SelectedFieldMapper::map)
+                .map(SelectFieldMapper::map)
                 .toList();
     }
 
     @Override
     public SelectFieldResponseDTO update(Long id, SelectFieldRequestDTO selectFieldRequestDTO) {
-        Field existingField = fieldRepository.findById(id)
+        SelectField existingField = selectFieldRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'ID : " + id));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est le même champ)
         if (!existingField.getVariableName().equals(selectFieldRequestDTO.variableName()) &&
-            fieldRepository.existsByVariableName(selectFieldRequestDTO.variableName())) {
+            selectFieldRepository.existsByVariableName(selectFieldRequestDTO.variableName())) {
             throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.variableName() + "' existe déjà");
         }
-        
-        SelectedFieldMapper.map(selectFieldRequestDTO, existingField);
-        Field updatedField = fieldRepository.save(existingField);
-        return SelectedFieldMapper.map(updatedField);
+
+        SelectFieldMapper.map(selectFieldRequestDTO, existingField);
+
+        if (selectFieldRequestDTO.options() != null)
+            existingField.setOptions(selectFieldOptionsService.getEntityByUuid(selectFieldRequestDTO.options()));
+
+        SelectField updatedField = selectFieldRepository.save(existingField);
+        return SelectFieldMapper.map(updatedField);
     }
 
     @Override
     public SelectFieldResponseDTO updateByUuid(UUID uuid, SelectFieldRequestDTO selectFieldRequestDTO) {
-        Field existingField = fieldRepository.findByUuid(uuid)
+        SelectField existingField = selectFieldRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est le même champ)
         if (!existingField.getVariableName().equals(selectFieldRequestDTO.variableName()) &&
-            fieldRepository.existsByVariableName(selectFieldRequestDTO.variableName())) {
+            selectFieldRepository.existsByVariableName(selectFieldRequestDTO.variableName())) {
             throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.variableName() + "' existe déjà");
         }
         
-        SelectedFieldMapper.map(selectFieldRequestDTO, existingField);
-        Field updatedField = fieldRepository.save(existingField);
-        return SelectedFieldMapper.map(updatedField);
+        SelectFieldMapper.map(selectFieldRequestDTO, existingField);
+
+        if (selectFieldRequestDTO.options() != null)
+            existingField.setOptions(selectFieldOptionsService.getEntityByUuid(selectFieldRequestDTO.options()));
+
+        SelectField updatedField = selectFieldRepository.save(existingField);
+        return SelectFieldMapper.map(updatedField);
     }
 
     @Override
     public void delete(Long id) {
-        if (!fieldRepository.existsById(id)) {
+        if (!selectFieldRepository.existsById(id)) {
             throw new EntityNotFoundException("Champ non trouvé avec l'ID : " + id);
         }
-        fieldRepository.deleteById(id);
+        selectFieldRepository.deleteById(id);
     }
 
     @Override
     public void deleteByUuid(UUID uuid) {
-        Field field = fieldRepository.findByUuid(uuid)
+        SelectField field = selectFieldRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
-        fieldRepository.delete(field);
+        selectFieldRepository.delete(field);
     }
 
     @Override
     public boolean existsByUuid(UUID uuid) {
-        return fieldRepository.existsByUuid(uuid);
+        return selectFieldRepository.existsByUuid(uuid);
     }
 }

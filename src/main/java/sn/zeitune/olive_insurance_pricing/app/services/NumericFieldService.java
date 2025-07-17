@@ -2,34 +2,32 @@ package sn.zeitune.olive_insurance_pricing.app.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.NumericFieldRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.NumericFieldResponseDTO;
 import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface FieldService {
+public interface NumericFieldService {
 
-    SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO);
+    NumericFieldResponseDTO create(NumericFieldRequestDTO numericFieldRequestDTO);
 
-    SelectFieldResponseDTO findById(Long id);
+    NumericFieldResponseDTO findById(Long id);
 
-    SelectFieldResponseDTO findByUuid(UUID uuid);
+    NumericFieldResponseDTO findByUuid(UUID uuid);
 
-    List<SelectFieldResponseDTO> findAll();
+    List<NumericFieldResponseDTO> findAll();
 
-    Page<SelectFieldResponseDTO> findAll(Pageable pageable);
+    Page<NumericFieldResponseDTO> findAll(Pageable pageable);
 
-    List<SelectFieldResponseDTO> findByType(FieldType type);
+    List<NumericFieldResponseDTO> findByProduct(UUID product);
 
-    List<SelectFieldResponseDTO> findByProduct(UUID product);
+    List<NumericFieldResponseDTO> searchByLabel(String label);
 
-    List<SelectFieldResponseDTO> searchByLabel(String label);
+    NumericFieldResponseDTO update(Long id, NumericFieldRequestDTO numericFieldRequestDTO);
 
-    SelectFieldResponseDTO update(Long id, SelectFieldRequestDTO selectFieldRequestDTO);
-
-    SelectFieldResponseDTO updateByUuid(UUID uuid, SelectFieldRequestDTO selectFieldRequestDTO);
+    NumericFieldResponseDTO updateByUuid(UUID uuid, NumericFieldRequestDTO numericFieldRequestDTO);
 
     void delete(Long id);
 

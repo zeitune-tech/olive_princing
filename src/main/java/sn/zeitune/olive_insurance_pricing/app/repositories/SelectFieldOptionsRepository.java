@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface FieldValueRepository extends JpaRepository<SelectFieldOptions, Long> {
+public interface SelectFieldOptionsRepository extends JpaRepository<SelectFieldOptions, Long> {
 
     Optional<SelectFieldOptions> findByName(String name);
 

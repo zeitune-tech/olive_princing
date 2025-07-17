@@ -25,75 +25,128 @@ public class ConstantServiceImpl implements ConstantService {
 
     @Override
     public ConstantResponseDTO create(ConstantRequestDTO constantRequestDTO) {
-        Constant constant = ConstantMapper.toEntity(constantRequestDTO);
+        // Vérifier si une constante avec le même nom de variable existe déjà
+        if (constantRepository.existsByVariableName(constantRequestDTO.variableName())) {
+            throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.variableName() + "' existe déjà");
+        }
+        
+        Constant constant = ConstantMapper.map(constantRequestDTO);
         constant = constantRepository.save(constant);
-        return ConstantMapper.toResponseDTO(constant);
+        return ConstantMapper.map(constant);
     }
 
     @Override
     public ConstantResponseDTO findById(Long id) {
-        return null;
+        Constant constant = constantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Constante non trouvée avec l'ID : " + id));
+        return ConstantMapper.map(constant);
     }
 
     @Override
     public ConstantResponseDTO findByUuid(UUID uuid) {
-        Constant constant = constantRepository.findByUuid(uuid).orElse(null);
-        if (constant == null) throw new EntityNotFoundException("Constant with uuid " + uuid + " not found");
+        Constant constant = constantRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Constante non trouvée avec l'UUID : " + uuid));
         return ConstantMapper.map(constant);
     }
 
     @Override
     public List<ConstantResponseDTO> findAll() {
-        return List.of();
+        return constantRepository.findAll()
+                .stream()
+                .map(ConstantMapper::map)
+                .toList();
     }
 
     @Override
     public Page<ConstantResponseDTO> findAll(Pageable pageable) {
-        return constantRepository.findAll(pageable).map(ConstantMapper::map);
+        return constantRepository.findAll(pageable)
+                .map(ConstantMapper::map);
     }
 
     @Override
     public List<ConstantResponseDTO> findByValue(Double value) {
-        return List.of();
+        return constantRepository.findAllByValue(value)
+                .stream()
+                .map(ConstantMapper::map)
+                .toList();
     }
 
     @Override
     public List<ConstantResponseDTO> findByValueRange(Double minValue, Double maxValue) {
-        return List.of();
+        if (minValue > maxValue) {
+            throw new IllegalArgumentException("La valeur minimale ne peut pas être supérieure à la valeur maximale");
+        }
+        return constantRepository.findByValueBetween(minValue, maxValue)
+                .stream()
+                .map(ConstantMapper::map)
+                .toList();
     }
 
     @Override
     public List<ConstantResponseDTO> findByProduct(UUID product) {
-        return List.of();
+        return constantRepository.findByProduct(product)
+                .stream()
+                .map(ConstantMapper::map)
+                .toList();
     }
 
     @Override
     public List<ConstantResponseDTO> searchByLabel(String label) {
-        return List.of();
+        return constantRepository.findByLabelContainingIgnoreCase(label)
+                .stream()
+                .map(ConstantMapper::map)
+                .toList();
     }
 
     @Override
     public ConstantResponseDTO update(Long id, ConstantRequestDTO constantRequestDTO) {
-        return null;
+        Constant existingConstant = constantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Constante non trouvée avec l'ID : " + id));
+        
+        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même constante)
+        if (!existingConstant.getVariableName().equals(constantRequestDTO.variableName()) &&
+            constantRepository.existsByVariableName(constantRequestDTO.variableName())) {
+            throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.variableName() + "' existe déjà");
+        }
+        
+        ConstantMapper.map(constantRequestDTO, existingConstant);
+        Constant updatedConstant = constantRepository.save(existingConstant);
+        return ConstantMapper.map(updatedConstant);
     }
 
     @Override
     public ConstantResponseDTO updateByUuid(UUID uuid, ConstantRequestDTO constantRequestDTO) {
-        return null;
+        Constant existingConstant = constantRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Constante non trouvée avec l'UUID : " + uuid));
+        
+        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même constante)
+        if (!existingConstant.getVariableName().equals(constantRequestDTO.variableName()) &&
+            constantRepository.existsByVariableName(constantRequestDTO.variableName())) {
+            throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.variableName() + "' existe déjà");
+        }
+        
+        ConstantMapper.map(constantRequestDTO, existingConstant);
+        Constant updatedConstant = constantRepository.save(existingConstant);
+        return ConstantMapper.map(updatedConstant);
     }
 
     @Override
     public void delete(Long id) {
-
+        if (!constantRepository.existsById(id)) {
+            throw new EntityNotFoundException("Constante non trouvée avec l'ID : " + id);
+        }
+        constantRepository.deleteById(id);
     }
 
     @Override
     public void deleteByUuid(UUID uuid) {
-
+        Constant constant = constantRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Constante non trouvée avec l'UUID : " + uuid));
+        constantRepository.delete(constant);
     }
 
     @Override
     public boolean existsByUuid(UUID uuid) {
-        return false;
+        return constantRepository.existsByUuid(uuid);
     }
 }

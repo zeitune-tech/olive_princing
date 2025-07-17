@@ -8,7 +8,9 @@ import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 import java.util.UUID;
 
 @Builder
-public record FieldRequestDTO(
+public record SelectFieldRequestDTO(
+        // TODO
+
         @NotNull(message = "Label is required")
         @NotBlank(message = "Label must not be blank")
         String label,
@@ -19,14 +21,13 @@ public record FieldRequestDTO(
         @NotBlank(message = "Variable name must not be blank")
         String variableName,
 
-        @NotNull(message = "Field type is required")
-        FieldType type,
-
         Boolean toReturn,
 
         UUID managementEntity,
 
         UUID product,
 
-        UUID coverage
+        UUID coverage,
+
+        UUID options
 ) {}

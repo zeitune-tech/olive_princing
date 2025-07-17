@@ -18,6 +18,10 @@ public class FormulaMapper {
         return formula;
     }
 
+    public static Formula map(FormulaRequestDTO dto) {
+        return map(dto, new Formula());
+    }
+
     public static FormulaResponseDTO map(Formula formula) {
         return FormulaResponseDTO.builder()
                 .id(formula.getUuid())

@@ -13,11 +13,11 @@ import java.util.UUID;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "field_possibilities_value")
-public class FieldPossibilitiesValue {
+@Table(name = "select_field_option_value")
+public class SelectFieldOptionValue {
 
     @Id
-    @Column(name = "code_field_possibilities_value")
+    @Column(name = "code_select_field_option_value")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

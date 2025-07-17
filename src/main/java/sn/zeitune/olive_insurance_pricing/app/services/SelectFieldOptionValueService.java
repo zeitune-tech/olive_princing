@@ -2,39 +2,39 @@ package sn.zeitune.olive_insurance_pricing.app.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FieldPossibilitiesValueRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FieldPossibilitiesValueResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldOptionValueRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldOptionValueResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.SelectFieldOptionValue;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface FieldPossibilitiesValueService {
+public interface SelectFieldOptionValueService {
 
-    FieldPossibilitiesValueResponseDTO create(FieldPossibilitiesValueRequestDTO fieldPossibilitiesValueRequestDTO);
+    SelectFieldOptionValueResponseDTO create(SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO);
 
-    FieldPossibilitiesValueResponseDTO findById(Long id);
+    SelectFieldOptionValueResponseDTO findById(Long id);
 
-    FieldPossibilitiesValueResponseDTO findByUuid(UUID uuid);
+    SelectFieldOptionValueResponseDTO findByUuid(UUID uuid);
 
     SelectFieldOptionValue getEntityByUuid(UUID uuid);
 
-    List<FieldPossibilitiesValueResponseDTO> findAll();
+    List<SelectFieldOptionValueResponseDTO> findAll();
 
-    Page<FieldPossibilitiesValueResponseDTO> findAll(Pageable pageable);
+    Page<SelectFieldOptionValueResponseDTO> findAll(Pageable pageable);
 
-    Optional<FieldPossibilitiesValueResponseDTO> findByName(String name);
+    Optional<SelectFieldOptionValueResponseDTO> findByName(String name);
 
-    List<FieldPossibilitiesValueResponseDTO> searchByName(String name);
+    List<SelectFieldOptionValueResponseDTO> searchByName(String name);
 
-    List<FieldPossibilitiesValueResponseDTO> findByGroup(String group);
+    List<SelectFieldOptionValueResponseDTO> findByGroup(String group);
 
-    List<FieldPossibilitiesValueResponseDTO> searchByLabel(String label);
+    List<SelectFieldOptionValueResponseDTO> searchByLabel(String label);
 
-    FieldPossibilitiesValueResponseDTO update(Long id, FieldPossibilitiesValueRequestDTO fieldPossibilitiesValueRequestDTO);
+    SelectFieldOptionValueResponseDTO update(Long id, SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO);
 
-    FieldPossibilitiesValueResponseDTO updateByUuid(UUID uuid, FieldPossibilitiesValueRequestDTO fieldPossibilitiesValueRequestDTO);
+    SelectFieldOptionValueResponseDTO updateByUuid(UUID uuid, SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO);
 
     void delete(Long id);
 

@@ -15,13 +15,13 @@ import java.util.UUID;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "field_value")
+@Table(name = "select_field_options")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "visibilite", discriminatorType = DiscriminatorType.STRING)
-public class FieldValue {
+public class SelectFieldOptions {
 
     @Id
-    @Column(name = "code_field_value")
+    @Column(name = "code_select_field_options")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -39,5 +39,5 @@ public class FieldValue {
     private String name;
     private String description;
     @OneToMany
-    private List<FieldPossibilitiesValue> possibilities = new ArrayList<>();
+    private List<SelectFieldOptionValue> possibilities = new ArrayList<>();
 }

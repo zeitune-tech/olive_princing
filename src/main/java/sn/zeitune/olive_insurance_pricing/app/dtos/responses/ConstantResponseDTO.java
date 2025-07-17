@@ -10,9 +10,9 @@ public record ConstantResponseDTO(
         String label,
         String description,
         String variableName,
-        Double value,
         Boolean toReturn,
         UUID managementEntity,
         UUID product,
-        UUID coverage
+        UUID coverage,
+        Double value
 ) {}

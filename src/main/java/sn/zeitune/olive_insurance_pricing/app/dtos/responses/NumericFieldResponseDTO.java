@@ -6,15 +6,14 @@ import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 import java.util.UUID;
 
 @Builder
-public record FieldResponseDTO(
+public record NumericFieldResponseDTO(
         UUID id,
         String label,
         String description,
         String variableName,
-        FieldType type,
         Boolean toReturn,
         UUID managementEntity,
         UUID product,
         UUID coverage,
-        FieldValueResponseDTO value
+        Double value
 ) {}

@@ -1,11 +1,12 @@
 package sn.zeitune.olive_insurance_pricing.app.entities;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -13,7 +14,11 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@DiscriminatorValue("numeric_field")
-public class NumericField extends Field {
-    private Double value;
+@DiscriminatorValue("select_field")
+@ToString
+public class SelectField extends Field {
+    @ManyToOne
+    private SelectFieldOptions options;
+    @ManyToOne
+    private SelectFieldOptionValue value;
 }

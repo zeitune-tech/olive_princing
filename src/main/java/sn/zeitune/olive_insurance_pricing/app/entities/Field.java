@@ -13,9 +13,7 @@ import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 @SuperBuilder
 @NoArgsConstructor
 @Table(name = "field")
-public class Field extends VariableItem {
-
-    private FieldType type;
-    @OneToOne
-    private FieldValue value;
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+public abstract class Field extends VariableItem {
 }

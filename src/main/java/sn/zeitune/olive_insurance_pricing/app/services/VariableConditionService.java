@@ -2,30 +2,31 @@ package sn.zeitune.olive_insurance_pricing.app.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import sn.zeitune.olive_insurance_pricing.app.dtos.VariableConditionDto;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.VariableConditionRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableConditionResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface VariableConditionService {
 
-    VariableConditionDto create(VariableConditionDto variableConditionDto);
+    VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto);
 
-    VariableConditionDto findById(Long id);
+    VariableConditionResponseDTO findById(Long id);
 
-    VariableConditionDto findByUuid(UUID uuid);
+    VariableConditionResponseDTO findByUuid(UUID uuid);
 
-    List<VariableConditionDto> findAll();
+    List<VariableConditionResponseDTO> findAll();
 
-    Page<VariableConditionDto> findAll(Pageable pageable);
+    Page<VariableConditionResponseDTO> findAll(Pageable pageable);
 
-    List<VariableConditionDto> findByProduct(UUID product);
+    List<VariableConditionResponseDTO> findByProduct(UUID product);
 
-    List<VariableConditionDto> searchByLabel(String label);
+    List<VariableConditionResponseDTO> searchByLabel(String label);
 
-    VariableConditionDto update(Long id, VariableConditionDto variableConditionDto);
+    VariableConditionResponseDTO update(Long id, VariableConditionRequestDTO variableConditionDto);
 
-    VariableConditionDto updateByUuid(UUID uuid, VariableConditionDto variableConditionDto);
+    VariableConditionResponseDTO updateByUuid(UUID uuid, VariableConditionRequestDTO variableConditionDto);
 
     void delete(Long id);
 

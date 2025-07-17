@@ -15,8 +15,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Table(name = "constant")
 public class Constant extends VariableItem {
-
     @Column(name = "value", nullable = false)
     private Double value;
-
 }

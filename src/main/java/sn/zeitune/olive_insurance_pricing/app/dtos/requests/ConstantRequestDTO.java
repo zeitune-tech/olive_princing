@@ -18,14 +18,14 @@ public record ConstantRequestDTO(
         @NotBlank(message = "Variable name must not be blank")
         String variableName,
 
-        @NotNull(message = "Value is required")
-        Double value,
-
         Boolean toReturn,
 
         UUID managementEntity,
 
         UUID product,
 
-        UUID coverage
+        UUID coverage,
+
+        @NotNull(message = "Value is required")
+        Double value
 ) {}

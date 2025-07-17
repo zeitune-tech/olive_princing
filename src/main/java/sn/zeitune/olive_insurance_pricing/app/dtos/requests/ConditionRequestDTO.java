@@ -12,7 +12,7 @@ public record ConditionRequestDTO(
         Double value,
 
         @NotNull(message = "Field UUID is required")
-        UUID fieldUuid,
+        UUID fieldId,
 
         @NotNull(message = "Operator is required")
         Operator operator

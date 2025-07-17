@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import sn.zeitune.olive_insurance_pricing.enums.Operator;
 
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
@@ -19,6 +21,16 @@ public class Condition {
     @Column(name = "code_condition")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "uuid", nullable = false, unique = true, updatable = false)
+    private UUID uuid;
+
+    @PrePersist
+    public void generateUuid() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID();
+        }
+    }
 
     private Double value;
 

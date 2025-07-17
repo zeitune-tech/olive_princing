@@ -4,6 +4,8 @@ import sn.zeitune.olive_insurance_pricing.app.dtos.requests.ConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.ConditionResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.Condition;
 import sn.zeitune.olive_insurance_pricing.app.entities.Field;
+import sn.zeitune.olive_insurance_pricing.app.entities.NumericField;
+import sn.zeitune.olive_insurance_pricing.app.entities.SelectField;
 
 public class ConditionMapper {
 
@@ -14,12 +16,32 @@ public class ConditionMapper {
         return condition;
     }
 
+    public static Condition map(ConditionRequestDTO dto, Condition condition) {
+        throw new RuntimeException("Not Implemented");
+//        return map(dto, null, condition);
+    }
+
+    public static Condition map(ConditionRequestDTO dto) {
+        return map(dto, new Condition());
+    }
+
     public static ConditionResponseDTO map(Condition condition) {
-        return ConditionResponseDTO.builder()
-                .id(condition.getId())
-                .value(condition.getValue())
-                .field(condition.getField() != null ? FieldMapper.map(condition.getField()) : null)
-                .operator(condition.getOperator())
-                .build();
+
+        if (condition.getField() instanceof NumericField)
+            return ConditionResponseDTO.builder()
+                    .id(condition.getUuid())
+                    .isNumeric(true)
+                    .value(condition.getValue())
+                    .numericField(condition.getField() != null ? NumericFieldMapper.map( (NumericField) condition.getField()) : null)
+                    .operator(condition.getOperator())
+                    .build();
+        else
+            return ConditionResponseDTO.builder()
+                    .id(condition.getUuid())
+                    .isNumeric(false)
+                    .value(condition.getValue())
+                    .selectField(condition.getField() != null ? SelectFieldMapper.map( (SelectField) condition.getField()) : null)
+                    .operator(condition.getOperator())
+                    .build();
     }
 }

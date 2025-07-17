@@ -2,13 +2,11 @@ package sn.zeitune.olive_insurance_pricing.app.mappers;
 
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.Field;
 import sn.zeitune.olive_insurance_pricing.app.entities.SelectField;
 
-public class SelectedFieldMapper {
+public class SelectFieldMapper {
 
     public static SelectField map(SelectFieldRequestDTO dto, SelectField field) {
-        field.setLabel(dto.label());
         field.setLabel(dto.label());
         field.setDescription(dto.description());
         field.setVariableName(dto.variableName());
@@ -34,8 +32,8 @@ public class SelectedFieldMapper {
                 .managementEntity(field.getManagementEntity())
                 .product(field.getProduct())
                 .coverage(field.getCoverage())
-                .options(FieldValueMapper.map(field.getOptions()))
-                .value(FieldPossibilitesValueMapper.map(field.getValue()))
+                .options(SelectFieldOptionsMapper.map(field.getOptions()))
+                .value(field.getValue() == null ? null : SelectFieldOptionValueMapper.map(field.getValue()))
                 .build();
     }
 }

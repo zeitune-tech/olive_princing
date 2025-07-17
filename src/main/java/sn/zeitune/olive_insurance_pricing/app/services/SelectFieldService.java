@@ -9,7 +9,7 @@ import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 import java.util.List;
 import java.util.UUID;
 
-public interface FieldService {
+public interface SelectFieldService {
 
     SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO);
 
@@ -20,8 +20,6 @@ public interface FieldService {
     List<SelectFieldResponseDTO> findAll();
 
     Page<SelectFieldResponseDTO> findAll(Pageable pageable);
-
-    List<SelectFieldResponseDTO> findByType(FieldType type);
 
     List<SelectFieldResponseDTO> findByProduct(UUID product);
 

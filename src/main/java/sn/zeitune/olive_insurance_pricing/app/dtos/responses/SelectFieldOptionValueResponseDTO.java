@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record FieldPossibilitiesValueResponseDTO(
+public record SelectFieldOptionValueResponseDTO(
         UUID id,
         String label,
         String name,

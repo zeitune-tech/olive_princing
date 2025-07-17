@@ -2,35 +2,35 @@ package sn.zeitune.olive_insurance_pricing.app.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FieldValueRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FieldValueResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldOptionsRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldOptionsResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.SelectFieldOptions;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface FieldValueService {
+public interface SelectFieldOptionsService {
 
-    FieldValueResponseDTO create(FieldValueRequestDTO fieldValueRequestDTO);
+    SelectFieldOptionsResponseDTO create(SelectFieldOptionsRequestDTO selectFieldOptionsRequestDTO);
 
-    FieldValueResponseDTO findById(Long id);
+    SelectFieldOptionsResponseDTO findById(Long id);
 
-    FieldValueResponseDTO findByUuid(UUID uuid);
+    SelectFieldOptionsResponseDTO findByUuid(UUID uuid);
 
     SelectFieldOptions getEntityByUuid(UUID uuid);
 
-    List<FieldValueResponseDTO> findAll();
+    List<SelectFieldOptionsResponseDTO> findAll();
 
-    Page<FieldValueResponseDTO> findAll(Pageable pageable);
+    Page<SelectFieldOptionsResponseDTO> findAll(Pageable pageable);
 
-    Optional<FieldValueResponseDTO> findByName(String name);
+    Optional<SelectFieldOptionsResponseDTO> findByName(String name);
 
-    List<FieldValueResponseDTO> searchByName(String name);
+    List<SelectFieldOptionsResponseDTO> searchByName(String name);
 
-    FieldValueResponseDTO update(Long id, FieldValueRequestDTO fieldValueRequestDTO);
+    SelectFieldOptionsResponseDTO update(Long id, SelectFieldOptionsRequestDTO selectFieldOptionsRequestDTO);
 
-    FieldValueResponseDTO updateByUuid(UUID uuid, FieldValueRequestDTO fieldValueRequestDTO);
+    SelectFieldOptionsResponseDTO updateByUuid(UUID uuid, SelectFieldOptionsRequestDTO selectFieldOptionsRequestDTO);
 
     void delete(Long id);
 

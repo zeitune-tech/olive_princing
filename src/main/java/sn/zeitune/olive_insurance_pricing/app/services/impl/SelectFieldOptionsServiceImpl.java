@@ -6,12 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FieldValueRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FieldValueResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldOptionsRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldOptionsResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.SelectFieldOptions;
-import sn.zeitune.olive_insurance_pricing.app.mappers.FieldValueMapper;
-import sn.zeitune.olive_insurance_pricing.app.repositories.FieldValueRepository;
-import sn.zeitune.olive_insurance_pricing.app.services.FieldValueService;
+import sn.zeitune.olive_insurance_pricing.app.mappers.SelectFieldOptionsMapper;
+import sn.zeitune.olive_insurance_pricing.app.repositories.SelectFieldOptionsRepository;
+import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionsService;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,98 +20,104 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FieldValueServiceImpl implements FieldValueService {
+public class SelectFieldOptionsServiceImpl implements SelectFieldOptionsService {
 
-    private final FieldValueRepository fieldValueRepository;
+    private final SelectFieldOptionsRepository selectFieldOptionsRepository;
 
     @Override
-    public FieldValueResponseDTO create(FieldValueRequestDTO fieldValueRequestDTO) {
+    public SelectFieldOptionsResponseDTO create(SelectFieldOptionsRequestDTO selectFieldOptionsRequestDTO) {
         // Vérifier si une valeur de champ avec le même nom existe déjà
-        if (fieldValueRepository.existsByName(fieldValueRequestDTO.name())) {
-            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + fieldValueRequestDTO.name() + "' existe déjà");
+        if (selectFieldOptionsRepository.existsByName(selectFieldOptionsRequestDTO.name())) {
+            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionsRequestDTO.name() + "' existe déjà");
         }
         
-        SelectFieldOptions selectFieldOptions = FieldValueMapper.toEntity(fieldValueRequestDTO);
-        selectFieldOptions = fieldValueRepository.save(selectFieldOptions);
-        return FieldValueMapper.toResponseDTO(selectFieldOptions);
+        SelectFieldOptions selectFieldOptions = SelectFieldOptionsMapper.map(selectFieldOptionsRequestDTO);
+        selectFieldOptions = selectFieldOptionsRepository.save(selectFieldOptions);
+        return SelectFieldOptionsMapper.map(selectFieldOptions);
     }
 
     @Override
-    public FieldValueResponseDTO findById(Long id) {
-        SelectFieldOptions selectFieldOptions = fieldValueRepository.findById(id)
+    public SelectFieldOptionsResponseDTO findById(Long id) {
+        SelectFieldOptions selectFieldOptions = selectFieldOptionsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + id));
-        return FieldValueMapper.toResponseDTO(selectFieldOptions);
+        return SelectFieldOptionsMapper.map(selectFieldOptions);
     }
 
     @Override
-    public FieldValueResponseDTO findByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("FieldValue n'utilise pas d'UUID");
+    public SelectFieldOptions getEntityByUuid(UUID uuid) {
+        return selectFieldOptionsRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + uuid));
     }
 
     @Override
-    public List<FieldValueResponseDTO> findAll() {
-        return fieldValueRepository.findAll()
+    public SelectFieldOptionsResponseDTO findByUuid(UUID uuid) {
+        return SelectFieldOptionsMapper.map(getEntityByUuid(uuid));
+    }
+
+    @Override
+    public List<SelectFieldOptionsResponseDTO> findAll() {
+        return selectFieldOptionsRepository.findAll()
                 .stream()
-                .map(FieldValueMapper::toResponseDTO)
+                .map(SelectFieldOptionsMapper::map)
                 .toList();
     }
 
     @Override
-    public Page<FieldValueResponseDTO> findAll(Pageable pageable) {
-        return fieldValueRepository.findAll(pageable)
-                .map(FieldValueMapper::toResponseDTO);
+    public Page<SelectFieldOptionsResponseDTO> findAll(Pageable pageable) {
+        return selectFieldOptionsRepository.findAll(pageable)
+                .map(SelectFieldOptionsMapper::map);
     }
 
     @Override
-    public Optional<FieldValueResponseDTO> findByName(String name) {
-        return fieldValueRepository.findByName(name)
-                .map(FieldValueMapper::toResponseDTO);
+    public Optional<SelectFieldOptionsResponseDTO> findByName(String name) {
+        return selectFieldOptionsRepository.findByName(name)
+                .map(SelectFieldOptionsMapper::map);
     }
 
     @Override
-    public List<FieldValueResponseDTO> searchByName(String name) {
-        return fieldValueRepository.findByNameContainingIgnoreCase(name)
+    public List<SelectFieldOptionsResponseDTO> searchByName(String name) {
+        return selectFieldOptionsRepository.findByNameContainingIgnoreCase(name)
                 .stream()
-                .map(FieldValueMapper::toResponseDTO)
+                .map(SelectFieldOptionsMapper::map)
                 .toList();
     }
 
     @Override
-    public FieldValueResponseDTO update(Long id, FieldValueRequestDTO fieldValueRequestDTO) {
-        SelectFieldOptions existingSelectFieldOptions = fieldValueRepository.findById(id)
+    public SelectFieldOptionsResponseDTO update(Long id, SelectFieldOptionsRequestDTO selectFieldOptionsRequestDTO) {
+        SelectFieldOptions existingSelectFieldOptions = selectFieldOptionsRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + id));
         
         // Vérifier si le nouveau nom existe déjà (sauf si c'est la même valeur de champ)
-        if (!existingSelectFieldOptions.getName().equals(fieldValueRequestDTO.name()) &&
-            fieldValueRepository.existsByName(fieldValueRequestDTO.name())) {
-            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + fieldValueRequestDTO.name() + "' existe déjà");
+        if (!existingSelectFieldOptions.getName().equals(selectFieldOptionsRequestDTO.name()) &&
+            selectFieldOptionsRepository.existsByName(selectFieldOptionsRequestDTO.name())) {
+            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionsRequestDTO.name() + "' existe déjà");
         }
         
-        FieldValueMapper.updateEntityFromRequestDTO(existingSelectFieldOptions, fieldValueRequestDTO);
-        SelectFieldOptions updatedSelectFieldOptions = fieldValueRepository.save(existingSelectFieldOptions);
-        return FieldValueMapper.toResponseDTO(updatedSelectFieldOptions);
+        SelectFieldOptionsMapper.map(selectFieldOptionsRequestDTO, existingSelectFieldOptions);
+        SelectFieldOptions updatedSelectFieldOptions = selectFieldOptionsRepository.save(existingSelectFieldOptions);
+        return SelectFieldOptionsMapper.map(updatedSelectFieldOptions);
     }
 
     @Override
-    public FieldValueResponseDTO updateByUuid(UUID uuid, FieldValueRequestDTO fieldValueRequestDTO) {
-        throw new UnsupportedOperationException("FieldValue n'utilise pas d'UUID");
+    public SelectFieldOptionsResponseDTO updateByUuid(UUID uuid, SelectFieldOptionsRequestDTO selectFieldOptionsRequestDTO) {
+        throw new UnsupportedOperationException("SelectFieldOptions n'utilise pas d'UUID");
     }
 
     @Override
     public void delete(Long id) {
-        if (!fieldValueRepository.existsById(id)) {
+        if (!selectFieldOptionsRepository.existsById(id)) {
             throw new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + id);
         }
-        fieldValueRepository.deleteById(id);
+        selectFieldOptionsRepository.deleteById(id);
     }
 
     @Override
     public void deleteByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("FieldValue n'utilise pas d'UUID");
+        throw new UnsupportedOperationException("SelectFieldOptions n'utilise pas d'UUID");
     }
 
     @Override
     public boolean existsByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("FieldValue n'utilise pas d'UUID");
+        throw new UnsupportedOperationException("SelectFieldOptions n'utilise pas d'UUID");
     }
 }

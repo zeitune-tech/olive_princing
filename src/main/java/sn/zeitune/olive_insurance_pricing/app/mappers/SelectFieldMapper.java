@@ -1,16 +1,17 @@
 package sn.zeitune.olive_insurance_pricing.app.mappers;
 
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FieldRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FieldResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.Field;
+import sn.zeitune.olive_insurance_pricing.app.entities.SelectField;
 
-public class FieldMapper {
+public class SelectedFieldMapper {
 
-    public static Field map(FieldRequestDTO dto, Field field) {
+    public static SelectField map(SelectFieldRequestDTO dto, SelectField field) {
+        field.setLabel(dto.label());
         field.setLabel(dto.label());
         field.setDescription(dto.description());
         field.setVariableName(dto.variableName());
-        field.setType(dto.type());
         field.setToReturn(dto.toReturn());
         field.setManagementEntity(dto.managementEntity());
         field.setProduct(dto.product());
@@ -18,18 +19,23 @@ public class FieldMapper {
         return field;
     }
 
-    public static FieldResponseDTO map(Field field) {
-        return FieldResponseDTO.builder()
+    public static SelectField map(SelectFieldRequestDTO dto) {
+        return map(dto, new SelectField());
+    }
+
+    public static SelectFieldResponseDTO map(SelectField field) {
+        // TODO
+        return SelectFieldResponseDTO.builder()
                 .id(field.getUuid())
                 .label(field.getLabel())
                 .description(field.getDescription())
                 .variableName(field.getVariableName())
-                .type(field.getType())
                 .toReturn(field.getToReturn())
                 .managementEntity(field.getManagementEntity())
                 .product(field.getProduct())
                 .coverage(field.getCoverage())
-                .value(field.getValue() != null ? FieldValueMapper.map(field.getValue()) : null)
+                .options(FieldValueMapper.map(field.getOptions()))
+                .value(FieldPossibilitesValueMapper.map(field.getValue()))
                 .build();
     }
 }

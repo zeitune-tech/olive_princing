@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FieldValueRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FieldValueResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.SelectFieldOptions;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,8 @@ public interface FieldValueService {
     FieldValueResponseDTO findById(Long id);
 
     FieldValueResponseDTO findByUuid(UUID uuid);
+
+    SelectFieldOptions getEntityByUuid(UUID uuid);
 
     List<FieldValueResponseDTO> findAll();
 

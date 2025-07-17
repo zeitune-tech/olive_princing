@@ -2,10 +2,14 @@ package sn.zeitune.olive_insurance_pricing.app.dtos.responses;
 
 import lombok.Builder;
 
+import java.util.List;
+import java.util.UUID;
+
 @Builder
 public record FieldValueResponseDTO(
-        Long id,
+        UUID id,
+        String label,
         String name,
         String description,
-        String value
+        List<FieldPossibilitiesValueResponseDTO> possibilities
 ) {}

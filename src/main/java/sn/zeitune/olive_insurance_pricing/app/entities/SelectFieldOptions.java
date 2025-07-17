@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
@@ -21,7 +25,19 @@ public class FieldValue {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "uuid", nullable = false, unique = true, updatable = false)
+    private UUID uuid;
+
+    @PrePersist
+    public void generateUuid() {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID();
+        }
+    }
+
+    private String label;
     private String name;
     private String description;
-    private String value;
+    @OneToMany
+    private List<FieldPossibilitiesValue> possibilities = new ArrayList<>();
 }

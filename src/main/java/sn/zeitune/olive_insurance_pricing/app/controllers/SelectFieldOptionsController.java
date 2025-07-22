@@ -15,9 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldOptionsRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldOptionsResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldOptionsRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldOptionsResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionsService;
 
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.UUID;
 @RequestMapping("/app/select-field-options")
 @RequiredArgsConstructor
 @Slf4j
-@Tag(name = "Field Values Full", description = "Operations pour la gestion des valeurs de champs")
+@Tag(name = "Select field options", description = "Operations pour la gestion des valeurs de champs")
 public class SelectFieldOptionsController {
 
     private final SelectFieldOptionsService selectFieldOptionsService;

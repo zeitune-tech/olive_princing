@@ -2,9 +2,9 @@ package sn.zeitune.olive_insurance_pricing.app.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldOptionValueRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldOptionValueResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.SelectFieldOptionValue;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldOptionValueRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldOptionValueResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
 
 import java.util.List;
 import java.util.Optional;

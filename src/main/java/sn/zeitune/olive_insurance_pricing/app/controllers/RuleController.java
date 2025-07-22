@@ -27,7 +27,7 @@ public class RuleController {
     @PostMapping
     public ResponseEntity<RuleResponseDTO> create(@Valid @RequestBody RuleRequestDTO ruleRequestDTO) {
         log.info("REST request to create rule: {}", ruleRequestDTO.label());
-        return null;
+        return ResponseEntity.ok(ruleService.create(ruleRequestDTO));
     }
 
     @GetMapping("/{id}")
@@ -39,7 +39,7 @@ public class RuleController {
     @GetMapping
     public ResponseEntity<Page<RuleResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
         log.info("REST request to get all rules with pagination");
-        return null;
+        return ResponseEntity.ok(ruleService.findAll(pageable));
     }
 
     @GetMapping("/by-value/{value}")

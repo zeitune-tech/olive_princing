@@ -1,5 +1,5 @@
 server:
-    port: 8040
+    port: 8060
     servlet:
         context-path: /api/v1/
 
@@ -17,9 +17,9 @@ spring:
     config:
         import: "optional:consul:"
     datasource:
-        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5600/olive_pricing}
-        username: ${SPRING_DATASOURCE_USERNAME:lhacksrt}
-        password: ${SPRING_DATASOURCE_PASSWORD:lhacksrt}
+        url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5680/pricing_db}
+        username: ${SPRING_DATASOURCE_USERNAME:postgres}
+        password: ${SPRING_DATASOURCE_PASSWORD:olive_password_2024}
 
     jpa:
         hibernate:

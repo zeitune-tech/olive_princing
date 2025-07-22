@@ -1,15 +1,15 @@
-package sn.zeitune.olive_insurance_pricing.app.dtos.requests;
+package sn.zeitune.olive_insurance_pricing.app.dtos.requests.field;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.NumericalConditionRequestDTO;
 
-import java.util.Set;
 import java.util.UUID;
 
 @Builder
-public record RuleRequestDTO(
+public record SelectFieldRequestDTO(
+        // TODO
+
         @NotNull(message = "Label is required")
         @NotBlank(message = "Label must not be blank")
         String label,
@@ -20,9 +20,6 @@ public record RuleRequestDTO(
         @NotBlank(message = "Variable name must not be blank")
         String variableName,
 
-        @NotNull(message = "Value is required")
-        Double value,
-
         Boolean toReturn,
 
         UUID managementEntity,
@@ -31,5 +28,5 @@ public record RuleRequestDTO(
 
         UUID coverage,
 
-        Set<UUID> conditions
+        UUID options
 ) {}

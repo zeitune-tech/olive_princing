@@ -22,10 +22,6 @@ public interface RuleService {
 
     List<RuleResponseDTO> findByValue(Double value);
 
-    List<RuleResponseDTO> findByProduct(UUID product);
-
-    List<RuleResponseDTO> searchByLabel(String label);
-
     RuleResponseDTO update(Long id, RuleRequestDTO ruleRequestDTO);
 
     RuleResponseDTO updateByUuid(UUID uuid, RuleRequestDTO ruleRequestDTO);

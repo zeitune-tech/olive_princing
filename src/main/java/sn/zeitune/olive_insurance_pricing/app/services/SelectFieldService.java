@@ -2,9 +2,9 @@ package sn.zeitune.olive_insurance_pricing.app.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldResponseDTO;
-import sn.zeitune.olive_insurance_pricing.enums.FieldType;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +16,7 @@ public interface SelectFieldService {
     SelectFieldResponseDTO findById(Long id);
 
     SelectFieldResponseDTO findByUuid(UUID uuid);
+    SelectField getEntityByUuid(UUID uuid);
 
     List<SelectFieldResponseDTO> findAll();
 

@@ -1,12 +1,13 @@
 package sn.zeitune.olive_insurance_pricing.app.dtos.responses;
 
 import lombok.Builder;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.NumericalConditionResponseDTO;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Builder
-public record RuleResponseDTO(
+public record RuleResponseDTO (
         UUID id,
         String label,
         String description,
@@ -16,5 +17,5 @@ public record RuleResponseDTO(
         UUID managementEntity,
         UUID product,
         UUID coverage,
-        Set<ConditionResponseDTO> conditions
+        Set<Object> conditions
 ) {}

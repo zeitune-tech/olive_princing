@@ -25,11 +25,6 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public RuleResponseDTO create(RuleRequestDTO ruleRequestDTO) {
-        // Vérifier si une règle avec le même nom de variable existe déjà
-        if (ruleRepository.existsByVariableName(ruleRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Une règle avec le nom de variable '" + ruleRequestDTO.variableName() + "' existe déjà");
-        }
-
         Rule rule = RuleMapper.map(ruleRequestDTO, new Rule());
         rule = ruleRepository.save(rule);
         return RuleMapper.map(rule);
@@ -59,6 +54,12 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public Page<RuleResponseDTO> findAll(Pageable pageable) {
+//        List<Rule> rules = ruleRepository.findAll();
+//
+//        for (Rule rule: rules) {
+//            System.err.println(rule);
+//        }
+
         return ruleRepository.findAll(pageable)
                 .map(RuleMapper::map);
     }
@@ -72,32 +73,10 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    public List<RuleResponseDTO> findByProduct(UUID product) {
-        return ruleRepository.findByProduct(product)
-                .stream()
-                .map(RuleMapper::map)
-                .toList();
-    }
-
-    @Override
-    public List<RuleResponseDTO> searchByLabel(String label) {
-        return ruleRepository.findByLabelContainingIgnoreCase(label)
-                .stream()
-                .map(RuleMapper::map)
-                .toList();
-    }
-
-    @Override
     public RuleResponseDTO update(Long id, RuleRequestDTO ruleRequestDTO) {
         Rule existingRule = ruleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Règle non trouvée avec l'ID : " + id));
-        
-        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même règle)
-        if (!existingRule.getVariableName().equals(ruleRequestDTO.variableName()) &&
-            ruleRepository.existsByVariableName(ruleRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Une règle avec le nom de variable '" + ruleRequestDTO.variableName() + "' existe déjà");
-        }
-        
+
         RuleMapper.map(ruleRequestDTO, existingRule);
         Rule updatedRule = ruleRepository.save(existingRule);
         return RuleMapper.map(updatedRule);
@@ -108,12 +87,7 @@ public class RuleServiceImpl implements RuleService {
         Rule existingRule = ruleRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Règle non trouvée avec l'UUID : " + uuid));
         
-        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même règle)
-        if (!existingRule.getVariableName().equals(ruleRequestDTO.variableName()) &&
-            ruleRepository.existsByVariableName(ruleRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Une règle avec le nom de variable '" + ruleRequestDTO.variableName() + "' existe déjà");
-        }
-        
+
         RuleMapper.map(ruleRequestDTO, existingRule);
         Rule updatedRule = ruleRepository.save(existingRule);
         return RuleMapper.map(updatedRule);

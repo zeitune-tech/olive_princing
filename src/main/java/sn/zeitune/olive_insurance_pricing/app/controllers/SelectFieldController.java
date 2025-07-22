@@ -8,10 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.SelectFieldRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.SelectFieldResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldService;
-import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 
 import java.util.List;
 import java.util.UUID;

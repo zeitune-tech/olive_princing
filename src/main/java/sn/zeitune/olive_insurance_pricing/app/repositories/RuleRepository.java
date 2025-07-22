@@ -17,13 +17,4 @@ public interface RuleRepository extends JpaRepository<Rule, Long> {
     
     List<Rule> findByValue(Double value);
     
-    List<Rule> findByLabelContainingIgnoreCase(String label);
-    
-    List<Rule> findByProduct(UUID product);
-    
-    List<Rule> findByCoverage(UUID coverage);
-    
-    List<Rule> findByValueBetween(Double minValue, Double maxValue);
-    
-    boolean existsByVariableName(String variableName);
 }

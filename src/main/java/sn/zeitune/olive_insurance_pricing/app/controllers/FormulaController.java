@@ -27,7 +27,7 @@ public class FormulaController {
     @PostMapping
     public ResponseEntity<FormulaResponseDTO> create(@Valid @RequestBody FormulaRequestDTO formulaDto) {
         log.info("REST request to create formula: {}", formulaDto.label());
-        return null;
+        return ResponseEntity.ok(formulaService.create(formulaDto));
     }
 
     @GetMapping("/{id}")
@@ -39,7 +39,7 @@ public class FormulaController {
     @GetMapping
     public ResponseEntity<Page<FormulaResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
         log.info("REST request to get all formulas with pagination");
-        return null;
+        return ResponseEntity.ok(formulaService.findAll(pageable));
     }
 
     @GetMapping("/by-product/{product}")

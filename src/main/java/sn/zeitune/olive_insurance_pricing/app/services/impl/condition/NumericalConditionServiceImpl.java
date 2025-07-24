@@ -51,7 +51,7 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
 
     @Override
     public NumericalConditionResponseDTO findByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
+        return NumericalConditionMapper.map(getEntityByUuid(uuid));
     }
 
     @Override
@@ -115,6 +115,12 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
 
     @Override
     public boolean existsByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
+        return numericalConditionRepository.existsByUuid(uuid);
+    }
+
+    @Override
+    public NumericalCondition getEntityByUuid(UUID uuid) {
+        return numericalConditionRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'UUID : " + uuid));
     }
 }

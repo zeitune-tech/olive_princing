@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "rule")
+@Table(name = "regle")
 @ToString
 public class Rule {
 
@@ -35,14 +35,15 @@ public class Rule {
         }
     }
 
-
+    private String label;
+    private String name;
     private Double value;
 
     @Builder.Default
     @ManyToMany
     @JoinTable(
-            name = "condition",
-            joinColumns = @JoinColumn(name = "code_variable"),
+            name = "regle_conditions",
+            joinColumns = @JoinColumn(name = "code_regle"),
             inverseJoinColumns = @JoinColumn(name = "code_condition")
     )
     private Set<Condition> conditions = new HashSet<>();

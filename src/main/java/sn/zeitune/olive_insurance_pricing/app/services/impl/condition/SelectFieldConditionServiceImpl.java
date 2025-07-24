@@ -59,7 +59,7 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public SelectFieldConditionResponseDTO findByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
+        return SelectFieldConditionMapper.map(getEntityByUuid(uuid));
     }
 
     @Override
@@ -123,6 +123,12 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public boolean existsByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
+        return selectFieldConditionRepository.existsByUuid(uuid);
+    }
+
+    @Override
+    public SelectFieldCondition getEntityByUuid(UUID uuid) {
+        return selectFieldConditionRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + uuid));
     }
 }

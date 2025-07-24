@@ -14,22 +14,12 @@ public record RuleRequestDTO(
         @NotBlank(message = "Label must not be blank")
         String label,
 
-        String description,
-
-        @NotNull(message = "Variable name is required")
-        @NotBlank(message = "Variable name must not be blank")
-        String variableName,
+        @NotNull(message = "Name is required")
+        @NotBlank(message = "Name must not be blank")
+        String name,
 
         @NotNull(message = "Value is required")
         Double value,
-
-        Boolean toReturn,
-
-        UUID managementEntity,
-
-        UUID product,
-
-        UUID coverage,
 
         Set<UUID> conditions
 ) {}

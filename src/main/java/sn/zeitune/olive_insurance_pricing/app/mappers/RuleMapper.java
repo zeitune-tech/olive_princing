@@ -14,12 +14,16 @@ public class RuleMapper {
 
     public static Rule map(RuleRequestDTO dto, Rule rule) {
         rule.setValue(dto.value());
+        rule.setLabel(dto.label());
+        rule.setName(dto.name());
         return rule;
     }
 
     public static RuleResponseDTO map(Rule rule) {
         return RuleResponseDTO.builder()
                 .id(rule.getUuid())
+                .label(rule.getLabel())
+                .name(rule.getName())
                 .value(rule.getValue())
                 .conditions(
                         rule.getConditions() != null ?

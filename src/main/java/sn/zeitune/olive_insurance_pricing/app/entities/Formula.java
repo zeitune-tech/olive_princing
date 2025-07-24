@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,5 +24,5 @@ public class Formula extends VariableItem {
     private String expression;
 
     @OneToMany
-    private List<VariableItem> variables;
+    private List<VariableItem> variables = new ArrayList<>();
 }

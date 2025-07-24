@@ -27,7 +27,7 @@ public class VariableConditionController {
     @PostMapping
     public ResponseEntity<VariableConditionResponseDTO> create(@Valid @RequestBody VariableConditionRequestDTO variableConditionRequestDTO) {
         log.info("REST request to create variable condition: {}", variableConditionRequestDTO.label());
-        return null;
+        return ResponseEntity.ok(variableConditionService.create(variableConditionRequestDTO));
     }
 
     @GetMapping("/{id}")
@@ -39,7 +39,7 @@ public class VariableConditionController {
     @GetMapping
     public ResponseEntity<Page<VariableConditionResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
         log.info("REST request to get all variable conditions with pagination");
-        return null;
+        return ResponseEntity.ok(variableConditionService.findAll(pageable));
     }
 
     @GetMapping("/by-product/{product}")

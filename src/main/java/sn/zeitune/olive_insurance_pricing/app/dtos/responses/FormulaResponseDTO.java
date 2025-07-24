@@ -2,6 +2,7 @@ package sn.zeitune.olive_insurance_pricing.app.dtos.responses;
 
 import lombok.Builder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -14,5 +15,6 @@ public record FormulaResponseDTO(
         Boolean toReturn,
         UUID managementEntity,
         UUID product,
-        UUID coverage
+        UUID coverage,
+        List<Object> variables
 ) {}

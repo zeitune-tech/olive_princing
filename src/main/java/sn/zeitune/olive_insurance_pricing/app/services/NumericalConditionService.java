@@ -4,6 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.NumericalConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.NumericalConditionResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.Condition;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericalCondition;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,4 +35,6 @@ public interface NumericalConditionService {
     void deleteByUuid(UUID uuid);
 
     boolean existsByUuid(UUID uuid);
+
+    NumericalCondition getEntityByUuid(UUID uuid);
 }

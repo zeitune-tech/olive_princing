@@ -104,7 +104,13 @@
             <artifactId>json</artifactId>
             <version>20240303</version>
         </dependency>
-        
+
+        <dependency>
+            <groupId>net.objecthunter</groupId>
+            <artifactId>exp4j</artifactId>
+            <version>0.4.8</version>
+        </dependency>
+
         <!-- Swagger/OpenAPI 3 -->
         <dependency>
             <groupId>org.springdoc</groupId>

@@ -6,6 +6,8 @@ import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericalCondit
 import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface NumericalConditionRepository extends JpaRepository<NumericalCondition, Long> {
@@ -13,5 +15,8 @@ public interface NumericalConditionRepository extends JpaRepository<NumericalCon
     List<NumericalCondition> findByNumericFieldValue(Double value);
 
     List<NumericalCondition> findByNumericField(NumericField field);
-    
+
+    Optional<NumericalCondition> findByUuid(UUID uuid);
+
+    boolean existsByUuid(UUID uuid);
 }

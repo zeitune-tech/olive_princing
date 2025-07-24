@@ -21,7 +21,7 @@ public class VariableCondition extends VariableItem {
     @Builder.Default
     @ManyToMany
     @JoinTable(
-            name = "regles",
+            name = "variablecondition_regles",
             joinColumns = @JoinColumn(name = "code_variable"),
             inverseJoinColumns = @JoinColumn(name = "code_regle")
     )

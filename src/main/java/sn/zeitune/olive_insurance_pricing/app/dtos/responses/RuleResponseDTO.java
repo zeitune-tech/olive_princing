@@ -10,12 +10,7 @@ import java.util.UUID;
 public record RuleResponseDTO (
         UUID id,
         String label,
-        String description,
-        String variableName,
+        String name,
         Double value,
-        Boolean toReturn,
-        UUID managementEntity,
-        UUID product,
-        UUID coverage,
         Set<Object> conditions
 ) {}

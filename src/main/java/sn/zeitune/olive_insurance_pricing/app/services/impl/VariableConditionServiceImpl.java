@@ -11,6 +11,7 @@ import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableConditionRe
 import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
 import sn.zeitune.olive_insurance_pricing.app.mappers.VariableConditionMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.VariableConditionRepository;
+import sn.zeitune.olive_insurance_pricing.app.services.RuleService;
 import sn.zeitune.olive_insurance_pricing.app.services.VariableConditionService;
 
 import java.util.List;
@@ -22,17 +23,23 @@ import java.util.UUID;
 public class VariableConditionServiceImpl implements VariableConditionService {
 
     private final VariableConditionRepository variableConditionRepository;
+    private final RuleService ruleService;
 
     @Override
     public VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto) {
         // Vérifier si une condition variable avec le même nom de variable existe déjà
-        if (variableConditionRepository.existsByVariableName(variableConditionDto.variableName())) {
+        if (variableConditionRepository.existsByVariableName(variableConditionDto.variableName()))
             throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.variableName() + "' existe déjà");
-        }
+
         
         VariableCondition variableCondition = VariableConditionMapper.map(variableConditionDto);
-        variableCondition = variableConditionRepository.save(variableCondition);
-        return VariableConditionMapper.map(variableCondition);
+
+        for (UUID uuid : variableConditionDto.ruleIds()) {
+            if (ruleService.existsByUuid(uuid))
+                variableCondition.getRules().add(ruleService.getEntityByUuid(uuid));
+        }
+
+        return VariableConditionMapper.map(variableConditionRepository.save(variableCondition));
     }
 
     @Override

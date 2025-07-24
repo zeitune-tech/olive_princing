@@ -2,6 +2,8 @@ package sn.zeitune.olive_insurance_pricing.app.services.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,13 @@ import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
 import sn.zeitune.olive_insurance_pricing.app.mappers.FormulaMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.FormulaRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.FormulaService;
+import sn.zeitune.olive_insurance_pricing.app.services.VariableItemService;
+import sn.zeitune.olive_insurance_pricing.app.utils.ExpressionParser;
 
 import java.util.List;
 import java.util.UUID;
+
+import static sn.zeitune.olive_insurance_pricing.app.utils.ExpressionParser.parseExpression;
 
 @Service
 @Transactional
@@ -22,6 +28,7 @@ import java.util.UUID;
 public class FormulaServiceImpl implements FormulaService {
 
     private final FormulaRepository formulaRepository;
+    private final VariableItemService variableItemService;
 
     @Override
     public FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO) {
@@ -31,6 +38,13 @@ public class FormulaServiceImpl implements FormulaService {
         }
         
         Formula formula = FormulaMapper.map(formulaRequestDTO);
+
+        ExpressionParser.ParsedExpression parsed = parseExpression(formulaRequestDTO.expression());
+
+        for (String variable : parsed.variables) {
+            formula.getVariables().add(variableItemService.findByVariableName(variable));
+        }
+
         formula = formulaRepository.save(formula);
         return FormulaMapper.map(formula);
     }

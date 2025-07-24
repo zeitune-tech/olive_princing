@@ -15,7 +15,7 @@ public interface VariableItemRepository extends JpaRepository<VariableItem, Long
     
     List<VariableItem> findByLabelContainingIgnoreCase(String label);
     
-    List<VariableItem> findByVariableName(String variableName);
+    Optional<VariableItem> findByVariableName(String variableName);
     
     List<VariableItem> findByProduct(UUID product);
     

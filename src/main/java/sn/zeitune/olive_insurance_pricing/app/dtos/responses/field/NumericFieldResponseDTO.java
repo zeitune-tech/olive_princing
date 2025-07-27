@@ -13,6 +13,6 @@ public record NumericFieldResponseDTO(
         Boolean toReturn,
         UUID managementEntity,
         UUID product,
-        UUID coverage,
-        Double value
+        UUID coverage
+//        Double value
 ) {}

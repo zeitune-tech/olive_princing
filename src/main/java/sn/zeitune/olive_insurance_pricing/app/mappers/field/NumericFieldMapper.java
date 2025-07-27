@@ -31,7 +31,6 @@ public class NumericFieldMapper {
                 .managementEntity(field.getManagementEntity())
                 .product(field.getProduct())
                 .coverage(field.getCoverage())
-                .value(field.getValue())
                 .build();
     }
 }

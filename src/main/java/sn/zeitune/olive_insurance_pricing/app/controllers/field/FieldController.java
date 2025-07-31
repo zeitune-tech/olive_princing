@@ -1,6 +1,5 @@
-package sn.zeitune.olive_insurance_pricing.app.controllers;
+package sn.zeitune.olive_insurance_pricing.app.controllers.field;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

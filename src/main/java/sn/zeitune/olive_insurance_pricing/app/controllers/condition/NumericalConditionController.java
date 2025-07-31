@@ -1,4 +1,4 @@
-package sn.zeitune.olive_insurance_pricing.app.controllers;
+package sn.zeitune.olive_insurance_pricing.app.controllers.condition;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

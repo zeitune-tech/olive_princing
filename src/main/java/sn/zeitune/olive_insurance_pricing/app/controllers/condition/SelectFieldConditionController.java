@@ -1,4 +1,4 @@
-package sn.zeitune.olive_insurance_pricing.app.controllers;
+package sn.zeitune.olive_insurance_pricing.app.controllers.condition;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,17 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.SelectFieldConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.SelectFieldConditionResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldOptionValueResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
-import sn.zeitune.olive_insurance_pricing.app.repositories.condition.SelectFieldConditionRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldConditionService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionValueService;
-import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldService;
 import sn.zeitune.olive_insurance_pricing.enums.NumericOperator;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/app/select-field-conditions")

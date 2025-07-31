@@ -32,7 +32,7 @@ public class VariableItemServiceImpl implements VariableItemService {
     }
 
     @Override
-    public List<VariableItemResponseDTO> findAll() {
+    public List<Object> findAll() {
         return variableItemRepository.findAllByOrderByLabelAsc().stream().map(VariableItemMapper::map).toList();
     }
 
@@ -69,6 +69,11 @@ public class VariableItemServiceImpl implements VariableItemService {
     @Override
     public VariableItem getEntityByUuid(UUID uuid) {
         return null;
+    }
+
+    @Override
+    public VariableItem findByVariableName(String variable) {
+        return variableItemRepository.findByVariableName(variable).orElseThrow(() -> new RuntimeException("Variable not found"));
     }
 
 //    @Override

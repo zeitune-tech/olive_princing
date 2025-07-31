@@ -1,4 +1,4 @@
-package sn.zeitune.olive_insurance_pricing.app.controllers;
+package sn.zeitune.olive_insurance_pricing.app.controllers.field;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

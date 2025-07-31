@@ -15,7 +15,7 @@ public interface VariableItemService {
 
     VariableItemResponseDTO findByUuid(UUID uuid);
 
-    List<VariableItemResponseDTO> findAll();
+    List<Object> findAll();
 
     Page<VariableItemResponseDTO> findAll(Pageable pageable);
 
@@ -34,4 +34,6 @@ public interface VariableItemService {
     boolean existsByUuid(UUID uuid);
 
     VariableItem getEntityByUuid(@NotNull(message = "VariableItem UUID is required") UUID uuid);
+
+    VariableItem findByVariableName(String variable);
 }

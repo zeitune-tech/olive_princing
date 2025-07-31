@@ -10,7 +10,9 @@ import java.util.UUID;
 
 @Repository
 public interface VariableItemRepository extends JpaRepository<VariableItem, Long> {
-    
+
+    List<VariableItem> findAllByOrderByLabelAsc();
+
     Optional<VariableItem> findByUuid(UUID uuid);
     
     List<VariableItem> findByLabelContainingIgnoreCase(String label);
@@ -26,4 +28,5 @@ public interface VariableItemRepository extends JpaRepository<VariableItem, Long
     boolean existsByUuid(UUID uuid);
     
     boolean existsByVariableName(String variableName);
+
 }

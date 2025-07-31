@@ -1,11 +1,12 @@
 package sn.zeitune.olive_insurance_pricing.app.dtos.responses.field;
 
 import lombok.Builder;
+import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 
 import java.util.UUID;
 
 @Builder
-public record SelectFieldResponseDTO(
+public record FieldResponseDTO(
         UUID id,
         String label,
         String description,
@@ -14,6 +15,8 @@ public record SelectFieldResponseDTO(
         UUID managementEntity,
         UUID product,
         UUID coverage,
-        SelectFieldOptionsResponseDTO options
-//        SelectFieldOptionValueResponseDTO value
+
+        FieldType type,
+        SelectFieldOptionsResponseDTO options,
+        SelectFieldOptionValueResponseDTO value
 ) {}

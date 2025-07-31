@@ -33,7 +33,7 @@ public class SelectFieldMapper {
                 .product(field.getProduct())
                 .coverage(field.getCoverage())
                 .options(SelectFieldOptionsMapper.map(field.getOptions()))
-                .value(field.getValue() == null ? null : SelectFieldOptionValueMapper.map(field.getValue()))
+//                .value(field.getValue() == null ? null : SelectFieldOptionValueMapper.map(field.getValue()))
                 .build();
     }
 }

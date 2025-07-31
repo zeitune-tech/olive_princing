@@ -22,8 +22,6 @@ public interface NumericalConditionService {
 
     Page<NumericalConditionResponseDTO> findAll(Pageable pageable);
 
-    List<NumericalConditionResponseDTO> findByValue(Double value);
-
     List<NumericalConditionResponseDTO> findByField(Long fieldId);
 
     NumericalConditionResponseDTO update(Long id, NumericalConditionRequestDTO numericalConditionRequestDTO);

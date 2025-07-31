@@ -68,14 +68,6 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
                 .map(NumericalConditionMapper::map);
     }
 
-    @Override
-    public List<NumericalConditionResponseDTO> findByValue(Double value) {
-        return numericalConditionRepository.findByNumericFieldValue(value)
-                .stream()
-                .map(NumericalConditionMapper::map)
-                .toList();
-    }
-
 
     @Override
     public List<NumericalConditionResponseDTO> findByField(Long fieldId) {

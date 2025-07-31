@@ -11,8 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface NumericalConditionRepository extends JpaRepository<NumericalCondition, Long> {
-    
-    List<NumericalCondition> findByNumericFieldValue(Double value);
 
     List<NumericalCondition> findByNumericField(NumericField field);
 

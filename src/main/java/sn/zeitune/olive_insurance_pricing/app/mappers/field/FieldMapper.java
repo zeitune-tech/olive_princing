@@ -5,6 +5,8 @@ import sn.zeitune.olive_insurance_pricing.app.entities.Constant;
 import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
 import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.Field;
+import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
+import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
 import sn.zeitune.olive_insurance_pricing.app.mappers.ConstantMapper;
 import sn.zeitune.olive_insurance_pricing.app.mappers.FormulaMapper;
 import sn.zeitune.olive_insurance_pricing.app.mappers.VariableItemMapper;
@@ -26,22 +28,19 @@ public class FieldMapper {
 //        return map(dto, new Field());
 //    }
 
-    private static Object dtoForVariableItem (VariableItem variableItem) {
-        if (variableItem instanceof Constant) {
-            return ConstantMapper.map((Constant) variableItem);
+    private static Object dtoForField (Field field) {
+        if (field instanceof NumericField) {
+            return NumericFieldMapper.map((NumericField) field);
         }
-        if (variableItem instanceof Field) {
-            return FieldMapper.map((Field) variableItem);
-        }
-        if (variableItem instanceof Formula) {
-            return FormulaMapper.map((Formula) variableItem);
+        if (field instanceof SelectField) {
+            return SelectFieldMapper.map((SelectField) field);
         }
         // Add other mappings for different VariableItem types if needed
         return null; // or throw an exception if appropriate
 
     }
 
-    public static Object map(VariableItem variableItem) {
-        return dtoForVariableItem(variableItem);
+    public static FieldResponseDTO map(Field field) {
+        return (FieldResponseDTO) dtoForField(field);
     }
 }

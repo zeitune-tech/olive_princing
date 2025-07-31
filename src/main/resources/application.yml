@@ -13,7 +13,7 @@ services:
 
 spring:
     application:
-        name: olive_insurance_pricing_service
+        name: olive-insurance-princing-service
     config:
         import: "optional:consul:"
     datasource:

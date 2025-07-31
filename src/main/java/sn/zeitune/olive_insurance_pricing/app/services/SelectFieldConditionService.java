@@ -4,8 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.SelectFieldConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.SelectFieldConditionResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.Condition;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectFieldCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectCondition;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
 
 import java.util.List;
@@ -37,5 +36,5 @@ public interface SelectFieldConditionService {
 
     boolean existsByUuid(UUID uuid);
 
-    SelectFieldCondition getEntityByUuid(UUID uuid);
+    SelectCondition getEntityByUuid(UUID uuid);
 }

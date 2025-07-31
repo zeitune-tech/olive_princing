@@ -6,37 +6,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import sn.zeitune.olive_insurance_pricing.app.entities.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@Table(name = "select_field_options")
+@Table(name = "champ_select_option")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "visibilite", discriminatorType = DiscriminatorType.STRING)
 @ToString
-public class SelectFieldOptions {
-
-    @Id
-    @Column(name = "code_select_field_options")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "uuid", nullable = false, unique = true, updatable = false)
-    private UUID uuid;
-
-    @PrePersist
-    public void generateUuid() {
-        if (this.uuid == null) {
-            this.uuid = UUID.randomUUID();
-        }
-    }
-
+public class SelectFieldOption extends BaseEntity {
     private String label;
     private String name;
     private String description;

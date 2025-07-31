@@ -3,8 +3,8 @@ package sn.zeitune.olive_insurance_pricing.app.mappers;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.RuleRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.RuleResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.Rule;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericalCondition;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectFieldCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectCondition;
 import sn.zeitune.olive_insurance_pricing.app.mappers.condition.NumericalConditionMapper;
 import sn.zeitune.olive_insurance_pricing.app.mappers.condition.SelectFieldConditionMapper;
 
@@ -27,7 +27,7 @@ public class RuleMapper {
                 .value(rule.getValue())
                 .conditions(
                         rule.getConditions() != null ?
-                            rule.getConditions().stream().map( condition -> condition instanceof NumericalCondition ? NumericalConditionMapper.map((NumericalCondition) condition) : SelectFieldConditionMapper.map((SelectFieldCondition) condition)).collect(Collectors.toSet())
+                            rule.getConditions().stream().map( condition -> condition instanceof NumericCondition ? NumericalConditionMapper.map((NumericCondition) condition) : SelectFieldConditionMapper.map((SelectCondition) condition)).collect(Collectors.toSet())
                             : null
                 )
                 .build();

@@ -13,9 +13,8 @@ import sn.zeitune.olive_insurance_pricing.enums.NumericOperator;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@DiscriminatorValue("condition_numerique")
-public class NumericalCondition extends Condition {
-
+@DiscriminatorValue("condition_champ_numerique")
+public class NumericCondition extends Condition {
     @OneToOne
     private NumericField numericField;
     private NumericOperator numericOperator;

@@ -2,7 +2,7 @@ package sn.zeitune.olive_insurance_pricing.app.mappers.field;
 
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldOptionsRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldOptionsResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptions;
+import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOption;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -10,27 +10,27 @@ import java.util.stream.Collectors;
 public class SelectFieldOptionsMapper {
 
     // Backward compatibility
-    public static SelectFieldOptions map(SelectFieldOptionsRequestDTO requestDTO, SelectFieldOptions selectFieldOptions) {
-        selectFieldOptions.setLabel(requestDTO.label());
-        selectFieldOptions.setName(requestDTO.name());
-        selectFieldOptions.setDescription(requestDTO.description());
-        return selectFieldOptions;
+    public static SelectFieldOption map(SelectFieldOptionsRequestDTO requestDTO, SelectFieldOption selectFieldOption) {
+        selectFieldOption.setLabel(requestDTO.label());
+        selectFieldOption.setName(requestDTO.name());
+        selectFieldOption.setDescription(requestDTO.description());
+        return selectFieldOption;
     }
 
-    public static SelectFieldOptions map(SelectFieldOptionsRequestDTO requestDTO) {
-        return map(requestDTO, new SelectFieldOptions());
+    public static SelectFieldOption map(SelectFieldOptionsRequestDTO requestDTO) {
+        return map(requestDTO, new SelectFieldOption());
     }
 
-    public static SelectFieldOptionsResponseDTO map(SelectFieldOptions selectFieldOptions) {
+    public static SelectFieldOptionsResponseDTO map(SelectFieldOption selectFieldOption) {
         return SelectFieldOptionsResponseDTO.builder()
-                .id(selectFieldOptions.getUuid())
-                .label(selectFieldOptions.getLabel())
-                .name(selectFieldOptions.getName())
-                .description(selectFieldOptions.getDescription())
+                .id(selectFieldOption.getUuid())
+                .label(selectFieldOption.getLabel())
+                .name(selectFieldOption.getName())
+                .description(selectFieldOption.getDescription())
                 .possibilities(
-                        selectFieldOptions.getPossibilities() == null ?
+                        selectFieldOption.getPossibilities() == null ?
                                 new ArrayList<>() :
-                                selectFieldOptions.getPossibilities()
+                                selectFieldOption.getPossibilities()
                                         .stream().map(SelectFieldOptionValueMapper::map)
                                         .collect(Collectors.toList())
                 )

@@ -2,7 +2,7 @@ package sn.zeitune.olive_insurance_pricing.app.repositories.condition;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericalCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericCondition;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
 
 import java.util.List;
@@ -10,11 +10,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface NumericalConditionRepository extends JpaRepository<NumericalCondition, Long> {
+public interface NumericConditionRepository extends JpaRepository<NumericCondition, Long> {
 
-    List<NumericalCondition> findByNumericField(NumericField field);
+    List<NumericCondition> findByNumericField(NumericField field);
 
-    Optional<NumericalCondition> findByUuid(UUID uuid);
+    Optional<NumericCondition> findByUuid(UUID uuid);
 
     boolean existsByUuid(UUID uuid);
 }

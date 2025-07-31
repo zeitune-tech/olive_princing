@@ -15,8 +15,6 @@ public interface FieldRepository extends JpaRepository<Field, Long> {
     
     List<Field> findByProduct(UUID product);
     
-    List<Field> findByCoverage(UUID coverage);
-    
     boolean existsByVariableName(String variableName);
     
     Optional<Field> findByUuid(UUID uuid);

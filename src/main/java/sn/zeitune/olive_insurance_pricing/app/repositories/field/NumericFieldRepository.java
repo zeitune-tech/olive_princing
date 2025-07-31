@@ -15,8 +15,6 @@ public interface NumericFieldRepository extends JpaRepository<NumericField, Long
     
     List<NumericField> findByProduct(UUID product);
     
-    List<NumericField> findByCoverage(UUID coverage);
-    
     boolean existsByVariableName(String variableName);
     
     Optional<NumericField> findByUuid(UUID uuid);

@@ -21,8 +21,6 @@ public interface ConstantRepository extends JpaRepository<Constant, Long> {
     
     List<Constant> findByProduct(UUID product);
     
-    List<Constant> findByCoverage(UUID coverage);
-    
     List<Constant> findByValueBetween(Double minValue, Double maxValue);
     
     boolean existsByVariableName(String variableName);

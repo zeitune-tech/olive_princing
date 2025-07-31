@@ -19,7 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "formula")
 public class Formula extends VariableItem {
-
     @Column(name = "expression", nullable = false, columnDefinition = "TEXT")
     private String expression;
 

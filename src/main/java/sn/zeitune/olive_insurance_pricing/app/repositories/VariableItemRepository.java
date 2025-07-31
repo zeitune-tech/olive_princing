@@ -21,10 +21,6 @@ public interface VariableItemRepository extends JpaRepository<VariableItem, Long
     
     List<VariableItem> findByProduct(UUID product);
     
-    List<VariableItem> findByCoverage(UUID coverage);
-    
-    List<VariableItem> findByToReturn(Boolean toReturn);
-    
     boolean existsByUuid(UUID uuid);
     
     boolean existsByVariableName(String variableName);

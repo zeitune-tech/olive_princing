@@ -16,9 +16,8 @@ import sn.zeitune.olive_insurance_pricing.enums.SelectFieldOperator;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@DiscriminatorValue("condition_champs_select")
-public class SelectFieldCondition extends Condition {
-
+@DiscriminatorValue("condition_champ_select")
+public class SelectCondition extends Condition {
     @OneToOne
     private SelectField selectField;
     private SelectFieldOperator selectFieldOperator;

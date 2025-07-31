@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldOptionsRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldOptionsResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptions;
+import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOption;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +18,7 @@ public interface SelectFieldOptionsService {
 
     SelectFieldOptionsResponseDTO findByUuid(UUID uuid);
 
-    SelectFieldOptions getEntityByUuid(UUID uuid);
+    SelectFieldOption getEntityByUuid(UUID uuid);
 
     List<SelectFieldOptionsResponseDTO> findAll();
 

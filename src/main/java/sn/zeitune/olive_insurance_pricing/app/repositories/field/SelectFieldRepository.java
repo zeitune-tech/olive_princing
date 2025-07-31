@@ -15,8 +15,6 @@ public interface SelectFieldRepository extends JpaRepository<SelectField, Long> 
     
     List<SelectField> findByProduct(UUID product);
     
-    List<SelectField> findByCoverage(UUID coverage);
-    
     boolean existsByVariableName(String variableName);
     
     Optional<SelectField> findByUuid(UUID uuid);

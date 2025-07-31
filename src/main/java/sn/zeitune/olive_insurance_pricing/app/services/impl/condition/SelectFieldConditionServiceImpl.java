@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.SelectFieldConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.SelectFieldConditionResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectFieldCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectCondition;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
 import sn.zeitune.olive_insurance_pricing.app.mappers.condition.SelectFieldConditionMapper;
-import sn.zeitune.olive_insurance_pricing.app.repositories.condition.SelectFieldConditionRepository;
+import sn.zeitune.olive_insurance_pricing.app.repositories.condition.SelectConditionRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldConditionService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionValueService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldService;
@@ -25,14 +25,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SelectFieldConditionServiceImpl implements SelectFieldConditionService {
 
-    private final SelectFieldConditionRepository selectFieldConditionRepository;
+    private final SelectConditionRepository selectConditionRepository;
     private final SelectFieldService selectFieldService;
     private final SelectFieldOptionValueService selectFieldOptionValueService;
 
     @Override
     public SelectFieldConditionResponseDTO create(SelectFieldConditionRequestDTO selectFieldConditionRequestDTO) {
 
-        SelectFieldCondition selectFieldCondition = SelectFieldConditionMapper.map(selectFieldConditionRequestDTO);
+        SelectCondition selectCondition = SelectFieldConditionMapper.map(selectFieldConditionRequestDTO);
 
         SelectField selectField = selectFieldService.getEntityByUuid(selectFieldConditionRequestDTO.fieldId());
         if (selectField == null) throw new RuntimeException(String.format(""));
@@ -43,18 +43,18 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
         if (!selectField.getOptions().getPossibilities().stream().map(SelectFieldOptionValue::getUuid).toList().contains(selectFieldConditionRequestDTO.value()))
             throw new RuntimeException(String.format("Value with id %s does not exist", selectFieldConditionRequestDTO.value()));
 
-        selectFieldCondition.setSelectFieldValue(selectFieldOptionValueService.getEntityByUuid(selectFieldConditionRequestDTO.value()));
-        selectFieldCondition.setSelectField(selectField);
-        selectFieldCondition = selectFieldConditionRepository.save(selectFieldCondition);
+        selectCondition.setSelectFieldValue(selectFieldOptionValueService.getEntityByUuid(selectFieldConditionRequestDTO.value()));
+        selectCondition.setSelectField(selectField);
+        selectCondition = selectConditionRepository.save(selectCondition);
 
-        return SelectFieldConditionMapper.map(selectFieldCondition);
+        return SelectFieldConditionMapper.map(selectCondition);
     }
 
     @Override
     public SelectFieldConditionResponseDTO findById(Long id) {
-        SelectFieldCondition selectFieldCondition = selectFieldConditionRepository.findById(id)
+        SelectCondition selectCondition = selectConditionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + id));
-        return SelectFieldConditionMapper.map(selectFieldCondition);
+        return SelectFieldConditionMapper.map(selectCondition);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public List<SelectFieldConditionResponseDTO> findAll() {
-        return selectFieldConditionRepository.findAll()
+        return selectConditionRepository.findAll()
                 .stream()
                 .map(SelectFieldConditionMapper::map)
                 .toList();
@@ -72,13 +72,13 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public Page<SelectFieldConditionResponseDTO> findAll(Pageable pageable) {
-        return selectFieldConditionRepository.findAll(pageable)
+        return selectConditionRepository.findAll(pageable)
                 .map(SelectFieldConditionMapper::map);
     }
 
     @Override
     public List<SelectFieldConditionResponseDTO> findByValue(SelectFieldOptionValue value) {
-        return selectFieldConditionRepository.findBySelectFieldValue(value)
+        return selectConditionRepository.findBySelectFieldValue(value)
                 .stream()
                 .map(SelectFieldConditionMapper::map)
                 .toList();
@@ -87,7 +87,7 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public List<SelectFieldConditionResponseDTO> findByField(Long fieldId) {
-        return selectFieldConditionRepository.findBySelectFieldId(fieldId)
+        return selectConditionRepository.findBySelectFieldId(fieldId)
                 .stream()
                 .map(SelectFieldConditionMapper::map)
                 .toList();
@@ -95,12 +95,12 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public SelectFieldConditionResponseDTO update(Long id, SelectFieldConditionRequestDTO selectFieldConditionRequestDTO) {
-        SelectFieldCondition existingSelectFieldCondition = selectFieldConditionRepository.findById(id)
+        SelectCondition existingSelectCondition = selectConditionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + id));
         
-        SelectFieldConditionMapper.map(selectFieldConditionRequestDTO, existingSelectFieldCondition);
-        SelectFieldCondition updatedSelectFieldCondition = selectFieldConditionRepository.save(existingSelectFieldCondition);
-        return SelectFieldConditionMapper.map(updatedSelectFieldCondition);
+        SelectFieldConditionMapper.map(selectFieldConditionRequestDTO, existingSelectCondition);
+        SelectCondition updatedSelectCondition = selectConditionRepository.save(existingSelectCondition);
+        return SelectFieldConditionMapper.map(updatedSelectCondition);
     }
 
     @Override
@@ -110,10 +110,10 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public void delete(Long id) {
-        if (!selectFieldConditionRepository.existsById(id)) {
+        if (!selectConditionRepository.existsById(id)) {
             throw new EntityNotFoundException("Condition non trouvée avec l'ID : " + id);
         }
-        selectFieldConditionRepository.deleteById(id);
+        selectConditionRepository.deleteById(id);
     }
 
     @Override
@@ -123,12 +123,12 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public boolean existsByUuid(UUID uuid) {
-        return selectFieldConditionRepository.existsByUuid(uuid);
+        return selectConditionRepository.existsByUuid(uuid);
     }
 
     @Override
-    public SelectFieldCondition getEntityByUuid(UUID uuid) {
-        return selectFieldConditionRepository.findByUuid(uuid)
+    public SelectCondition getEntityByUuid(UUID uuid) {
+        return selectConditionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + uuid));
     }
 }

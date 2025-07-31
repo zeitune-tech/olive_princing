@@ -14,11 +14,11 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-@DiscriminatorValue("select_field")
+@DiscriminatorValue("champ_select")
 @ToString
 public class SelectField extends Field {
     @ManyToOne
-    private SelectFieldOptions options;
+    private SelectFieldOption options;
     @ManyToOne
     private SelectFieldOptionValue value;
 }

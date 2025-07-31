@@ -19,7 +19,5 @@ public interface VariableConditionRepository extends JpaRepository<VariableCondi
     
     List<VariableCondition> findByProduct(UUID product);
     
-    List<VariableCondition> findByCoverage(UUID coverage);
-    
     boolean existsByVariableName(String variableName);
 }

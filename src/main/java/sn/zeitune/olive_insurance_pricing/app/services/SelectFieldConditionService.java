@@ -2,8 +2,8 @@ package sn.zeitune.olive_insurance_pricing.app.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.SelectFieldConditionRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.SelectFieldConditionResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.SelectConditionRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.SelectConditionResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectCondition;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
 
@@ -12,23 +12,23 @@ import java.util.UUID;
 
 public interface SelectFieldConditionService {
 
-    SelectFieldConditionResponseDTO create(SelectFieldConditionRequestDTO selectFieldConditionRequestDTO);
+    SelectConditionResponseDTO create(SelectConditionRequestDTO selectConditionRequestDTO);
 
-    SelectFieldConditionResponseDTO findById(Long id);
+    SelectConditionResponseDTO findById(Long id);
 
-    SelectFieldConditionResponseDTO findByUuid(UUID uuid);
+    SelectConditionResponseDTO findByUuid(UUID uuid);
 
-    List<SelectFieldConditionResponseDTO> findAll();
+    List<SelectConditionResponseDTO> findAll();
 
-    Page<SelectFieldConditionResponseDTO> findAll(Pageable pageable);
+    Page<SelectConditionResponseDTO> findAll(Pageable pageable);
 
-    List<SelectFieldConditionResponseDTO> findByValue(SelectFieldOptionValue value);
+    List<SelectConditionResponseDTO> findByValue(SelectFieldOptionValue value);
 
-    List<SelectFieldConditionResponseDTO> findByField(Long fieldId);
+    List<SelectConditionResponseDTO> findByField(Long fieldId);
 
-    SelectFieldConditionResponseDTO update(Long id, SelectFieldConditionRequestDTO selectFieldConditionRequestDTO);
+    SelectConditionResponseDTO update(Long id, SelectConditionRequestDTO selectConditionRequestDTO);
 
-    SelectFieldConditionResponseDTO updateByUuid(UUID uuid, SelectFieldConditionRequestDTO selectFieldConditionRequestDTO);
+    SelectConditionResponseDTO updateByUuid(UUID uuid, SelectConditionRequestDTO selectConditionRequestDTO);
 
     void delete(Long id);
 

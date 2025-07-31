@@ -7,9 +7,9 @@ import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionVa
 public class SelectFieldOptionValueMapper {
 
     public static SelectFieldOptionValue map(SelectFieldOptionValueRequestDTO dto, SelectFieldOptionValue field) {
-        field.setLabel(dto.label());
-        field.setName(dto.name());
-        field.setGroup(dto.group());
+        field.setLabel(dto.getLabel());
+        field.setName(dto.getName());
+        field.setGroup(dto.getGroup());
         return field;
     }
 

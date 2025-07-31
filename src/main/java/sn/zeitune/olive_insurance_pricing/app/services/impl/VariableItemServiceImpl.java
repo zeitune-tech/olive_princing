@@ -22,17 +22,14 @@ public class VariableItemServiceImpl implements VariableItemService {
     private final VariableItemRepository variableItemRepository;
 
     @Override
-    public VariableItemResponseDTO findById(Long id) {
-        return null;
-    }
-
-    @Override
     public VariableItemResponseDTO findByUuid(UUID uuid) {
-        return null;
+        VariableItem variableItem = variableItemRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("Variable item not found"));
+        return VariableItemMapper.map(variableItem);
     }
 
     @Override
-    public List<Object> findAll() {
+    public List<VariableItemResponseDTO> findAll() {
         return variableItemRepository.findAllByOrderByLabelAsc().stream().map(VariableItemMapper::map).toList();
     }
 
@@ -52,18 +49,8 @@ public class VariableItemServiceImpl implements VariableItemService {
     }
 
     @Override
-    public void delete(Long id) {
-
-    }
-
-    @Override
-    public void deleteByUuid(UUID uuid) {
-
-    }
-
-    @Override
     public boolean existsByUuid(UUID uuid) {
-        return false;
+        return variableItemRepository.existsByUuid(uuid);
     }
 
     @Override
@@ -76,9 +63,4 @@ public class VariableItemServiceImpl implements VariableItemService {
         return variableItemRepository.findByVariableName(variable).orElseThrow(() -> new RuntimeException("Variable not found"));
     }
 
-//    @Override
-//    public VariableItem findByVariableName(String variableName) {
-//        return variableItemRepository.findByVariableName(variableName)
-//                .orElseThrow(() -> new RuntimeException("Variable item not found with name: " + variableName));
-//    }
 }

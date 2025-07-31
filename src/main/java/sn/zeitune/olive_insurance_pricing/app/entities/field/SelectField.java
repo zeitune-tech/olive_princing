@@ -19,6 +19,6 @@ import lombok.experimental.SuperBuilder;
 public class SelectField extends Field {
     @ManyToOne
     private SelectFieldOption options;
-    @ManyToOne
-    private SelectFieldOptionValue value;
+//    @ManyToOne
+//    private SelectFieldOptionValue value;
 }

@@ -35,9 +35,9 @@ public class SelectFieldOptionValueController {
             @ApiResponse(responseCode = "400", description = "Données d'entrée invalides")
     })
     public ResponseEntity<SelectFieldOptionValueResponseDTO> create(@Valid @RequestBody SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO) {
-        log.info("REST request to create field possibilities value: {}", selectFieldOptionValueRequestDTO.name());
+        log.info("REST request to create field possibilities value: {}", selectFieldOptionValueRequestDTO.getName());
         SelectFieldOptionValueResponseDTO response = selectFieldOptionValueService.create(selectFieldOptionValueRequestDTO);
-        log.info("Created field possibilities value with UUID: {}", response.id());
+        log.info("Created field possibilities value with UUID: {}", response.getId());
         return ResponseEntity.ok(response);
     }
 
@@ -50,7 +50,7 @@ public class SelectFieldOptionValueController {
     public ResponseEntity<SelectFieldOptionValueResponseDTO> getById(@PathVariable UUID id) {
         log.info("REST request to get field possibilities value by UUID: {}", id);
         SelectFieldOptionValueResponseDTO response = selectFieldOptionValueService.findByUuid(id);
-        log.info("Found field possibilities value: {}", response.id());
+        log.info("Found field possibilities value: {}", response.getId());
         return ResponseEntity.ok(response);
     }
 
@@ -111,7 +111,7 @@ public class SelectFieldOptionValueController {
             @Valid @RequestBody SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO) {
         log.info("REST request to update field possibilities value with UUID: {}, data: {}", id, selectFieldOptionValueRequestDTO);
         SelectFieldOptionValueResponseDTO response = selectFieldOptionValueService.updateByUuid(id, selectFieldOptionValueRequestDTO);
-        log.info("Updated field possibilities value with UUID: {}", response.id());
+        log.info("Updated field possibilities value with UUID: {}", response.getId());
         return ResponseEntity.ok(response);
     }
 

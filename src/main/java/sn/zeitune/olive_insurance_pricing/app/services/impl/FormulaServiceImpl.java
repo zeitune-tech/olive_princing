@@ -33,13 +33,13 @@ public class FormulaServiceImpl implements FormulaService {
     @Override
     public FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO) {
         // Vérifier si une formule avec le même nom de variable existe déjà
-        if (formulaRepository.existsByVariableName(formulaRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.variableName() + "' existe déjà");
+        if (formulaRepository.existsByVariableName(formulaRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.getVariableName() + "' existe déjà");
         }
         
         Formula formula = FormulaMapper.map(formulaRequestDTO);
 
-        ExpressionParser.ParsedExpression parsed = parseExpression(formulaRequestDTO.expression());
+        ExpressionParser.ParsedExpression parsed = parseExpression(formulaRequestDTO.getExpression());
 
         for (String variable : parsed.variables) {
             formula.getVariables().add(variableItemService.findByVariableName(variable));
@@ -107,9 +107,9 @@ public class FormulaServiceImpl implements FormulaService {
                 .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'ID : " + id));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même formule)
-        if (!existingFormula.getVariableName().equals(formulaRequestDTO.variableName()) &&
-            formulaRepository.existsByVariableName(formulaRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.variableName() + "' existe déjà");
+        if (!existingFormula.getVariableName().equals(formulaRequestDTO.getVariableName()) &&
+            formulaRepository.existsByVariableName(formulaRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.getVariableName() + "' existe déjà");
         }
 
         update(existingFormula, formulaRequestDTO);
@@ -123,9 +123,9 @@ public class FormulaServiceImpl implements FormulaService {
                 .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'UUID : " + uuid));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même formule)
-        if (!existingFormula.getVariableName().equals(formulaRequestDTO.variableName()) &&
-            formulaRepository.existsByVariableName(formulaRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.variableName() + "' existe déjà");
+        if (!existingFormula.getVariableName().equals(formulaRequestDTO.getVariableName()) &&
+            formulaRepository.existsByVariableName(formulaRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.getVariableName() + "' existe déjà");
         }
 
         update(existingFormula, formulaRequestDTO);
@@ -134,14 +134,14 @@ public class FormulaServiceImpl implements FormulaService {
     }
 
     private void update (Formula formula, FormulaRequestDTO formulaRequestDTO) {
-        formula.setLabel(formulaRequestDTO.label());
-        formula.setDescription(formulaRequestDTO.description());
-        formula.setVariableName(formulaRequestDTO.variableName());
-        formula.setExpression(formulaRequestDTO.expression());
-        formula.setToReturn(formulaRequestDTO.toReturn());
-        formula.setManagementEntity(formulaRequestDTO.managementEntity());
-        formula.setProduct(formulaRequestDTO.product());
-        formula.setCoverage(formulaRequestDTO.coverage());
+        formula.setLabel(formulaRequestDTO.getLabel());
+        formula.setDescription(formulaRequestDTO.getDescription());
+        formula.setVariableName(formulaRequestDTO.getVariableName());
+        formula.setExpression(formulaRequestDTO.getExpression());
+        formula.setToReturn(formulaRequestDTO.getToReturn());
+        formula.setManagementEntity(formulaRequestDTO.getManagementEntity());
+        formula.setProduct(formulaRequestDTO.getProduct());
+        formula.setBranch(formulaRequestDTO.getBranch());
     }
 
     @Override

@@ -26,7 +26,7 @@ public class RuleController {
 
     @PostMapping
     public ResponseEntity<RuleResponseDTO> create(@Valid @RequestBody RuleRequestDTO ruleRequestDTO) {
-        log.info("REST request to create rule: {}", ruleRequestDTO.label());
+        log.info("REST request to create rule: {}", ruleRequestDTO.getLabel());
         return ResponseEntity.ok(ruleService.create(ruleRequestDTO));
     }
 

@@ -2,8 +2,8 @@ package sn.zeitune.olive_insurance_pricing.app.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.NumericalConditionRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.NumericalConditionResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.NumericConditionRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.NumericConditionResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericCondition;
 
 import java.util.List;
@@ -11,21 +11,21 @@ import java.util.UUID;
 
 public interface NumericalConditionService {
 
-    NumericalConditionResponseDTO create(NumericalConditionRequestDTO numericalConditionRequestDTO);
+    NumericConditionResponseDTO create(NumericConditionRequestDTO numericConditionRequestDTO);
 
-    NumericalConditionResponseDTO findById(Long id);
+    NumericConditionResponseDTO findById(Long id);
 
-    NumericalConditionResponseDTO findByUuid(UUID uuid);
+    NumericConditionResponseDTO findByUuid(UUID uuid);
 
-    List<NumericalConditionResponseDTO> findAll();
+    List<NumericConditionResponseDTO> findAll();
 
-    Page<NumericalConditionResponseDTO> findAll(Pageable pageable);
+    Page<NumericConditionResponseDTO> findAll(Pageable pageable);
 
-    List<NumericalConditionResponseDTO> findByField(Long fieldId);
+    List<NumericConditionResponseDTO> findByField(Long fieldId);
 
-    NumericalConditionResponseDTO update(Long id, NumericalConditionRequestDTO numericalConditionRequestDTO);
+    NumericConditionResponseDTO update(Long id, NumericConditionRequestDTO numericConditionRequestDTO);
 
-    NumericalConditionResponseDTO updateByUuid(UUID uuid, NumericalConditionRequestDTO numericalConditionRequestDTO);
+    NumericConditionResponseDTO updateByUuid(UUID uuid, NumericConditionRequestDTO numericConditionRequestDTO);
 
     void delete(Long id);
 

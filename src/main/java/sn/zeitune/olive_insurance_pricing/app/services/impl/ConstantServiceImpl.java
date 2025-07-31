@@ -26,8 +26,8 @@ public class ConstantServiceImpl implements ConstantService {
     @Override
     public ConstantResponseDTO create(ConstantRequestDTO constantRequestDTO) {
         // Vérifier si une constante avec le même nom de variable existe déjà
-        if (constantRepository.existsByVariableName(constantRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.variableName() + "' existe déjà");
+        if (constantRepository.existsByVariableName(constantRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.getVariableName() + "' existe déjà");
         }
         
         Constant constant = ConstantMapper.map(constantRequestDTO);
@@ -104,9 +104,9 @@ public class ConstantServiceImpl implements ConstantService {
                 .orElseThrow(() -> new EntityNotFoundException("Constante non trouvée avec l'ID : " + id));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même constante)
-        if (!existingConstant.getVariableName().equals(constantRequestDTO.variableName()) &&
-            constantRepository.existsByVariableName(constantRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.variableName() + "' existe déjà");
+        if (!existingConstant.getVariableName().equals(constantRequestDTO.getVariableName()) &&
+            constantRepository.existsByVariableName(constantRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.getVariableName() + "' existe déjà");
         }
         
         ConstantMapper.map(constantRequestDTO, existingConstant);
@@ -120,9 +120,9 @@ public class ConstantServiceImpl implements ConstantService {
                 .orElseThrow(() -> new EntityNotFoundException("Constante non trouvée avec l'UUID : " + uuid));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même constante)
-        if (!existingConstant.getVariableName().equals(constantRequestDTO.variableName()) &&
-            constantRepository.existsByVariableName(constantRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.variableName() + "' existe déjà");
+        if (!existingConstant.getVariableName().equals(constantRequestDTO.getVariableName()) &&
+            constantRepository.existsByVariableName(constantRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.getVariableName() + "' existe déjà");
         }
         
         ConstantMapper.map(constantRequestDTO, existingConstant);

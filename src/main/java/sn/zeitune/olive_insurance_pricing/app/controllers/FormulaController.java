@@ -26,7 +26,7 @@ public class FormulaController {
     
     @PostMapping
     public ResponseEntity<FormulaResponseDTO> create(@Valid @RequestBody FormulaRequestDTO formulaDto) {
-        log.info("REST request to create formula: {}", formulaDto.label());
+        log.info("REST request to create formula: {}", formulaDto.getLabel());
         return ResponseEntity.ok(formulaService.create(formulaDto));
     }
 

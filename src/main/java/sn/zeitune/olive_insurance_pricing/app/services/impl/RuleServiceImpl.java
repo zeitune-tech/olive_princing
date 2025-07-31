@@ -29,11 +29,11 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public RuleResponseDTO create(RuleRequestDTO ruleRequestDTO) {
-        if (ruleRepository.existsByName(ruleRequestDTO.name()))
-            throw new RuntimeException("Une règle avec le même nom existe déjà : " + ruleRequestDTO.name());
+        if (ruleRepository.existsByName(ruleRequestDTO.getName()))
+            throw new RuntimeException("Une règle avec le même nom existe déjà : " + ruleRequestDTO.getName());
 
         Rule rule = RuleMapper.map(ruleRequestDTO, new Rule());
-        for (UUID uuid : ruleRequestDTO.conditions()) {
+        for (UUID uuid : ruleRequestDTO.getConditions()) {
             if (selectFieldConditionService.existsByUuid(uuid)) {
                 rule.getConditions().add(selectFieldConditionService.getEntityByUuid(uuid));
             } else if (numericalConditionService.existsByUuid(uuid)) {

@@ -1,28 +1,16 @@
 package sn.zeitune.olive_insurance_pricing.app.dtos.requests.field;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
+import lombok.*;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.VariableItemRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.field.Field;
 
-import java.util.UUID;
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class NumericFieldRequestDTO extends FieldRequestDTO {
+    @NonNull
+    private Double minValue;
 
-@Builder
-public record NumericFieldRequestDTO(
-        @NotNull(message = "Label is required")
-        @NotBlank(message = "Label must not be blank")
-        String label,
-
-        String description,
-
-        @NotNull(message = "Variable name is required")
-        @NotBlank(message = "Variable name must not be blank")
-        String variableName,
-
-        Boolean toReturn,
-
-        UUID managementEntity,
-
-        UUID product,
-
-        UUID coverage
-) {}
+    @NonNull
+    private Double maxValue;
+}

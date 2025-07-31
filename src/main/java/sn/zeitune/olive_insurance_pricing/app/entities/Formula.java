@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -24,4 +25,6 @@ public class Formula extends VariableItem {
 
     @OneToMany
     private List<VariableItem> variables = new ArrayList<>();
+
+    private UUID coverage;
 }

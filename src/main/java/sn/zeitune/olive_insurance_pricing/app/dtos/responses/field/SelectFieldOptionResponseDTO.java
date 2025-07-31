@@ -1,19 +1,23 @@
 package sn.zeitune.olive_insurance_pricing.app.dtos.responses.field;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Builder;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SelectFieldOptionValueResponseDTO {
+public class SelectFieldOptionResponseDTO {
+
     private UUID id;
     private String label;
     private String name;
-    private String group;
+    private String description;
+    private List<SelectFieldOptionValueResponseDTO> possibilities;
+
 }

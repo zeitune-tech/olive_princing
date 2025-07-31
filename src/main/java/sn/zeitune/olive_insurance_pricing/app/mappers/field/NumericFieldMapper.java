@@ -7,13 +7,13 @@ import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
 public class NumericFieldMapper {
 
     public static NumericField map(NumericFieldRequestDTO dto, NumericField field) {
-        field.setLabel(dto.label());
-        field.setDescription(dto.description());
-        field.setVariableName(dto.variableName());
-        field.setToReturn(dto.toReturn());
-        field.setManagementEntity(dto.managementEntity());
-        field.setProduct(dto.product());
-        field.setCoverage(dto.coverage());
+        field.setLabel(dto.getLabel());
+        field.setDescription(dto.getDescription());
+        field.setVariableName(dto.getVariableName());
+        field.setToReturn(dto.getToReturn());
+        field.setManagementEntity(dto.getManagementEntity());
+        field.setProduct(dto.getProduct());
+        field.setBranch(dto.getBranch());
         return field;
     }
 
@@ -22,15 +22,18 @@ public class NumericFieldMapper {
     }
 
     public static NumericFieldResponseDTO map(NumericField field) {
-        return NumericFieldResponseDTO.builder()
-                .id(field.getUuid())
-                .label(field.getLabel())
-                .description(field.getDescription())
-                .variableName(field.getVariableName())
-                .toReturn(field.getToReturn())
-                .managementEntity(field.getManagementEntity())
-                .product(field.getProduct())
-                .coverage(field.getCoverage())
-                .build();
+        if (field == null) {
+            return null; // Handle null case if necessary
+        }
+        NumericFieldResponseDTO dto = new NumericFieldResponseDTO();
+        dto.setId(field.getUuid());
+        dto.setLabel(field.getLabel());
+        dto.setDescription(field.getDescription());
+        dto.setVariableName(field.getVariableName());
+        dto.setToReturn(field.getToReturn());
+        dto.setManagementEntity(field.getManagementEntity());
+        dto.setProduct(field.getProduct());
+        dto.setBranch(field.getBranch());
+        return dto;
     }
 }

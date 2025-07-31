@@ -10,22 +10,7 @@ import sn.zeitune.olive_insurance_pricing.app.mappers.field.FieldMapper;
 
 public class VariableItemMapper {
 
-//    public static VariableItem map(VariableItemRequestDTO dto, VariableItem variableItem) {
-//        variableItem.setLabel(dto.label());
-//        variableItem.setDescription(dto.description());
-//        variableItem.setVariableName(dto.variableName());
-//        variableItem.setToReturn(dto.toReturn());
-//        variableItem.setManagementEntity(dto.managementEntity());
-//        variableItem.setProduct(dto.product());
-//        variableItem.setCoverage(dto.coverage());
-//        return variableItem;
-//    }
-
-//    public static VariableItem map(VariableItemRequestDTO dto) {
-//        return map(dto, new VariableItem());
-//    }
-
-    private static Object dtoForVariableItem (VariableItem variableItem) {
+    private static VariableItemResponseDTO dtoForVariableItem (VariableItem variableItem) {
         if (variableItem instanceof Constant) {
             return ConstantMapper.map((Constant) variableItem);
         }
@@ -40,7 +25,7 @@ public class VariableItemMapper {
 
     }
 
-    public static Object map(VariableItem variableItem) {
+    public static VariableItemResponseDTO map(VariableItem variableItem) {
         return dtoForVariableItem(variableItem);
     }
 }

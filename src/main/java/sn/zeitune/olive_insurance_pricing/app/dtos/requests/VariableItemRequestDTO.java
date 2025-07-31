@@ -1,6 +1,7 @@
-package sn.zeitune.olive_insurance_pricing.app.dtos.responses;
+package sn.zeitune.olive_insurance_pricing.app.dtos.requests;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.UUID;
@@ -9,18 +10,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class VariableItemResponseDTO {
-
-    @Schema(description = "UUID unique", example = "123e4567-e89b-12d3-a456-426614174000")
-    UUID id;
-
+public class VariableItemRequestDTO {
     @Schema(description = "Libellé de la condition de variable", example = "Condition âge")
+    @NotBlank(message = "Le libellé est obligatoire")
     String label;
 
     @Schema(description = "Description de la condition de variable", example = "Condition pour vérifier l'âge du conducteur")
     String description;
 
     @Schema(description = "Nom de la variable", example = "age_conducteur")
+    @NotBlank(message = "Le nom de la variable est obligatoire")
     String variableName;
 
     @Schema(description = "Indique si la variable doit être retournée", example = "true")

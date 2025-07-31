@@ -28,7 +28,7 @@ public class ConstantController {
     public ResponseEntity<ConstantResponseDTO> create(@Valid @RequestBody ConstantRequestDTO constantRequestDTO) {
         log.info("REST request to create constant: {}", constantRequestDTO);
         ConstantResponseDTO response = constantService.create(constantRequestDTO);
-        log.info("Created constant with ID: {}", response.id());
+        log.info("Created constant with ID: {}", response.getId());
         return ResponseEntity.ok(response);
     }
 
@@ -36,7 +36,7 @@ public class ConstantController {
     public ResponseEntity<ConstantResponseDTO> getById(@PathVariable UUID id) {
         log.info("REST request to get constant by ID: {}", id);
         ConstantResponseDTO response = constantService.findByUuid(id);
-        log.info("Found constant: {}", response.id());
+        log.info("Found constant: {}", response.getId());
         return ResponseEntity.ok(response);
     }
 
@@ -76,7 +76,7 @@ public class ConstantController {
     public ResponseEntity<ConstantResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody ConstantRequestDTO constantRequestDTO) {
         log.info("REST request to update constant with ID: {}, data: {}", id, constantRequestDTO);
         ConstantResponseDTO response = constantService.updateByUuid(id, constantRequestDTO);
-        log.info("Updated constant with ID: {}", response.id());
+        log.info("Updated constant with ID: {}", response.getId());
         return ResponseEntity.ok(response);
     }
 

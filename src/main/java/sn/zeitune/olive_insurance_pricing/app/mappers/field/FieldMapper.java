@@ -20,7 +20,7 @@ public class FieldMapper {
 //        field.setToReturn(dto.toReturn());
 //        field.setManagementEntity(dto.managementEntity());
 //        field.setProduct(dto.product());
-//        field.setCoverage(dto.coverage());
+//        field.setCoverage(dto.branch());
 //        return field;
 //    }
 

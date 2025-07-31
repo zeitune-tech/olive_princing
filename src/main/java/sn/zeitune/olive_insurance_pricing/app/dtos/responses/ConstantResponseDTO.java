@@ -1,18 +1,16 @@
 package sn.zeitune.olive_insurance_pricing.app.dtos.responses;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
-@Builder
-public record ConstantResponseDTO(
-        UUID id,
-        String label,
-        String description,
-        String variableName,
-        Boolean toReturn,
-        UUID managementEntity,
-        UUID product,
-        UUID coverage,
-        Double value
-) {}
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class ConstantResponseDTO extends VariableItemResponseDTO {
+    Double value;
+}

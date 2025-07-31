@@ -28,13 +28,13 @@ public class VariableConditionServiceImpl implements VariableConditionService {
     @Override
     public VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto) {
         // Vérifier si une condition variable avec le même nom de variable existe déjà
-        if (variableConditionRepository.existsByVariableName(variableConditionDto.variableName()))
-            throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.variableName() + "' existe déjà");
+        if (variableConditionRepository.existsByVariableName(variableConditionDto.getVariableName()))
+            throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.getVariableName() + "' existe déjà");
 
         
         VariableCondition variableCondition = VariableConditionMapper.map(variableConditionDto);
 
-        for (UUID uuid : variableConditionDto.ruleIds()) {
+        for (UUID uuid : variableConditionDto.getRuleIds()) {
             if (ruleService.existsByUuid(uuid))
                 variableCondition.getRules().add(ruleService.getEntityByUuid(uuid));
         }
@@ -92,9 +92,9 @@ public class VariableConditionServiceImpl implements VariableConditionService {
                 .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'ID : " + id));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même condition variable)
-        if (!existingVariableCondition.getVariableName().equals(variableConditionDto.variableName()) &&
-            variableConditionRepository.existsByVariableName(variableConditionDto.variableName())) {
-            throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.variableName() + "' existe déjà");
+        if (!existingVariableCondition.getVariableName().equals(variableConditionDto.getVariableName()) &&
+            variableConditionRepository.existsByVariableName(variableConditionDto.getVariableName())) {
+            throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.getVariableName() + "' existe déjà");
         }
 
         update(existingVariableCondition, variableConditionDto);
@@ -108,9 +108,9 @@ public class VariableConditionServiceImpl implements VariableConditionService {
                 .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'UUID : " + uuid));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même condition variable)
-        if (!existingVariableCondition.getVariableName().equals(variableConditionDto.variableName()) &&
-            variableConditionRepository.existsByVariableName(variableConditionDto.variableName())) {
-            throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.variableName() + "' existe déjà");
+        if (!existingVariableCondition.getVariableName().equals(variableConditionDto.getVariableName()) &&
+            variableConditionRepository.existsByVariableName(variableConditionDto.getVariableName())) {
+            throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.getVariableName() + "' existe déjà");
         }
         
         update(existingVariableCondition, variableConditionDto);
@@ -120,13 +120,13 @@ public class VariableConditionServiceImpl implements VariableConditionService {
 
     private void update (VariableCondition variableCondition, VariableConditionRequestDTO variableConditionRequestDTO) {
         if (variableCondition == null) return;
-        variableCondition.setLabel(variableConditionRequestDTO.label());
-        variableCondition.setDescription(variableConditionRequestDTO.description());
-        variableCondition.setVariableName(variableConditionRequestDTO.variableName());
-        variableCondition.setToReturn(variableConditionRequestDTO.toReturn());
-        variableCondition.setManagementEntity(variableConditionRequestDTO.managementEntity() != null ? variableConditionRequestDTO.managementEntity() : null);
-        variableCondition.setProduct(variableConditionRequestDTO.product());
-        variableCondition.setCoverage(variableConditionRequestDTO.coverage());
+        variableCondition.setLabel(variableConditionRequestDTO.getLabel());
+        variableCondition.setDescription(variableConditionRequestDTO.getDescription());
+        variableCondition.setVariableName(variableConditionRequestDTO.getVariableName());
+        variableCondition.setToReturn(variableConditionRequestDTO.getToReturn());
+        variableCondition.setManagementEntity(variableConditionRequestDTO.getManagementEntity() != null ? variableConditionRequestDTO.getManagementEntity() : null);
+        variableCondition.setProduct(variableConditionRequestDTO.getProduct());
+        variableCondition.setBranch(variableConditionRequestDTO.getBranch());
 
     }
 

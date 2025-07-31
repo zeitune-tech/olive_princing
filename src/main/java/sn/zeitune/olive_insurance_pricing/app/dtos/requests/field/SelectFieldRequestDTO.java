@@ -1,32 +1,12 @@
 package sn.zeitune.olive_insurance_pricing.app.dtos.requests.field;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
+import lombok.*;
 
 import java.util.UUID;
 
-@Builder
-public record SelectFieldRequestDTO(
-        // TODO
-
-        @NotNull(message = "Label is required")
-        @NotBlank(message = "Label must not be blank")
-        String label,
-
-        String description,
-
-        @NotNull(message = "Variable name is required")
-        @NotBlank(message = "Variable name must not be blank")
-        String variableName,
-
-        Boolean toReturn,
-
-        UUID managementEntity,
-
-        UUID product,
-
-        UUID coverage,
-
-        UUID options
-) {}
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class SelectFieldRequestDTO extends FieldRequestDTO {
+    UUID options;
+}

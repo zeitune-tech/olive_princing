@@ -7,13 +7,13 @@ import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
 public class SelectFieldMapper {
 
     public static SelectField map(SelectFieldRequestDTO dto, SelectField field) {
-        field.setLabel(dto.label());
-        field.setDescription(dto.description());
-        field.setVariableName(dto.variableName());
-        field.setToReturn(dto.toReturn());
-        field.setManagementEntity(dto.managementEntity());
-        field.setProduct(dto.product());
-        field.setCoverage(dto.coverage());
+        field.setLabel(dto.getLabel());
+        field.setDescription(dto.getDescription());
+        field.setVariableName(dto.getVariableName());
+        field.setToReturn(dto.getToReturn());
+        field.setManagementEntity(dto.getManagementEntity());
+        field.setProduct(dto.getProduct());
+        field.setBranch(dto.getBranch());
         return field;
     }
 
@@ -22,18 +22,20 @@ public class SelectFieldMapper {
     }
 
     public static SelectFieldResponseDTO map(SelectField field) {
-        // TODO
-        return SelectFieldResponseDTO.builder()
-                .id(field.getUuid())
-                .label(field.getLabel())
-                .description(field.getDescription())
-                .variableName(field.getVariableName())
-                .toReturn(field.getToReturn())
-                .managementEntity(field.getManagementEntity())
-                .product(field.getProduct())
-                .coverage(field.getCoverage())
-                .options(SelectFieldOptionsMapper.map(field.getOptions()))
-//                .value(field.getValue() == null ? null : SelectFieldOptionValueMapper.map(field.getValue()))
-                .build();
+        if (field == null) {
+            return null; // Handle null case if necessary
+        }
+        SelectFieldResponseDTO ResponseDTO  = new SelectFieldResponseDTO();
+        ResponseDTO.setId(field.getUuid());
+        ResponseDTO.setLabel(field.getLabel());
+        ResponseDTO.setDescription(field.getDescription());
+        ResponseDTO.setVariableName(field.getVariableName());
+        ResponseDTO.setToReturn(field.getToReturn());
+        ResponseDTO.setManagementEntity(field.getManagementEntity());
+        ResponseDTO.setProduct(field.getProduct());
+        ResponseDTO.setBranch(field.getBranch());
+        ResponseDTO.setOptions(SelectFieldOptionsMapper.map(field.getOptions()));
+
+        return ResponseDTO;
     }
 }

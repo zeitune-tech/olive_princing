@@ -11,25 +11,15 @@ import java.util.UUID;
 
 public interface VariableItemService {
 
-    VariableItemResponseDTO findById(Long id);
-
     VariableItemResponseDTO findByUuid(UUID uuid);
 
-    List<Object> findAll();
+    List<VariableItemResponseDTO> findAll();
 
     Page<VariableItemResponseDTO> findAll(Pageable pageable);
 
     List<VariableItemResponseDTO> findByProduct(UUID product);
 
     List<VariableItemResponseDTO> searchByLabel(String label);
-
-//    VariableItemResponseDTO update(Long id, VariableItemRequestDTO numericVariableItemRequestDTO);
-
-//    VariableItemResponseDTO updateByUuid(UUID uuid, VariableItemRequestDTO numericVariableItemRequestDTO);
-
-    void delete(Long id);
-
-    void deleteByUuid(UUID uuid);
 
     boolean existsByUuid(UUID uuid);
 

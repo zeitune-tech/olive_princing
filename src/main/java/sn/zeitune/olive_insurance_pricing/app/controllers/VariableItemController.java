@@ -21,11 +21,6 @@ public class VariableItemController {
 
     private final VariableItemService variableItemService;
 
-//    @PostMapping
-//    public ResponseEntity<VariableItemResponseDTO> create(@Valid @RequestBody VariableItemRequestDTO variableItemRequestDTO) {
-//        return ResponseEntity.ok(variableItemService.create(variableItemRequestDTO));
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<VariableItemResponseDTO> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(variableItemService.findByUuid(id));
@@ -46,14 +41,4 @@ public class VariableItemController {
         return ResponseEntity.ok(variableItemService.searchByLabel(label));
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<VariableItemResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody VariableItemRequestDTO variableItemRequestDTO) {
-//        return ResponseEntity.ok(variableItemService.updateByUuid(id, variableItemRequestDTO));
-//    }
-
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-//        variableItemService.deleteByUuid(id);
-//        return ResponseEntity.ok().build();
-//    }
 }

@@ -7,14 +7,14 @@ import sn.zeitune.olive_insurance_pricing.app.entities.Constant;
 public class ConstantMapper {
 
     public static Constant map(ConstantRequestDTO dto, Constant constant) {
-        constant.setLabel(dto.label());
-        constant.setDescription(dto.description());
-        constant.setVariableName(dto.variableName());
-        constant.setValue(dto.value());
-        constant.setToReturn(dto.toReturn());
-        constant.setManagementEntity(dto.managementEntity());
-        constant.setProduct(dto.product());
-        constant.setCoverage(dto.coverage());
+        constant.setLabel(dto.getLabel());
+        constant.setDescription(dto.getDescription());
+        constant.setVariableName(dto.getVariableName());
+        constant.setValue(dto.getValue());
+        constant.setToReturn(dto.getToReturn());
+        constant.setManagementEntity(dto.getManagementEntity());
+        constant.setProduct(dto.getProduct());
+        constant.setBranch(dto.getBranch());
         return constant;
     }
 
@@ -23,16 +23,16 @@ public class ConstantMapper {
     }
 
     public static ConstantResponseDTO map(Constant constant) {
-        return ConstantResponseDTO.builder()
-                .id(constant.getUuid())
-                .label(constant.getLabel())
-                .description(constant.getDescription())
-                .variableName(constant.getVariableName())
-                .value(constant.getValue())
-                .toReturn(constant.getToReturn())
-                .managementEntity(constant.getManagementEntity())
-                .product(constant.getProduct())
-                .coverage(constant.getCoverage())
-                .build();
+        ConstantResponseDTO dto = new ConstantResponseDTO();
+        dto.setLabel(constant.getLabel());
+        dto.setDescription(constant.getDescription());
+        dto.setVariableName(constant.getVariableName());
+        dto.setValue(constant.getValue());
+        dto.setToReturn(constant.getToReturn());
+        dto.setManagementEntity(constant.getManagementEntity());
+        dto.setProduct(constant.getProduct());
+        dto.setBranch(constant.getBranch());
+        dto.setId(constant.getUuid());
+        return dto;
     }
 }

@@ -6,11 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.NumericalConditionRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.NumericalConditionResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.condition.NumericConditionRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.condition.NumericConditionResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericCondition;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
-import sn.zeitune.olive_insurance_pricing.app.mappers.condition.NumericalConditionMapper;
+import sn.zeitune.olive_insurance_pricing.app.mappers.condition.NumericConditionMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.condition.NumericConditionRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.NumericFieldService;
 import sn.zeitune.olive_insurance_pricing.app.services.NumericalConditionService;
@@ -27,66 +27,66 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
     private final NumericFieldService numericFieldService;
 
     @Override
-    public NumericalConditionResponseDTO create(NumericalConditionRequestDTO numericalConditionRequestDTO) {
-        NumericCondition numericCondition = NumericalConditionMapper.map(numericalConditionRequestDTO);
+    public NumericConditionResponseDTO create(NumericConditionRequestDTO numericConditionRequestDTO) {
+        NumericCondition numericCondition = NumericConditionMapper.map(numericConditionRequestDTO);
 
-        NumericField numericField = numericFieldService.getEntityByUuid(numericalConditionRequestDTO.fieldId());
+        NumericField numericField = numericFieldService.getEntityByUuid(numericConditionRequestDTO.getFieldId());
         if (numericField == null) throw new RuntimeException(String.format(""));
 
         numericCondition.setNumericField(numericField);
         numericCondition = numericConditionRepository.save(numericCondition);
 
         numericCondition = numericConditionRepository.save(numericCondition);
-        return NumericalConditionMapper.map(numericCondition);
+        return NumericConditionMapper.map(numericCondition);
     }
 
     @Override
-    public NumericalConditionResponseDTO findById(Long id) {
+    public NumericConditionResponseDTO findById(Long id) {
         NumericCondition numericCondition = numericConditionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + id));
-        return NumericalConditionMapper.map(numericCondition);
+        return NumericConditionMapper.map(numericCondition);
     }
 
     @Override
-    public NumericalConditionResponseDTO findByUuid(UUID uuid) {
-        return NumericalConditionMapper.map(getEntityByUuid(uuid));
+    public NumericConditionResponseDTO findByUuid(UUID uuid) {
+        return NumericConditionMapper.map(getEntityByUuid(uuid));
     }
 
     @Override
-    public List<NumericalConditionResponseDTO> findAll() {
+    public List<NumericConditionResponseDTO> findAll() {
         return numericConditionRepository.findAll()
                 .stream()
-                .map(NumericalConditionMapper::map)
+                .map(NumericConditionMapper::map)
                 .toList();
     }
 
     @Override
-    public Page<NumericalConditionResponseDTO> findAll(Pageable pageable) {
+    public Page<NumericConditionResponseDTO> findAll(Pageable pageable) {
         return numericConditionRepository.findAll(pageable)
-                .map(NumericalConditionMapper::map);
+                .map(NumericConditionMapper::map);
     }
 
 
     @Override
-    public List<NumericalConditionResponseDTO> findByField(Long fieldId) {
+    public List<NumericConditionResponseDTO> findByField(Long fieldId) {
         return numericConditionRepository.findById(fieldId)
                 .stream()
-                .map(NumericalConditionMapper::map)
+                .map(NumericConditionMapper::map)
                 .toList();
     }
 
     @Override
-    public NumericalConditionResponseDTO update(Long id, NumericalConditionRequestDTO numericalConditionRequestDTO) {
+    public NumericConditionResponseDTO update(Long id, NumericConditionRequestDTO numericConditionRequestDTO) {
         NumericCondition existingNumericCondition = numericConditionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + id));
         
-        NumericalConditionMapper.map(numericalConditionRequestDTO, existingNumericCondition);
+        NumericConditionMapper.map(numericConditionRequestDTO, existingNumericCondition);
         NumericCondition updatedNumericCondition = numericConditionRepository.save(existingNumericCondition);
-        return NumericalConditionMapper.map(updatedNumericCondition);
+        return NumericConditionMapper.map(updatedNumericCondition);
     }
 
     @Override
-    public NumericalConditionResponseDTO updateByUuid(UUID uuid, NumericalConditionRequestDTO numericalConditionRequestDTO) {
+    public NumericConditionResponseDTO updateByUuid(UUID uuid, NumericConditionRequestDTO numericConditionRequestDTO) {
         throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
     }
 

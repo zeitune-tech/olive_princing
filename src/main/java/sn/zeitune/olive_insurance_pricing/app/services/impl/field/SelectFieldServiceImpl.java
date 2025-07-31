@@ -12,7 +12,7 @@ import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldRe
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.field.SelectFieldRepository;
-import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionsService;
+import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldService;
 
 import java.util.List;
@@ -25,22 +25,22 @@ import java.util.UUID;
 public class SelectFieldServiceImpl implements SelectFieldService {
 
     private final SelectFieldRepository selectFieldRepository;
-    private final SelectFieldOptionsService selectFieldOptionsService;
+    private final SelectFieldOptionService selectFieldOptionService;
 
     @Override
     public SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO) {
         // Vérifier si un champ avec le même nom de variable existe déjà
-        if (selectFieldRepository.existsByVariableName(selectFieldRequestDTO.variableName()))
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.variableName() + "' existe déjà");
+        if (selectFieldRepository.existsByVariableName(selectFieldRequestDTO.getVariableName()))
+            throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.getVariableName() + "' existe déjà");
 
 
-        if (selectFieldOptionsService.findByUuid(selectFieldRequestDTO.options()) == null)
+        if (selectFieldOptionService.findByUuid(selectFieldRequestDTO.getOptions()) == null)
             throw new IllegalArgumentException("Options are not defined");
 
         SelectField field = SelectFieldMapper.map(selectFieldRequestDTO);
 
-        if (selectFieldRequestDTO.options() != null)
-            field.setOptions(selectFieldOptionsService.getEntityByUuid(selectFieldRequestDTO.options()));
+        if (selectFieldRequestDTO.getOptions() != null)
+            field.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
 
         System.out.println(field);
         log.info(field.toString());
@@ -103,15 +103,15 @@ public class SelectFieldServiceImpl implements SelectFieldService {
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'ID : " + id));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est le même champ)
-        if (!existingField.getVariableName().equals(selectFieldRequestDTO.variableName()) &&
-            selectFieldRepository.existsByVariableName(selectFieldRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.variableName() + "' existe déjà");
+        if (!existingField.getVariableName().equals(selectFieldRequestDTO.getVariableName()) &&
+            selectFieldRepository.existsByVariableName(selectFieldRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.getVariableName() + "' existe déjà");
         }
 
         SelectFieldMapper.map(selectFieldRequestDTO, existingField);
 
-        if (selectFieldRequestDTO.options() != null)
-            existingField.setOptions(selectFieldOptionsService.getEntityByUuid(selectFieldRequestDTO.options()));
+        if (selectFieldRequestDTO.getOptions() != null)
+            existingField.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
 
         SelectField updatedField = selectFieldRepository.save(existingField);
         return SelectFieldMapper.map(updatedField);
@@ -123,15 +123,15 @@ public class SelectFieldServiceImpl implements SelectFieldService {
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est le même champ)
-        if (!existingField.getVariableName().equals(selectFieldRequestDTO.variableName()) &&
-            selectFieldRepository.existsByVariableName(selectFieldRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.variableName() + "' existe déjà");
+        if (!existingField.getVariableName().equals(selectFieldRequestDTO.getVariableName()) &&
+            selectFieldRepository.existsByVariableName(selectFieldRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.getVariableName() + "' existe déjà");
         }
         
         SelectFieldMapper.map(selectFieldRequestDTO, existingField);
 
-        if (selectFieldRequestDTO.options() != null)
-            existingField.setOptions(selectFieldOptionsService.getEntityByUuid(selectFieldRequestDTO.options()));
+        if (selectFieldRequestDTO.getOptions() != null)
+            existingField.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
 
         SelectField updatedField = selectFieldRepository.save(existingField);
         return SelectFieldMapper.map(updatedField);

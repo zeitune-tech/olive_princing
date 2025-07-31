@@ -6,14 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldOptionsRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldOptionsResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldOptionRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldOptionResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOption;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldOptionsMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.field.SelectFieldOptionRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionValueService;
-import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionsService;
+import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionService;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,21 +22,21 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SelectFieldOptionsServiceImpl implements SelectFieldOptionsService {
+public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
 
     private final SelectFieldOptionRepository selectFieldOptionRepository;
     private final SelectFieldOptionValueService  selectFieldOptionValueService;
 
     @Override
-    public SelectFieldOptionsResponseDTO create(SelectFieldOptionsRequestDTO selectFieldOptionsRequestDTO) {
+    public SelectFieldOptionResponseDTO create(SelectFieldOptionRequestDTO selectFieldOptionRequestDTO) {
         // Vérifier si une valeur de champ avec le même nom existe déjà
-        if (selectFieldOptionRepository.existsByName(selectFieldOptionsRequestDTO.name())) {
-            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionsRequestDTO.name() + "' existe déjà");
+        if (selectFieldOptionRepository.existsByName(selectFieldOptionRequestDTO.getName())) {
+            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionRequestDTO.getName() + "' existe déjà");
         }
 
-        SelectFieldOption selectFieldOption = SelectFieldOptionsMapper.map(selectFieldOptionsRequestDTO);
+        SelectFieldOption selectFieldOption = SelectFieldOptionsMapper.map(selectFieldOptionRequestDTO);
 
-        for (UUID possibility : selectFieldOptionsRequestDTO.possibilities()) {
+        for (UUID possibility : selectFieldOptionRequestDTO.getPossibilities()) {
             SelectFieldOptionValue selectFieldOptionValue = selectFieldOptionValueService.getEntityByUuid(possibility);
             selectFieldOption.getPossibilities().add(selectFieldOptionValue);
         }
@@ -46,7 +46,7 @@ public class SelectFieldOptionsServiceImpl implements SelectFieldOptionsService 
     }
 
     @Override
-    public SelectFieldOptionsResponseDTO findById(Long id) {
+    public SelectFieldOptionResponseDTO findById(Long id) {
         SelectFieldOption selectFieldOption = selectFieldOptionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + id));
         return SelectFieldOptionsMapper.map(selectFieldOption);
@@ -59,12 +59,12 @@ public class SelectFieldOptionsServiceImpl implements SelectFieldOptionsService 
     }
 
     @Override
-    public SelectFieldOptionsResponseDTO findByUuid(UUID uuid) {
+    public SelectFieldOptionResponseDTO findByUuid(UUID uuid) {
         return SelectFieldOptionsMapper.map(getEntityByUuid(uuid));
     }
 
     @Override
-    public List<SelectFieldOptionsResponseDTO> findAll() {
+    public List<SelectFieldOptionResponseDTO> findAll() {
         return selectFieldOptionRepository.findAll()
                 .stream()
                 .map(SelectFieldOptionsMapper::map)
@@ -72,7 +72,7 @@ public class SelectFieldOptionsServiceImpl implements SelectFieldOptionsService 
     }
 
     @Override
-    public Page<SelectFieldOptionsResponseDTO> findAll(Pageable pageable) {
+    public Page<SelectFieldOptionResponseDTO> findAll(Pageable pageable) {
         List<SelectFieldOption> response = selectFieldOptionRepository.findAll();
 
         for (SelectFieldOption s : response) {
@@ -83,13 +83,13 @@ public class SelectFieldOptionsServiceImpl implements SelectFieldOptionsService 
     }
 
     @Override
-    public Optional<SelectFieldOptionsResponseDTO> findByName(String name) {
+    public Optional<SelectFieldOptionResponseDTO> findByName(String name) {
         return selectFieldOptionRepository.findByName(name)
                 .map(SelectFieldOptionsMapper::map);
     }
 
     @Override
-    public List<SelectFieldOptionsResponseDTO> searchByName(String name) {
+    public List<SelectFieldOptionResponseDTO> searchByName(String name) {
         return selectFieldOptionRepository.findByNameContainingIgnoreCase(name)
                 .stream()
                 .map(SelectFieldOptionsMapper::map)
@@ -97,38 +97,38 @@ public class SelectFieldOptionsServiceImpl implements SelectFieldOptionsService 
     }
 
     @Override
-    public SelectFieldOptionsResponseDTO update(Long id, SelectFieldOptionsRequestDTO selectFieldOptionsRequestDTO) {
+    public SelectFieldOptionResponseDTO update(Long id, SelectFieldOptionRequestDTO selectFieldOptionRequestDTO) {
         SelectFieldOption existingSelectFieldOption = selectFieldOptionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + id));
         
         // Vérifier si le nouveau nom existe déjà (sauf si c'est la même valeur de champ)
-        if (!existingSelectFieldOption.getName().equals(selectFieldOptionsRequestDTO.name()) &&
-            selectFieldOptionRepository.existsByName(selectFieldOptionsRequestDTO.name())) {
-            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionsRequestDTO.name() + "' existe déjà");
+        if (!existingSelectFieldOption.getName().equals(selectFieldOptionRequestDTO.getName()) &&
+            selectFieldOptionRepository.existsByName(selectFieldOptionRequestDTO.getName())) {
+            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionRequestDTO.getName() + "' existe déjà");
         }
         
-        SelectFieldOptionsMapper.map(selectFieldOptionsRequestDTO, existingSelectFieldOption);
+        SelectFieldOptionsMapper.map(selectFieldOptionRequestDTO, existingSelectFieldOption);
         SelectFieldOption updatedSelectFieldOption = selectFieldOptionRepository.save(existingSelectFieldOption);
         return SelectFieldOptionsMapper.map(updatedSelectFieldOption);
     }
 
     @Override
-    public SelectFieldOptionsResponseDTO updateByUuid(UUID uuid, SelectFieldOptionsRequestDTO selectFieldOptionsRequestDTO) {
+    public SelectFieldOptionResponseDTO updateByUuid(UUID uuid, SelectFieldOptionRequestDTO selectFieldOptionRequestDTO) {
         SelectFieldOption existingSelectFieldOption = selectFieldOptionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + uuid));
 
         // Vérifier si le nouveau nom existe déjà (sauf si c'est la même valeur de champ)
-        if (!existingSelectFieldOption.getName().equals(selectFieldOptionsRequestDTO.name()) &&
-                selectFieldOptionRepository.existsByName(selectFieldOptionsRequestDTO.name())) {
-            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionsRequestDTO.name() + "' existe déjà");
+        if (!existingSelectFieldOption.getName().equals(selectFieldOptionRequestDTO.getName()) &&
+                selectFieldOptionRepository.existsByName(selectFieldOptionRequestDTO.getName())) {
+            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionRequestDTO.getName() + "' existe déjà");
         }
 
-        for (UUID possibility : selectFieldOptionsRequestDTO.possibilities()) {
+        for (UUID possibility : selectFieldOptionRequestDTO.getPossibilities()) {
             SelectFieldOptionValue selectFieldOptionValue = selectFieldOptionValueService.getEntityByUuid(possibility);
             existingSelectFieldOption.getPossibilities().add(selectFieldOptionValue);
         }
 
-        SelectFieldOptionsMapper.map(selectFieldOptionsRequestDTO, existingSelectFieldOption);
+        SelectFieldOptionsMapper.map(selectFieldOptionRequestDTO, existingSelectFieldOption);
         SelectFieldOption updatedSelectFieldOption = selectFieldOptionRepository.save(existingSelectFieldOption);
         return SelectFieldOptionsMapper.map(updatedSelectFieldOption);
     }

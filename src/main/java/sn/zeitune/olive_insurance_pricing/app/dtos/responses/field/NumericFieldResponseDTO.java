@@ -1,18 +1,13 @@
 package sn.zeitune.olive_insurance_pricing.app.dtos.responses.field;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Builder
-public record NumericFieldResponseDTO(
-        UUID id,
-        String label,
-        String description,
-        String variableName,
-        Boolean toReturn,
-        UUID managementEntity,
-        UUID product,
-        UUID coverage
-//        Double value
-) {}
+@AllArgsConstructor
+//@NoArgsConstructor
+@Data
+public class NumericFieldResponseDTO extends FieldResponseDTO {}

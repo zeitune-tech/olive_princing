@@ -12,13 +12,13 @@ public class VariableConditionMapper {
 
     public static VariableCondition map(VariableConditionRequestDTO dto, VariableCondition variableCondition) {
         if (variableCondition == null) return null;
-        variableCondition.setLabel(dto.label());
-        variableCondition.setDescription(dto.description());
-        variableCondition.setVariableName(dto.variableName());
-        variableCondition.setToReturn(dto.toReturn());
-        variableCondition.setManagementEntity(dto.managementEntity() != null ? dto.managementEntity() : null);
-        variableCondition.setProduct(dto.product());
-        variableCondition.setCoverage(dto.coverage());
+        variableCondition.setLabel(dto.getLabel());
+        variableCondition.setDescription(dto.getDescription());
+        variableCondition.setVariableName(dto.getVariableName());
+        variableCondition.setToReturn(dto.getToReturn());
+        variableCondition.setManagementEntity(dto.getManagementEntity() != null ? dto.getManagementEntity() : null);
+        variableCondition.setProduct(dto.getProduct());
+        variableCondition.setBranch(dto.getBranch() != null ? dto.getBranch() : null);
         // Note: Les règles (ruleIds) doivent être gérées dans le service
         return variableCondition;
     }
@@ -32,21 +32,22 @@ public class VariableConditionMapper {
     public static VariableConditionResponseDTO map(VariableCondition variableCondition) {
         if (variableCondition == null)
             return null;
-        return VariableConditionResponseDTO.builder()
-                .uuid(variableCondition.getUuid())
-                .label(variableCondition.getLabel())
-                .description(variableCondition.getDescription())
-                .variableName(variableCondition.getVariableName())
-                .toReturn(variableCondition.getToReturn())
-                .managementEntity(variableCondition.getManagementEntity() != null ? variableCondition.getManagementEntity() : null)
-                .product(variableCondition.getProduct())
-                .coverage(variableCondition.getCoverage())
-                .rules(variableCondition.getRules() != null ?
-                        variableCondition.getRules().stream()
-                                .map(RuleMapper::map)
-                                .collect(Collectors.toSet()) :
-                        Collections.emptySet())
-                .build();
+        VariableConditionResponseDTO variableConditionResponseDTO = new VariableConditionResponseDTO();
+        variableConditionResponseDTO.setId(variableCondition.getUuid());
+        variableConditionResponseDTO.setLabel(variableCondition.getLabel());
+        variableConditionResponseDTO.setDescription(variableCondition.getDescription());
+        variableConditionResponseDTO.setVariableName(variableCondition.getVariableName());
+        variableConditionResponseDTO.setToReturn(variableCondition.getToReturn());
+        variableConditionResponseDTO.setManagementEntity(variableCondition.getManagementEntity() != null ? variableCondition.getManagementEntity() : null);
+        variableConditionResponseDTO.setProduct(variableCondition.getProduct());
+        variableConditionResponseDTO.setBranch(variableCondition.getBranch());
+        variableConditionResponseDTO.setRules(variableCondition.getRules() != null ?
+                variableCondition.getRules().stream()
+                        .map(RuleMapper::map)
+                        .collect(Collectors.toSet()) :
+                Collections.emptySet());
+
+        return variableConditionResponseDTO;
     }
 
 }

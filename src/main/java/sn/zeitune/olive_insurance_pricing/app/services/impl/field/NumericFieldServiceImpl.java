@@ -26,8 +26,8 @@ public class NumericFieldServiceImpl implements NumericFieldService {
     @Override
     public NumericFieldResponseDTO create(NumericFieldRequestDTO numericFieldRequestDTO) {
         // Vérifier si un champ avec le même nom de variable existe déjà
-        if (fieldRepository.existsByVariableName(numericFieldRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.variableName() + "' existe déjà");
+        if (fieldRepository.existsByVariableName(numericFieldRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.getVariableName() + "' existe déjà");
         }
         
         NumericField field = NumericFieldMapper.map(numericFieldRequestDTO);
@@ -86,9 +86,9 @@ public class NumericFieldServiceImpl implements NumericFieldService {
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'ID : " + id));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est le même champ)
-        if (!existingField.getVariableName().equals(numericFieldRequestDTO.variableName()) &&
-            fieldRepository.existsByVariableName(numericFieldRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.variableName() + "' existe déjà");
+        if (!existingField.getVariableName().equals(numericFieldRequestDTO.getVariableName()) &&
+            fieldRepository.existsByVariableName(numericFieldRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.getVariableName() + "' existe déjà");
         }
         
         NumericFieldMapper.map(numericFieldRequestDTO, existingField);
@@ -102,9 +102,9 @@ public class NumericFieldServiceImpl implements NumericFieldService {
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
         
         // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est le même champ)
-        if (!existingField.getVariableName().equals(numericFieldRequestDTO.variableName()) &&
-            fieldRepository.existsByVariableName(numericFieldRequestDTO.variableName())) {
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.variableName() + "' existe déjà");
+        if (!existingField.getVariableName().equals(numericFieldRequestDTO.getVariableName()) &&
+            fieldRepository.existsByVariableName(numericFieldRequestDTO.getVariableName())) {
+            throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.getVariableName() + "' existe déjà");
         }
         
         NumericFieldMapper.map(numericFieldRequestDTO, existingField);

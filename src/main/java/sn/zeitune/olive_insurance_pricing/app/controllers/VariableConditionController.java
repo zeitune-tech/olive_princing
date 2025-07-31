@@ -26,7 +26,7 @@ public class VariableConditionController {
 
     @PostMapping
     public ResponseEntity<VariableConditionResponseDTO> create(@Valid @RequestBody VariableConditionRequestDTO variableConditionRequestDTO) {
-        log.info("REST request to create variable condition: {}", variableConditionRequestDTO.label());
+        log.info("REST request to create variable condition: {}", variableConditionRequestDTO.getLabel());
         return ResponseEntity.ok(variableConditionService.create(variableConditionRequestDTO));
     }
 

@@ -30,5 +30,5 @@ public abstract class VariableItem extends BaseEntity {
     @Column
     private UUID product;
     @Column
-    private UUID coverage;
+    private UUID branch;
 }

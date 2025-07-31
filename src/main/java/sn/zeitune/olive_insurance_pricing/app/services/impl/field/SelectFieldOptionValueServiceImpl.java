@@ -27,8 +27,8 @@ public class SelectFieldOptionValueServiceImpl implements SelectFieldOptionValue
     @Override
     public SelectFieldOptionValueResponseDTO create(SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO) {
         // Vérifier si une valeur avec le même nom existe déjà
-        if (selectFieldOptionValueRepository.existsByName(selectFieldOptionValueRequestDTO.name())) {
-            throw new IllegalArgumentException("Une valeur de possibilité avec le nom '" + selectFieldOptionValueRequestDTO.name() + "' existe déjà");
+        if (selectFieldOptionValueRepository.existsByName(selectFieldOptionValueRequestDTO.getName())) {
+            throw new IllegalArgumentException("Une valeur de possibilité avec le nom '" + selectFieldOptionValueRequestDTO.getName() + "' existe déjà");
         }
 
         SelectFieldOptionValue selectFieldOptionValue = SelectFieldOptionValueMapper.map(selectFieldOptionValueRequestDTO);
@@ -106,9 +106,9 @@ public class SelectFieldOptionValueServiceImpl implements SelectFieldOptionValue
                 .orElseThrow(() -> new EntityNotFoundException("Valeur de possibilité non trouvée avec l'ID : " + id));
         
         // Vérifier si le nouveau nom existe déjà (sauf si c'est la même valeur)
-        if (!existingSelectFieldOptionValue.getName().equals(selectFieldOptionValueRequestDTO.name()) &&
-            selectFieldOptionValueRepository.existsByName(selectFieldOptionValueRequestDTO.name())) {
-            throw new IllegalArgumentException("Une valeur de possibilité avec le nom '" + selectFieldOptionValueRequestDTO.name() + "' existe déjà");
+        if (!existingSelectFieldOptionValue.getName().equals(selectFieldOptionValueRequestDTO.getName()) &&
+            selectFieldOptionValueRepository.existsByName(selectFieldOptionValueRequestDTO.getName())) {
+            throw new IllegalArgumentException("Une valeur de possibilité avec le nom '" + selectFieldOptionValueRequestDTO.getName() + "' existe déjà");
         }
         
         SelectFieldOptionValueMapper.map(selectFieldOptionValueRequestDTO, existingSelectFieldOptionValue);
@@ -122,9 +122,9 @@ public class SelectFieldOptionValueServiceImpl implements SelectFieldOptionValue
                 .orElseThrow(() -> new EntityNotFoundException("Valeur de possibilité non trouvée avec l'UUID : " + uuid));
         
         // Vérifier si le nouveau nom existe déjà (sauf si c'est la même valeur)
-        if (!existingSelectFieldOptionValue.getName().equals(selectFieldOptionValueRequestDTO.name()) &&
-            selectFieldOptionValueRepository.existsByName(selectFieldOptionValueRequestDTO.name())) {
-            throw new IllegalArgumentException("Une valeur de possibilité avec le nom '" + selectFieldOptionValueRequestDTO.name() + "' existe déjà");
+        if (!existingSelectFieldOptionValue.getName().equals(selectFieldOptionValueRequestDTO.getName()) &&
+            selectFieldOptionValueRepository.existsByName(selectFieldOptionValueRequestDTO.getName())) {
+            throw new IllegalArgumentException("Une valeur de possibilité avec le nom '" + selectFieldOptionValueRequestDTO.getName() + "' existe déjà");
         }
         
         SelectFieldOptionValueMapper.map(selectFieldOptionValueRequestDTO, existingSelectFieldOptionValue);

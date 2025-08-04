@@ -17,6 +17,7 @@ import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -66,12 +67,6 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
 
     @Override
     public Page<SelectFieldOptionResponseDTO> findAll(Pageable pageable) {
-        List<SelectFieldOption> response = selectFieldOptionRepository.findAll();
-
-        for (SelectFieldOption s : response) {
-            System.err.println(s);
-        }
-
         return selectFieldOptionRepository.findAll(pageable).map(SelectFieldOptionsMapper::map);
     }
 
@@ -100,10 +95,15 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
             throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionRequestDTO.getName() + "' existe déjà");
         }
 
-        for (UUID possibility : selectFieldOptionRequestDTO.getPossibilities()) {
-            SelectFieldOptionValue selectFieldOptionValue = selectFieldOptionValueService.getEntityByUuid(possibility);
-            existingSelectFieldOption.getPossibilities().add(selectFieldOptionValue);
+        List<SelectFieldOptionValue> existingPossibilities = existingSelectFieldOption.getPossibilities();
+
+        for (UUID possibilityUuid : selectFieldOptionRequestDTO.getPossibilities()) {
+            SelectFieldOptionValue selectFieldOptionValue = selectFieldOptionValueService.getEntityByUuid(possibilityUuid);
+            if (!existingPossibilities.contains(selectFieldOptionValue)) {
+                existingPossibilities.add(selectFieldOptionValue);
+            }
         }
+
 
         SelectFieldOptionsMapper.map(selectFieldOptionRequestDTO, existingSelectFieldOption);
         SelectFieldOption updatedSelectFieldOption = selectFieldOptionRepository.save(existingSelectFieldOption);

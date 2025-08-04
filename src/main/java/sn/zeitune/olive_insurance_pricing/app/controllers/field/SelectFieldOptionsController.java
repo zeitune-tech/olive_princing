@@ -59,29 +59,29 @@ public class SelectFieldOptionsController {
         return ResponseEntity.ok(selectFieldOptionService.findAll(pageable));
     }
 
-    @GetMapping("/by-name/{name}")
-    @Operation(summary = "Récupérer une valeur de champ par nom", description = "Récupère une valeur de champ spécifique par son nom")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Valeur de champ trouvée",
-                    content = @Content(schema = @Schema(implementation = SelectFieldResponseDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Valeur de champ non trouvée",
-                    content = @Content)
-    })
-    public ResponseEntity<Optional<SelectFieldOptionResponseDTO>> getByName(@Parameter(description = "Nom de la valeur de champ") @PathVariable String name) {
-        log.info("REST request to get field value by name: {}", name);
-        return ResponseEntity.ok(selectFieldOptionService.findByName(name));
-    }
-
-    @GetMapping("/search")
-    @Operation(summary = "Rechercher des valeurs de champs par nom", description = "Recherche des valeurs de champs contenant le nom spécifié")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Liste des valeurs de champs trouvées",
-                    content = @Content(schema = @Schema(implementation = List.class)))
-    })
-    public ResponseEntity<List<SelectFieldOptionResponseDTO>> searchByName(@Parameter(description = "Nom à rechercher") @RequestParam String name) {
-        log.info("REST request to search field values by name: {}", name);
-        return ResponseEntity.ok(selectFieldOptionService.searchByName(name));
-    }
+//    @GetMapping("/by-name/{name}")
+//    @Operation(summary = "Récupérer une valeur de champ par nom", description = "Récupère une valeur de champ spécifique par son nom")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Valeur de champ trouvée",
+//                    content = @Content(schema = @Schema(implementation = SelectFieldResponseDTO.class))),
+//            @ApiResponse(responseCode = "404", description = "Valeur de champ non trouvée",
+//                    content = @Content)
+//    })
+//    public ResponseEntity<Optional<SelectFieldOptionResponseDTO>> getByName(@Parameter(description = "Nom de la valeur de champ") @PathVariable String name) {
+//        log.info("REST request to get field value by name: {}", name);
+//        return ResponseEntity.ok(selectFieldOptionService.findByName(name));
+//    }
+//
+//    @GetMapping("/search")
+//    @Operation(summary = "Rechercher des valeurs de champs par nom", description = "Recherche des valeurs de champs contenant le nom spécifié")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Liste des valeurs de champs trouvées",
+//                    content = @Content(schema = @Schema(implementation = List.class)))
+//    })
+//    public ResponseEntity<List<SelectFieldOptionResponseDTO>> searchByName(@Parameter(description = "Nom à rechercher") @RequestParam String name) {
+//        log.info("REST request to search field values by name: {}", name);
+//        return ResponseEntity.ok(selectFieldOptionService.searchByName(name));
+//    }
 
     @PutMapping("/{id}")
     @Operation(summary = "Mettre à jour une valeur de champ", description = "Met à jour une valeur de champ existante avec les nouvelles données")

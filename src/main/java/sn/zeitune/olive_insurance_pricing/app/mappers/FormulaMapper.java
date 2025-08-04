@@ -30,7 +30,6 @@ public class FormulaMapper {
         formula.setVariableName(dto.getVariableName());
         formula.setExpression(dto.getExpression());
         formula.setToReturn(dto.getToReturn());
-        formula.setManagementEntity(dto.getManagementEntity());
         formula.setProduct(dto.getProduct());
         formula.setBranch(dto.getBranch());
         return formula;

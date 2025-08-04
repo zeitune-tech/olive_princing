@@ -50,13 +50,6 @@ public class FormulaServiceImpl implements FormulaService {
     }
 
     @Override
-    public FormulaResponseDTO findById(Long id) {
-        Formula formula = formulaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'ID : " + id));
-        return FormulaMapper.map(formula);
-    }
-
-    @Override
     public FormulaResponseDTO findByUuid(UUID uuid) {
         Formula formula = formulaRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'UUID : " + uuid));
@@ -102,22 +95,6 @@ public class FormulaServiceImpl implements FormulaService {
     }
 
     @Override
-    public FormulaResponseDTO update(Long id, FormulaRequestDTO formulaRequestDTO) {
-        Formula existingFormula = formulaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'ID : " + id));
-        
-        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même formule)
-        if (!existingFormula.getVariableName().equals(formulaRequestDTO.getVariableName()) &&
-            formulaRepository.existsByVariableName(formulaRequestDTO.getVariableName())) {
-            throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.getVariableName() + "' existe déjà");
-        }
-
-        update(existingFormula, formulaRequestDTO);
-        Formula updatedFormula = formulaRepository.save(existingFormula);
-        return FormulaMapper.map(updatedFormula);
-    }
-
-    @Override
     public FormulaResponseDTO updateByUuid(UUID uuid, FormulaRequestDTO formulaRequestDTO) {
         Formula existingFormula = formulaRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'UUID : " + uuid));
@@ -139,17 +116,8 @@ public class FormulaServiceImpl implements FormulaService {
         formula.setVariableName(formulaRequestDTO.getVariableName());
         formula.setExpression(formulaRequestDTO.getExpression());
         formula.setToReturn(formulaRequestDTO.getToReturn());
-        formula.setManagementEntity(formulaRequestDTO.getManagementEntity());
         formula.setProduct(formulaRequestDTO.getProduct());
         formula.setBranch(formulaRequestDTO.getBranch());
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!formulaRepository.existsById(id)) {
-            throw new EntityNotFoundException("Formule non trouvée avec l'ID : " + id);
-        }
-        formulaRepository.deleteById(id);
     }
 
     @Override

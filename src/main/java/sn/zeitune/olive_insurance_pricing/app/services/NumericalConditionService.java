@@ -13,21 +13,13 @@ public interface NumericalConditionService {
 
     NumericConditionResponseDTO create(NumericConditionRequestDTO numericConditionRequestDTO);
 
-    NumericConditionResponseDTO findById(Long id);
-
     NumericConditionResponseDTO findByUuid(UUID uuid);
 
     List<NumericConditionResponseDTO> findAll();
 
     Page<NumericConditionResponseDTO> findAll(Pageable pageable);
 
-    List<NumericConditionResponseDTO> findByField(Long fieldId);
-
-    NumericConditionResponseDTO update(Long id, NumericConditionRequestDTO numericConditionRequestDTO);
-
     NumericConditionResponseDTO updateByUuid(UUID uuid, NumericConditionRequestDTO numericConditionRequestDTO);
-
-    void delete(Long id);
 
     void deleteByUuid(UUID uuid);
 

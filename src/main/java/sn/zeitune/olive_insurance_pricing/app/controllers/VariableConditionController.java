@@ -30,12 +30,6 @@ public class VariableConditionController {
         return ResponseEntity.ok(variableConditionService.create(variableConditionRequestDTO));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<VariableConditionResponseDTO> getById(@PathVariable Long id) {
-        log.info("REST request to get variable condition by ID: {}", id);
-        return null;
-    }
-
     @GetMapping
     public ResponseEntity<Page<VariableConditionResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
         log.info("REST request to get all variable conditions with pagination");

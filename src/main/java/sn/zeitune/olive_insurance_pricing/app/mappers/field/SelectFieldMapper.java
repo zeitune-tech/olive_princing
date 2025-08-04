@@ -11,7 +11,6 @@ public class SelectFieldMapper {
         field.setDescription(dto.getDescription());
         field.setVariableName(dto.getVariableName());
         field.setToReturn(dto.getToReturn());
-        field.setManagementEntity(dto.getManagementEntity());
         field.setProduct(dto.getProduct());
         field.setBranch(dto.getBranch());
         return field;

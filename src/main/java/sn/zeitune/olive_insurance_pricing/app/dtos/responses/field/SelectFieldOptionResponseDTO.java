@@ -13,11 +13,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SelectFieldOptionResponseDTO {
-
     private UUID id;
     private String label;
     private String name;
     private String description;
     private List<SelectFieldOptionValueResponseDTO> possibilities;
-
 }

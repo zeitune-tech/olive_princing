@@ -13,10 +13,6 @@ public interface VariableItemService {
 
     VariableItemResponseDTO findByUuid(UUID uuid);
 
-    List<VariableItemResponseDTO> findAll();
-
-    Page<VariableItemResponseDTO> findAll(Pageable pageable);
-
     List<VariableItemResponseDTO> findByProduct(UUID product);
 
     List<VariableItemResponseDTO> searchByLabel(String label);
@@ -26,4 +22,6 @@ public interface VariableItemService {
     VariableItem getEntityByUuid(@NotNull(message = "VariableItem UUID is required") UUID uuid);
 
     VariableItem findByVariableName(String variable);
+
+    List<VariableItemResponseDTO> findAll(UUID managementEntity);
 }

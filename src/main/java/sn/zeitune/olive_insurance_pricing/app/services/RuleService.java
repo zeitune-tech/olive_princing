@@ -13,21 +13,13 @@ public interface RuleService {
 
     RuleResponseDTO create(RuleRequestDTO ruleRequestDTO);
 
-    RuleResponseDTO findById(Long id);
-
     RuleResponseDTO findByUuid(UUID uuid);
 
     List<RuleResponseDTO> findAll();
 
     Page<RuleResponseDTO> findAll(Pageable pageable);
 
-    List<RuleResponseDTO> findByValue(Double value);
-
-    RuleResponseDTO update(Long id, RuleRequestDTO ruleRequestDTO);
-
     RuleResponseDTO updateByUuid(UUID uuid, RuleRequestDTO ruleRequestDTO);
-
-    void delete(Long id);
 
     void deleteByUuid(UUID uuid);
 

@@ -43,13 +43,6 @@ public class VariableConditionServiceImpl implements VariableConditionService {
     }
 
     @Override
-    public VariableConditionResponseDTO findById(Long id) {
-        VariableCondition variableCondition = variableConditionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'ID : " + id));
-        return VariableConditionMapper.map(variableCondition);
-    }
-
-    @Override
     public VariableConditionResponseDTO findByUuid(UUID uuid) {
         VariableCondition variableCondition = variableConditionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'UUID : " + uuid));
@@ -87,22 +80,6 @@ public class VariableConditionServiceImpl implements VariableConditionService {
     }
 
     @Override
-    public VariableConditionResponseDTO update(Long id, VariableConditionRequestDTO variableConditionDto) {
-        VariableCondition existingVariableCondition = variableConditionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'ID : " + id));
-        
-        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même condition variable)
-        if (!existingVariableCondition.getVariableName().equals(variableConditionDto.getVariableName()) &&
-            variableConditionRepository.existsByVariableName(variableConditionDto.getVariableName())) {
-            throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.getVariableName() + "' existe déjà");
-        }
-
-        update(existingVariableCondition, variableConditionDto);
-        VariableCondition updatedVariableCondition = variableConditionRepository.save(existingVariableCondition);
-        return VariableConditionMapper.map(updatedVariableCondition);
-    }
-
-    @Override
     public VariableConditionResponseDTO updateByUuid(UUID uuid, VariableConditionRequestDTO variableConditionDto) {
         VariableCondition existingVariableCondition = variableConditionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'UUID : " + uuid));
@@ -124,18 +101,9 @@ public class VariableConditionServiceImpl implements VariableConditionService {
         variableCondition.setDescription(variableConditionRequestDTO.getDescription());
         variableCondition.setVariableName(variableConditionRequestDTO.getVariableName());
         variableCondition.setToReturn(variableConditionRequestDTO.getToReturn());
-        variableCondition.setManagementEntity(variableConditionRequestDTO.getManagementEntity() != null ? variableConditionRequestDTO.getManagementEntity() : null);
         variableCondition.setProduct(variableConditionRequestDTO.getProduct());
         variableCondition.setBranch(variableConditionRequestDTO.getBranch());
 
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!variableConditionRepository.existsById(id)) {
-            throw new EntityNotFoundException("Condition variable non trouvée avec l'ID : " + id);
-        }
-        variableConditionRepository.deleteById(id);
     }
 
     @Override

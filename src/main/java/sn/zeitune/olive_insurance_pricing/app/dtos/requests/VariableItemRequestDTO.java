@@ -25,8 +25,8 @@ public class VariableItemRequestDTO {
     @Schema(description = "Indique si la variable doit être retournée", example = "true")
     Boolean toReturn;
 
-    @Schema(description = "Entité de gestion", example = "123e4567-e89b-12d3-a456-426614174000")
-    UUID managementEntity;
+//    @Schema(description = "Entité de gestion", example = "123e4567-e89b-12d3-a456-426614174000")
+//    UUID managementEntity;
 
     @Schema(description = "Produit associé", example = "123e4567-e89b-12d3-a456-426614174000")
     UUID product;

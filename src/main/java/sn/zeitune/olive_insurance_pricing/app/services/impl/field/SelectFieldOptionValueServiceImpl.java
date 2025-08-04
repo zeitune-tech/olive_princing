@@ -25,28 +25,15 @@ public class SelectFieldOptionValueServiceImpl implements SelectFieldOptionValue
     private final SelectFieldOptionValueRepository selectFieldOptionValueRepository;
 
     @Override
-    public SelectFieldOptionValueResponseDTO create(SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO) {
+    public SelectFieldOptionValueResponseDTO create(SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO, UUID managementEntity) {
         // Vérifier si une valeur avec le même nom existe déjà
         if (selectFieldOptionValueRepository.existsByName(selectFieldOptionValueRequestDTO.getName())) {
             throw new IllegalArgumentException("Une valeur de possibilité avec le nom '" + selectFieldOptionValueRequestDTO.getName() + "' existe déjà");
         }
 
         SelectFieldOptionValue selectFieldOptionValue = SelectFieldOptionValueMapper.map(selectFieldOptionValueRequestDTO);
+        selectFieldOptionValue.setManagementEntity(managementEntity);
         selectFieldOptionValue = selectFieldOptionValueRepository.save(selectFieldOptionValue);
-        return SelectFieldOptionValueMapper.map(selectFieldOptionValue);
-    }
-
-    @Override
-    public SelectFieldOptionValueResponseDTO findById(Long id) {
-        SelectFieldOptionValue selectFieldOptionValue = selectFieldOptionValueRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Valeur de possibilité non trouvée avec l'ID : " + id));
-        return SelectFieldOptionValueMapper.map(selectFieldOptionValue);
-    }
-
-    @Override
-    public SelectFieldOptionValueResponseDTO findByUuid(UUID uuid) {
-        SelectFieldOptionValue selectFieldOptionValue = selectFieldOptionValueRepository.findByUuid(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("Valeur de possibilité non trouvée avec l'UUID : " + uuid));
         return SelectFieldOptionValueMapper.map(selectFieldOptionValue);
     }
 
@@ -57,63 +44,9 @@ public class SelectFieldOptionValueServiceImpl implements SelectFieldOptionValue
     }
 
     @Override
-    public List<SelectFieldOptionValueResponseDTO> findAll() {
-        return selectFieldOptionValueRepository.findAll()
-                .stream()
-                .map(SelectFieldOptionValueMapper::map)
-                .toList();
-    }
-
-    @Override
-    public Page<SelectFieldOptionValueResponseDTO> findAll(Pageable pageable) {
-        return selectFieldOptionValueRepository.findAll(pageable)
+    public Page<SelectFieldOptionValueResponseDTO> findAll(Pageable pageable, UUID managementEntity) {
+        return selectFieldOptionValueRepository.findAllByManagementEntity(pageable, managementEntity)
                 .map(SelectFieldOptionValueMapper::map);
-    }
-
-    @Override
-    public Optional<SelectFieldOptionValueResponseDTO> findByName(String name) {
-        return selectFieldOptionValueRepository.findByName(name)
-                .map(SelectFieldOptionValueMapper::map);
-    }
-
-    @Override
-    public List<SelectFieldOptionValueResponseDTO> searchByName(String name) {
-        return selectFieldOptionValueRepository.findByNameContainingIgnoreCase(name)
-                .stream()
-                .map(SelectFieldOptionValueMapper::map)
-                .toList();
-    }
-
-    @Override
-    public List<SelectFieldOptionValueResponseDTO> findByGroup(String group) {
-        return selectFieldOptionValueRepository.findByGroup(group)
-                .stream()
-                .map(SelectFieldOptionValueMapper::map)
-                .toList();
-    }
-
-    @Override
-    public List<SelectFieldOptionValueResponseDTO> searchByLabel(String label) {
-        return selectFieldOptionValueRepository.findByLabelContainingIgnoreCase(label)
-                .stream()
-                .map(SelectFieldOptionValueMapper::map)
-                .toList();
-    }
-
-    @Override
-    public SelectFieldOptionValueResponseDTO update(Long id, SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO) {
-        SelectFieldOptionValue existingSelectFieldOptionValue = selectFieldOptionValueRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Valeur de possibilité non trouvée avec l'ID : " + id));
-        
-        // Vérifier si le nouveau nom existe déjà (sauf si c'est la même valeur)
-        if (!existingSelectFieldOptionValue.getName().equals(selectFieldOptionValueRequestDTO.getName()) &&
-            selectFieldOptionValueRepository.existsByName(selectFieldOptionValueRequestDTO.getName())) {
-            throw new IllegalArgumentException("Une valeur de possibilité avec le nom '" + selectFieldOptionValueRequestDTO.getName() + "' existe déjà");
-        }
-        
-        SelectFieldOptionValueMapper.map(selectFieldOptionValueRequestDTO, existingSelectFieldOptionValue);
-        SelectFieldOptionValue updatedSelectFieldOptionValue = selectFieldOptionValueRepository.save(existingSelectFieldOptionValue);
-        return SelectFieldOptionValueMapper.map(updatedSelectFieldOptionValue);
     }
 
     @Override
@@ -130,14 +63,6 @@ public class SelectFieldOptionValueServiceImpl implements SelectFieldOptionValue
         SelectFieldOptionValueMapper.map(selectFieldOptionValueRequestDTO, existingSelectFieldOptionValue);
         SelectFieldOptionValue updatedSelectFieldOptionValue = selectFieldOptionValueRepository.save(existingSelectFieldOptionValue);
         return SelectFieldOptionValueMapper.map(updatedSelectFieldOptionValue);
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!selectFieldOptionValueRepository.existsById(id)) {
-            throw new EntityNotFoundException("Valeur de possibilité non trouvée avec l'ID : " + id);
-        }
-        selectFieldOptionValueRepository.deleteById(id);
     }
 
     @Override

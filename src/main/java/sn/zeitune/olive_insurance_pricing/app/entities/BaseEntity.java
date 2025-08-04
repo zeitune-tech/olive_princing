@@ -33,4 +33,7 @@ public abstract class BaseEntity {
             this.uuid = UUID.randomUUID();
         }
     }
+
+    @Column(name = "management_entity")
+    private UUID managementEntity;
 }

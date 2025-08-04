@@ -14,8 +14,6 @@ public interface NumericFieldService {
 
     NumericFieldResponseDTO create(NumericFieldRequestDTO numericFieldRequestDTO);
 
-    NumericFieldResponseDTO findById(Long id);
-
     NumericFieldResponseDTO findByUuid(UUID uuid);
 
     List<NumericFieldResponseDTO> findAll();
@@ -26,11 +24,7 @@ public interface NumericFieldService {
 
     List<NumericFieldResponseDTO> searchByLabel(String label);
 
-    NumericFieldResponseDTO update(Long id, NumericFieldRequestDTO numericFieldRequestDTO);
-
     NumericFieldResponseDTO updateByUuid(UUID uuid, NumericFieldRequestDTO numericFieldRequestDTO);
-
-    void delete(Long id);
 
     void deleteByUuid(UUID uuid);
 

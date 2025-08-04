@@ -19,7 +19,7 @@ import java.util.Set;
 public class VariableCondition extends VariableItem {
 
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "variablecondition_regles",
             joinColumns = @JoinColumn(name = "code_variable"),

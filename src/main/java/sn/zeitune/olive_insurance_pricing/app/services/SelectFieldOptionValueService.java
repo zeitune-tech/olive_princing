@@ -12,33 +12,19 @@ import java.util.UUID;
 
 public interface SelectFieldOptionValueService {
 
-    SelectFieldOptionValueResponseDTO create(SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO);
+    SelectFieldOptionValueResponseDTO create(SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO, UUID managementEntity);
 
-    SelectFieldOptionValueResponseDTO findById(Long id);
-
-    SelectFieldOptionValueResponseDTO findByUuid(UUID uuid);
-
-    SelectFieldOptionValue getEntityByUuid(UUID uuid);
-
-    List<SelectFieldOptionValueResponseDTO> findAll();
-
-    Page<SelectFieldOptionValueResponseDTO> findAll(Pageable pageable);
-
-    Optional<SelectFieldOptionValueResponseDTO> findByName(String name);
-
-    List<SelectFieldOptionValueResponseDTO> searchByName(String name);
-
-    List<SelectFieldOptionValueResponseDTO> findByGroup(String group);
-
-    List<SelectFieldOptionValueResponseDTO> searchByLabel(String label);
-
-    SelectFieldOptionValueResponseDTO update(Long id, SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO);
+    Page<SelectFieldOptionValueResponseDTO> findAll(Pageable pageable, UUID managementEntity);
 
     SelectFieldOptionValueResponseDTO updateByUuid(UUID uuid, SelectFieldOptionValueRequestDTO selectFieldOptionValueRequestDTO);
 
-    void delete(Long id);
-
     void deleteByUuid(UUID uuid);
 
+//    SelectFieldOptionValueResponseDTO findByUuid(UUID uuid);
+//    List<SelectFieldOptionValueResponseDTO> findAll();
+//    List<SelectFieldOptionValueResponseDTO> searchByLabel(String label);
+
     boolean existsByUuid(UUID uuid);
+
+    SelectFieldOptionValue getEntityByUuid(UUID uuid);
 }

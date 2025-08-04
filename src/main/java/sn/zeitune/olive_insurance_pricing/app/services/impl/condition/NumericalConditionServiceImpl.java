@@ -41,13 +41,6 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
     }
 
     @Override
-    public NumericConditionResponseDTO findById(Long id) {
-        NumericCondition numericCondition = numericConditionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + id));
-        return NumericConditionMapper.map(numericCondition);
-    }
-
-    @Override
     public NumericConditionResponseDTO findByUuid(UUID uuid) {
         return NumericConditionMapper.map(getEntityByUuid(uuid));
     }
@@ -66,36 +59,9 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
                 .map(NumericConditionMapper::map);
     }
 
-
-    @Override
-    public List<NumericConditionResponseDTO> findByField(Long fieldId) {
-        return numericConditionRepository.findById(fieldId)
-                .stream()
-                .map(NumericConditionMapper::map)
-                .toList();
-    }
-
-    @Override
-    public NumericConditionResponseDTO update(Long id, NumericConditionRequestDTO numericConditionRequestDTO) {
-        NumericCondition existingNumericCondition = numericConditionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + id));
-        
-        NumericConditionMapper.map(numericConditionRequestDTO, existingNumericCondition);
-        NumericCondition updatedNumericCondition = numericConditionRepository.save(existingNumericCondition);
-        return NumericConditionMapper.map(updatedNumericCondition);
-    }
-
     @Override
     public NumericConditionResponseDTO updateByUuid(UUID uuid, NumericConditionRequestDTO numericConditionRequestDTO) {
         throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!numericConditionRepository.existsById(id)) {
-            throw new EntityNotFoundException("Condition non trouvée avec l'ID : " + id);
-        }
-        numericConditionRepository.deleteById(id);
     }
 
     @Override

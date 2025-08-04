@@ -10,29 +10,21 @@ import java.util.UUID;
 
 public interface ConstantService {
 
-    ConstantResponseDTO create(ConstantRequestDTO constantRequestDTO);
-
-    ConstantResponseDTO findById(Long id);
+    ConstantResponseDTO create(ConstantRequestDTO constantRequestDTO, UUID managementEntity);
 
     ConstantResponseDTO findByUuid(UUID uuid);
 
-    List<ConstantResponseDTO> findAll();
+    List<ConstantResponseDTO> findAll(UUID managementEntity);
 
-    Page<ConstantResponseDTO> findAll(Pageable pageable);
+    Page<ConstantResponseDTO> findAll(Pageable pageable, UUID managementEntity);
 
     List<ConstantResponseDTO> findByValue(Double value);
-
-    List<ConstantResponseDTO> findByValueRange(Double minValue, Double maxValue);
 
     List<ConstantResponseDTO> findByProduct(UUID product);
 
     List<ConstantResponseDTO> searchByLabel(String label);
 
-    ConstantResponseDTO update(Long id, ConstantRequestDTO constantRequestDTO);
-
     ConstantResponseDTO updateByUuid(UUID uuid, ConstantRequestDTO constantRequestDTO);
-
-    void delete(Long id);
 
     void deleteByUuid(UUID uuid);
 

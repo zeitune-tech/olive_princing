@@ -12,7 +12,6 @@ public class ConstantMapper {
         constant.setVariableName(dto.getVariableName());
         constant.setValue(dto.getValue());
         constant.setToReturn(dto.getToReturn());
-        constant.setManagementEntity(dto.getManagementEntity());
         constant.setProduct(dto.getProduct());
         constant.setBranch(dto.getBranch());
         return constant;

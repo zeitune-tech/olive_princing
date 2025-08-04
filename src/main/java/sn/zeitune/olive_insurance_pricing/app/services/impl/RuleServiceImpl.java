@@ -46,13 +46,6 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    public RuleResponseDTO findById(Long id) {
-        Rule rule = ruleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Règle non trouvée avec l'ID : " + id));
-        return RuleMapper.map(rule);
-    }
-
-    @Override
     public RuleResponseDTO findByUuid(UUID uuid) {
         return RuleMapper.map(getEntityByUuid(uuid));
     }
@@ -72,24 +65,6 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    public List<RuleResponseDTO> findByValue(Double value) {
-        return ruleRepository.findByValue(value)
-                .stream()
-                .map(RuleMapper::map)
-                .toList();
-    }
-
-    @Override
-    public RuleResponseDTO update(Long id, RuleRequestDTO ruleRequestDTO) {
-        Rule existingRule = ruleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Règle non trouvée avec l'ID : " + id));
-
-        RuleMapper.map(ruleRequestDTO, existingRule);
-        Rule updatedRule = ruleRepository.save(existingRule);
-        return RuleMapper.map(updatedRule);
-    }
-
-    @Override
     public RuleResponseDTO updateByUuid(UUID uuid, RuleRequestDTO ruleRequestDTO) {
         Rule existingRule = ruleRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Règle non trouvée avec l'UUID : " + uuid));
@@ -98,14 +73,6 @@ public class RuleServiceImpl implements RuleService {
         RuleMapper.map(ruleRequestDTO, existingRule);
         Rule updatedRule = ruleRepository.save(existingRule);
         return RuleMapper.map(updatedRule);
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!ruleRepository.existsById(id)) {
-            throw new EntityNotFoundException("Règle non trouvée avec l'ID : " + id);
-        }
-        ruleRepository.deleteById(id);
     }
 
     @Override

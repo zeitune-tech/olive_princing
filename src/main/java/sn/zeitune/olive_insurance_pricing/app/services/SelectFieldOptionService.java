@@ -14,8 +14,6 @@ public interface SelectFieldOptionService {
 
     SelectFieldOptionResponseDTO create(SelectFieldOptionRequestDTO selectFieldOptionRequestDTO);
 
-    SelectFieldOptionResponseDTO findById(Long id);
-
     SelectFieldOptionResponseDTO findByUuid(UUID uuid);
 
     SelectFieldOption getEntityByUuid(UUID uuid);
@@ -28,11 +26,7 @@ public interface SelectFieldOptionService {
 
     List<SelectFieldOptionResponseDTO> searchByName(String name);
 
-    SelectFieldOptionResponseDTO update(Long id, SelectFieldOptionRequestDTO selectFieldOptionRequestDTO);
-
     SelectFieldOptionResponseDTO updateByUuid(UUID uuid, SelectFieldOptionRequestDTO selectFieldOptionRequestDTO);
-
-    void delete(Long id);
 
     void deleteByUuid(UUID uuid);
 

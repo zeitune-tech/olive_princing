@@ -36,13 +36,6 @@ public class NumericFieldServiceImpl implements NumericFieldService {
     }
 
     @Override
-    public NumericFieldResponseDTO findById(Long id) {
-        NumericField field = fieldRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'ID : " + id));
-        return NumericFieldMapper.map(field);
-    }
-
-    @Override
     public NumericFieldResponseDTO findByUuid(UUID uuid) {
         NumericField field = fieldRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
@@ -81,22 +74,6 @@ public class NumericFieldServiceImpl implements NumericFieldService {
     }
 
     @Override
-    public NumericFieldResponseDTO update(Long id, NumericFieldRequestDTO numericFieldRequestDTO) {
-        NumericField existingField = fieldRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'ID : " + id));
-        
-        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est le même champ)
-        if (!existingField.getVariableName().equals(numericFieldRequestDTO.getVariableName()) &&
-            fieldRepository.existsByVariableName(numericFieldRequestDTO.getVariableName())) {
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.getVariableName() + "' existe déjà");
-        }
-        
-        NumericFieldMapper.map(numericFieldRequestDTO, existingField);
-        NumericField updatedField = fieldRepository.save(existingField);
-        return NumericFieldMapper.map(updatedField);
-    }
-
-    @Override
     public NumericFieldResponseDTO updateByUuid(UUID uuid, NumericFieldRequestDTO numericFieldRequestDTO) {
         NumericField existingField = fieldRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
@@ -110,14 +87,6 @@ public class NumericFieldServiceImpl implements NumericFieldService {
         NumericFieldMapper.map(numericFieldRequestDTO, existingField);
         NumericField updatedField = fieldRepository.save(existingField);
         return NumericFieldMapper.map(updatedField);
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!fieldRepository.existsById(id)) {
-            throw new EntityNotFoundException("Champ non trouvé avec l'ID : " + id);
-        }
-        fieldRepository.deleteById(id);
     }
 
     @Override

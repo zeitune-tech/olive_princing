@@ -2,6 +2,7 @@ package sn.zeitune.olive_insurance_pricing.app.entities.condition;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import sn.zeitune.olive_insurance_pricing.enums.SelectFieldOperator;
 @NoArgsConstructor
 @DiscriminatorValue("condition_champ_select")
 public class SelectCondition extends Condition {
-    @OneToOne
+    @ManyToOne
     private SelectField selectField;
     private SelectFieldOperator selectFieldOperator;
     @OneToOne

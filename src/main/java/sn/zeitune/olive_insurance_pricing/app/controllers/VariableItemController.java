@@ -1,14 +1,17 @@
 package sn.zeitune.olive_insurance_pricing.app.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableItemResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.VariableItemService;
+import sn.zeitune.olive_insurance_pricing.security.Employee;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,9 +29,12 @@ public class VariableItemController {
         return ResponseEntity.ok(variableItemService.findByUuid(id));
     }
 
-    @GetMapping
-    public ResponseEntity<Page<VariableItemResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(variableItemService.findAll(pageable));
+    @GetMapping("/all")
+    public ResponseEntity<List<VariableItemResponseDTO>> getAll(
+            Authentication authentication
+    ) {
+        Employee employee = (Employee) authentication.getPrincipal();
+        return ResponseEntity.ok(variableItemService.findAll(employee.getManagementEntity()));
     }
 
     @GetMapping("/by-product/{product}")

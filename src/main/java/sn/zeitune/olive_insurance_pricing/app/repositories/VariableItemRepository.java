@@ -2,6 +2,7 @@ package sn.zeitune.olive_insurance_pricing.app.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableItemResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
 
 import java.util.List;
@@ -25,4 +26,5 @@ public interface VariableItemRepository extends JpaRepository<VariableItem, Long
     
     boolean existsByVariableName(String variableName);
 
+    List<VariableItem> findAllByManagementEntity(UUID managementEntity);
 }

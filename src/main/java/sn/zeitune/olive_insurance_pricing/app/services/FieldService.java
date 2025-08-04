@@ -11,27 +11,19 @@ import java.util.UUID;
 
 public interface FieldService {
 
-    FieldResponseDTO findById(Long id);
+    FieldResponseDTO findByUuid(UUID uuid, UUID managementEntity);
 
-    FieldResponseDTO findByUuid(UUID uuid);
+//    List<FieldResponseDTO> findAll();
 
-    List<FieldResponseDTO> findAll();
-
-    Page<FieldResponseDTO> findAll(Pageable pageable);
-
-    List<FieldResponseDTO> findByProduct(UUID product);
-
-    List<FieldResponseDTO> searchByLabel(String label);
-
-//    FieldResponseDTO update(Long id, FieldRequestDTO numericFieldRequestDTO);
-
-//    FieldResponseDTO updateByUuid(UUID uuid, FieldRequestDTO numericFieldRequestDTO);
-
-    void delete(Long id);
-
-    void deleteByUuid(UUID uuid);
-
-    boolean existsByUuid(UUID uuid);
+    Page<FieldResponseDTO> findAll(Pageable pageable, UUID managementEntity);
+//
+//    List<FieldResponseDTO> findByProduct(UUID product);
+//
+//    List<FieldResponseDTO> searchByLabel(String label);
+//
+//    void deleteByUuid(UUID uuid);
+//
+//    boolean existsByUuid(UUID uuid);
 
     Field getEntityByUuid(@NotNull(message = "Field UUID is required") UUID uuid);
 }

@@ -1,9 +1,14 @@
 package sn.zeitune.olive_insurance_pricing.app.repositories;
 
+import org.apache.tomcat.util.bcel.Const;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import sn.zeitune.olive_insurance_pricing.app.entities.Constant;
+import sn.zeitune.olive_insurance_pricing.app.mappers.ConstantMapper;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,4 +29,8 @@ public interface ConstantRepository extends JpaRepository<Constant, Long> {
     List<Constant> findByValueBetween(Double minValue, Double maxValue);
     
     boolean existsByVariableName(String variableName);
+
+    Page<Constant> findAllByManagementEntity(UUID managementEntity, Pageable pageable);
+
+    List<Constant> findAllByManagementEntity(UUID managementEntity);
 }

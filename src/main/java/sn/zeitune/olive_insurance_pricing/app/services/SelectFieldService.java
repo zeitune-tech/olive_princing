@@ -13,9 +13,8 @@ public interface SelectFieldService {
 
     SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO);
 
-    SelectFieldResponseDTO findById(Long id);
-
     SelectFieldResponseDTO findByUuid(UUID uuid);
+
     SelectField getEntityByUuid(UUID uuid);
 
     List<SelectFieldResponseDTO> findAll();
@@ -26,11 +25,7 @@ public interface SelectFieldService {
 
     List<SelectFieldResponseDTO> searchByLabel(String label);
 
-    SelectFieldResponseDTO update(Long id, SelectFieldRequestDTO selectFieldRequestDTO);
-
     SelectFieldResponseDTO updateByUuid(UUID uuid, SelectFieldRequestDTO selectFieldRequestDTO);
-
-    void delete(Long id);
 
     void deleteByUuid(UUID uuid);
 

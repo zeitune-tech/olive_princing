@@ -12,8 +12,6 @@ public interface FormulaService {
 
     FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO);
 
-    FormulaResponseDTO findById(Long id);
-
     FormulaResponseDTO findByUuid(UUID uuid);
 
     List<FormulaResponseDTO> findAll();
@@ -26,11 +24,7 @@ public interface FormulaService {
 
     List<FormulaResponseDTO> searchByExpression(String expression);
 
-    FormulaResponseDTO update(Long id, FormulaRequestDTO formulaRequestDTO);
-
     FormulaResponseDTO updateByUuid(UUID uuid, FormulaRequestDTO formulaRequestDTO);
-
-    void delete(Long id);
 
     void deleteByUuid(UUID uuid);
 

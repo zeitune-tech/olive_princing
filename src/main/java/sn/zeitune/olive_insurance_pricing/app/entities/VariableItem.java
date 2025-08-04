@@ -25,8 +25,6 @@ public abstract class VariableItem extends BaseEntity {
     private String variableName;
     @Column(name = "to_return")
     private Boolean toReturn;
-    @Column(name = "management_entity")
-    private UUID managementEntity;
     @Column
     private UUID product;
     @Column

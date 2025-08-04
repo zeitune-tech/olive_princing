@@ -46,13 +46,6 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
     }
 
     @Override
-    public SelectFieldOptionResponseDTO findById(Long id) {
-        SelectFieldOption selectFieldOption = selectFieldOptionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + id));
-        return SelectFieldOptionsMapper.map(selectFieldOption);
-    }
-
-    @Override
     public SelectFieldOption getEntityByUuid(UUID uuid) {
         return selectFieldOptionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + uuid));
@@ -97,22 +90,6 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
     }
 
     @Override
-    public SelectFieldOptionResponseDTO update(Long id, SelectFieldOptionRequestDTO selectFieldOptionRequestDTO) {
-        SelectFieldOption existingSelectFieldOption = selectFieldOptionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + id));
-        
-        // Vérifier si le nouveau nom existe déjà (sauf si c'est la même valeur de champ)
-        if (!existingSelectFieldOption.getName().equals(selectFieldOptionRequestDTO.getName()) &&
-            selectFieldOptionRepository.existsByName(selectFieldOptionRequestDTO.getName())) {
-            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionRequestDTO.getName() + "' existe déjà");
-        }
-        
-        SelectFieldOptionsMapper.map(selectFieldOptionRequestDTO, existingSelectFieldOption);
-        SelectFieldOption updatedSelectFieldOption = selectFieldOptionRepository.save(existingSelectFieldOption);
-        return SelectFieldOptionsMapper.map(updatedSelectFieldOption);
-    }
-
-    @Override
     public SelectFieldOptionResponseDTO updateByUuid(UUID uuid, SelectFieldOptionRequestDTO selectFieldOptionRequestDTO) {
         SelectFieldOption existingSelectFieldOption = selectFieldOptionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + uuid));
@@ -131,14 +108,6 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
         SelectFieldOptionsMapper.map(selectFieldOptionRequestDTO, existingSelectFieldOption);
         SelectFieldOption updatedSelectFieldOption = selectFieldOptionRepository.save(existingSelectFieldOption);
         return SelectFieldOptionsMapper.map(updatedSelectFieldOption);
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!selectFieldOptionRepository.existsById(id)) {
-            throw new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + id);
-        }
-        selectFieldOptionRepository.deleteById(id);
     }
 
     @Override

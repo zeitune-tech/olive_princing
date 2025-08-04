@@ -1,5 +1,7 @@
 package sn.zeitune.olive_insurance_pricing.app.repositories.field;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
@@ -10,6 +12,10 @@ import java.util.UUID;
 
 @Repository
 public interface SelectFieldOptionValueRepository extends JpaRepository<SelectFieldOptionValue, Long> {
+
+
+
+    Page<SelectFieldOptionValue> findAllByManagementEntity(Pageable pageable, UUID managementEntityUuid);
 
     Optional<SelectFieldOptionValue> findByUuid(UUID uuid);
 

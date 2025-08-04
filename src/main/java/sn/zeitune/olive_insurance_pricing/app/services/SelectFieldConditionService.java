@@ -14,8 +14,6 @@ public interface SelectFieldConditionService {
 
     SelectConditionResponseDTO create(SelectConditionRequestDTO selectConditionRequestDTO);
 
-    SelectConditionResponseDTO findById(Long id);
-
     SelectConditionResponseDTO findByUuid(UUID uuid);
 
     List<SelectConditionResponseDTO> findAll();
@@ -24,13 +22,7 @@ public interface SelectFieldConditionService {
 
     List<SelectConditionResponseDTO> findByValue(SelectFieldOptionValue value);
 
-    List<SelectConditionResponseDTO> findByField(Long fieldId);
-
-    SelectConditionResponseDTO update(Long id, SelectConditionRequestDTO selectConditionRequestDTO);
-
     SelectConditionResponseDTO updateByUuid(UUID uuid, SelectConditionRequestDTO selectConditionRequestDTO);
-
-    void delete(Long id);
 
     void deleteByUuid(UUID uuid);
 

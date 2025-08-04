@@ -1,8 +1,6 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableItemResponseDTO;
@@ -13,6 +11,7 @@ import sn.zeitune.olive_insurance_pricing.app.services.VariableItemService;
 
 import java.util.List;
 import java.util.UUID;
+
 
 @Service
 @Transactional
@@ -26,16 +25,6 @@ public class VariableItemServiceImpl implements VariableItemService {
         VariableItem variableItem = variableItemRepository.findByUuid(uuid)
                 .orElseThrow(() -> new RuntimeException("Variable item not found"));
         return VariableItemMapper.map(variableItem);
-    }
-
-    @Override
-    public List<VariableItemResponseDTO> findAll() {
-        return variableItemRepository.findAllByOrderByLabelAsc().stream().map(VariableItemMapper::map).toList();
-    }
-
-    @Override
-    public Page<VariableItemResponseDTO> findAll(Pageable pageable) {
-        return null;
     }
 
     @Override
@@ -61,6 +50,14 @@ public class VariableItemServiceImpl implements VariableItemService {
     @Override
     public VariableItem findByVariableName(String variable) {
         return variableItemRepository.findByVariableName(variable).orElseThrow(() -> new RuntimeException("Variable not found"));
+    }
+
+    @Override
+    public List<VariableItemResponseDTO> findAll(UUID managementEntity) {
+        return variableItemRepository.findAllByManagementEntity(managementEntity)
+                .stream()
+                .map(VariableItemMapper::map)
+                .toList();
     }
 
 }

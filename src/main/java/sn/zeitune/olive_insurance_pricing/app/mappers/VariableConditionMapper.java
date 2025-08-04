@@ -16,7 +16,6 @@ public class VariableConditionMapper {
         variableCondition.setDescription(dto.getDescription());
         variableCondition.setVariableName(dto.getVariableName());
         variableCondition.setToReturn(dto.getToReturn());
-        variableCondition.setManagementEntity(dto.getManagementEntity() != null ? dto.getManagementEntity() : null);
         variableCondition.setProduct(dto.getProduct());
         variableCondition.setBranch(dto.getBranch() != null ? dto.getBranch() : null);
         // Note: Les règles (ruleIds) doivent être gérées dans le service

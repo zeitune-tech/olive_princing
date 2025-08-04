@@ -51,13 +51,6 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
     }
 
     @Override
-    public SelectConditionResponseDTO findById(Long id) {
-        SelectCondition selectCondition = selectConditionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + id));
-        return SelectConditionMapper.map(selectCondition);
-    }
-
-    @Override
     public SelectConditionResponseDTO findByUuid(UUID uuid) {
         return SelectConditionMapper.map(getEntityByUuid(uuid));
     }
@@ -84,36 +77,9 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
                 .toList();
     }
 
-
-    @Override
-    public List<SelectConditionResponseDTO> findByField(Long fieldId) {
-        return selectConditionRepository.findBySelectFieldId(fieldId)
-                .stream()
-                .map(SelectConditionMapper::map)
-                .toList();
-    }
-
-    @Override
-    public SelectConditionResponseDTO update(Long id, SelectConditionRequestDTO selectConditionRequestDTO) {
-        SelectCondition existingSelectCondition = selectConditionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Condition non trouvée avec l'ID : " + id));
-        
-        SelectConditionMapper.map(selectConditionRequestDTO, existingSelectCondition);
-        SelectCondition updatedSelectCondition = selectConditionRepository.save(existingSelectCondition);
-        return SelectConditionMapper.map(updatedSelectCondition);
-    }
-
     @Override
     public SelectConditionResponseDTO updateByUuid(UUID uuid, SelectConditionRequestDTO selectConditionRequestDTO) {
         throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!selectConditionRepository.existsById(id)) {
-            throw new EntityNotFoundException("Condition non trouvée avec l'ID : " + id);
-        }
-        selectConditionRepository.deleteById(id);
     }
 
     @Override

@@ -48,19 +48,6 @@ public class SelectFieldOptionsController {
         return ResponseEntity.ok(selectFieldOptionService.create(selectFieldOptionRequestDTO));
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Récupérer une valeur de champ par ID", description = "Récupère une valeur de champ spécifique par son identifiant")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Valeur de champ trouvée",
-                    content = @Content(schema = @Schema(implementation = SelectFieldOptionResponseDTO.class))),
-            @ApiResponse(responseCode = "404", description = "Valeur de champ non trouvée",
-                    content = @Content)
-    })
-    public ResponseEntity<SelectFieldOptionResponseDTO> getById(@Parameter(description = "ID de la valeur de champ") @PathVariable Long id) {
-        log.info("REST request to get field value by ID: {}", id);
-        return ResponseEntity.ok(selectFieldOptionService.findById(id));
-    }
-
     @GetMapping
     @Operation(summary = "Récupérer toutes les valeurs de champs", description = "Récupère toutes les valeurs de champs avec pagination")
     @ApiResponses(value = {
@@ -109,18 +96,5 @@ public class SelectFieldOptionsController {
     public ResponseEntity<SelectFieldOptionResponseDTO> update(@Parameter(description = "ID de la valeur de champ") @PathVariable UUID id, @Valid @RequestBody SelectFieldOptionRequestDTO selectFieldOptionRequestDTO) {
         log.info("REST request to update field value with ID: {}", id);
         return ResponseEntity.ok(selectFieldOptionService.updateByUuid(id, selectFieldOptionRequestDTO));
-    }
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Supprimer une valeur de champ", description = "Supprime une valeur de champ spécifique par son identifiant")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Valeur de champ supprimée avec succès"),
-            @ApiResponse(responseCode = "404", description = "Valeur de champ non trouvée",
-                    content = @Content)
-    })
-    public ResponseEntity<Void> delete(@Parameter(description = "ID de la valeur de champ") @PathVariable Long id) {
-        log.info("REST request to delete field value with ID: {}", id);
-        selectFieldOptionService.delete(id);
-        return ResponseEntity.ok().build();
     }
 }

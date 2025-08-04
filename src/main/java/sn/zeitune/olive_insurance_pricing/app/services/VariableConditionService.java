@@ -12,8 +12,6 @@ public interface VariableConditionService {
 
     VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto);
 
-    VariableConditionResponseDTO findById(Long id);
-
     VariableConditionResponseDTO findByUuid(UUID uuid);
 
     List<VariableConditionResponseDTO> findAll();
@@ -24,11 +22,7 @@ public interface VariableConditionService {
 
     List<VariableConditionResponseDTO> searchByLabel(String label);
 
-    VariableConditionResponseDTO update(Long id, VariableConditionRequestDTO variableConditionDto);
-
     VariableConditionResponseDTO updateByUuid(UUID uuid, VariableConditionRequestDTO variableConditionDto);
-
-    void delete(Long id);
 
     void deleteByUuid(UUID uuid);
 

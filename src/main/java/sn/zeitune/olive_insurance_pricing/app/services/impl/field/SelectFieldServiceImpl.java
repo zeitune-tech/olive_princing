@@ -50,13 +50,6 @@ public class SelectFieldServiceImpl implements SelectFieldService {
     }
 
     @Override
-    public SelectFieldResponseDTO findById(Long id) {
-        SelectField field = selectFieldRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'ID : " + id));
-        return SelectFieldMapper.map(field);
-    }
-
-    @Override
     public SelectFieldResponseDTO findByUuid(UUID uuid) {
         return SelectFieldMapper.map(getEntityByUuid(uuid));
     }
@@ -98,26 +91,6 @@ public class SelectFieldServiceImpl implements SelectFieldService {
     }
 
     @Override
-    public SelectFieldResponseDTO update(Long id, SelectFieldRequestDTO selectFieldRequestDTO) {
-        SelectField existingField = selectFieldRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'ID : " + id));
-        
-        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est le même champ)
-        if (!existingField.getVariableName().equals(selectFieldRequestDTO.getVariableName()) &&
-            selectFieldRepository.existsByVariableName(selectFieldRequestDTO.getVariableName())) {
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.getVariableName() + "' existe déjà");
-        }
-
-        SelectFieldMapper.map(selectFieldRequestDTO, existingField);
-
-        if (selectFieldRequestDTO.getOptions() != null)
-            existingField.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
-
-        SelectField updatedField = selectFieldRepository.save(existingField);
-        return SelectFieldMapper.map(updatedField);
-    }
-
-    @Override
     public SelectFieldResponseDTO updateByUuid(UUID uuid, SelectFieldRequestDTO selectFieldRequestDTO) {
         SelectField existingField = selectFieldRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
@@ -135,14 +108,6 @@ public class SelectFieldServiceImpl implements SelectFieldService {
 
         SelectField updatedField = selectFieldRepository.save(existingField);
         return SelectFieldMapper.map(updatedField);
-    }
-
-    @Override
-    public void delete(Long id) {
-        if (!selectFieldRepository.existsById(id)) {
-            throw new EntityNotFoundException("Champ non trouvé avec l'ID : " + id);
-        }
-        selectFieldRepository.deleteById(id);
     }
 
     @Override

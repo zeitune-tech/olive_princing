@@ -30,9 +30,6 @@ public class SelectFieldConditionController {
     @PostMapping
     public ResponseEntity<SelectConditionResponseDTO> create(@Valid @RequestBody SelectConditionRequestDTO selectConditionRequestDTO) {
         log.info("REST request to create condition with value: {}", selectConditionRequestDTO.getValue());
-
-
-
         return ResponseEntity.ok(selectFieldConditionService.create(selectConditionRequestDTO));
     }
 
@@ -62,19 +59,19 @@ public class SelectFieldConditionController {
     }
 
     @GetMapping("/by-field/{fieldId}")
-    public ResponseEntity<List<SelectConditionResponseDTO>> getByField(@PathVariable Long fieldId) {
+    public ResponseEntity<List<SelectConditionResponseDTO>> getByField(@PathVariable UUID fieldId) {
         log.info("REST request to get conditions by field ID: {}", fieldId);
         return null;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SelectConditionResponseDTO> update(@PathVariable Long id, @Valid @RequestBody SelectConditionRequestDTO selectConditionRequestDTO) {
+    public ResponseEntity<SelectConditionResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody SelectConditionRequestDTO selectConditionRequestDTO) {
         log.info("REST request to update condition with ID: {}", id);
         return null;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         log.info("REST request to delete condition with ID: {}", id);
         return null;
     }

@@ -36,27 +36,28 @@ public class VariableConditionController {
         return ResponseEntity.ok(variableConditionService.findAll(pageable));
     }
 
-    @GetMapping("/by-product/{product}")
-    public ResponseEntity<List<VariableConditionResponseDTO>> getByProduct(@PathVariable UUID product) {
-        log.info("REST request to get variable conditions by product: {}", product);
-        return null;
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<VariableConditionResponseDTO>> searchByLabel(@RequestParam String label) {
-        log.info("REST request to search variable conditions by label: {}", label);
-        return null;
-    }
+//    @GetMapping("/by-product/{product}")
+//    public ResponseEntity<List<VariableConditionResponseDTO>> getByProduct(@PathVariable UUID product) {
+//        log.info("REST request to get variable conditions by product: {}", product);
+//        return null;
+//    }
+//
+//    @GetMapping("/search")
+//    public ResponseEntity<List<VariableConditionResponseDTO>> searchByLabel(@RequestParam String label) {
+//        log.info("REST request to search variable conditions by label: {}", label);
+//        return null;
+//    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VariableConditionResponseDTO> update(@PathVariable Long id, @Valid @RequestBody VariableConditionRequestDTO variableConditionRequestDTO) {
+    public ResponseEntity<VariableConditionResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody VariableConditionRequestDTO variableConditionRequestDTO) {
         log.info("REST request to update variable condition with ID: {}", id);
-        return null;
+        return ResponseEntity.ok(variableConditionService.updateByUuid(id, variableConditionRequestDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         log.info("REST request to delete variable condition with ID: {}", id);
-        return null;
+        variableConditionService.deleteByUuid(id);
+        return ResponseEntity.ok().build();
     }
 }

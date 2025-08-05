@@ -42,33 +42,34 @@ public class RuleController {
         return ResponseEntity.ok(ruleService.findAll(pageable));
     }
 
-    @GetMapping("/by-value/{value}")
-    public ResponseEntity<List<RuleResponseDTO>> getByValue(@PathVariable Double value) {
-        log.info("REST request to get rules by value: {}", value);
-        return null;
-    }
-
-    @GetMapping("/by-product/{product}")
-    public ResponseEntity<List<RuleResponseDTO>> getByProduct(@PathVariable UUID product) {
-        log.info("REST request to get rules by product: {}", product);
-        return null;
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<RuleResponseDTO>> searchByLabel(@RequestParam String label) {
-        log.info("REST request to search rules by label: {}", label);
-        return null;
-    }
+//    @GetMapping("/by-value/{value}")
+//    public ResponseEntity<List<RuleResponseDTO>> getByValue(@PathVariable Double value) {
+//        log.info("REST request to get rules by value: {}", value);
+//        return null;
+//    }
+//
+//    @GetMapping("/by-product/{product}")
+//    public ResponseEntity<List<RuleResponseDTO>> getByProduct(@PathVariable UUID product) {
+//        log.info("REST request to get rules by product: {}", product);
+//        return null;
+//    }
+//
+//    @GetMapping("/search")
+//    public ResponseEntity<List<RuleResponseDTO>> searchByLabel(@RequestParam String label) {
+//        log.info("REST request to search rules by label: {}", label);
+//        return null;
+//    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RuleResponseDTO> update(@PathVariable Long id, @Valid @RequestBody RuleRequestDTO ruleRequestDTO) {
+    public ResponseEntity<RuleResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody RuleRequestDTO ruleRequestDTO) {
         log.info("REST request to update rule with ID: {}", id);
-        return null;
+        return ResponseEntity.ok(ruleService.updateByUuid(id, ruleRequestDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         log.info("REST request to delete rule with ID: {}", id);
-        return null;
+        ruleService.deleteByUuid(id);
+        return ResponseEntity.ok().build();
     }
 }

@@ -13,7 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 public class NumericConditionResponseDTO extends ConditionResponseDTO {
-    NumericFieldResponseDTO numericField;
+    NumericFieldResponseDTO field;
     NumericOperator operator;
     Double value;
 }

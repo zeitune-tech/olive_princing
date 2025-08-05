@@ -10,14 +10,14 @@ public class NumericConditionMapper {
 
     public static NumericCondition map(NumericConditionRequestDTO dto, NumericField field, NumericCondition numericCondition) {
         numericCondition.setNumericValue(dto.getValue());
-        numericCondition.setNumericField(field);
         numericCondition.setNumericOperator(dto.getNumericOperator());
+
+        numericCondition.setNumericField(field);
         return numericCondition;
     }
 
     public static NumericCondition map(NumericConditionRequestDTO dto, NumericCondition numericCondition) {
-//        throw new RuntimeException("Not Implemented");
-        return map(dto, null, numericCondition);
+        return map(dto, numericCondition.getNumericField(), numericCondition);
     }
 
     public static NumericCondition map(NumericConditionRequestDTO dto) {
@@ -32,7 +32,7 @@ public class NumericConditionMapper {
         NumericConditionResponseDTO numericConditionResponseDTO = new NumericConditionResponseDTO();
         numericConditionResponseDTO.setId(numericCondition.getUuid());
         numericConditionResponseDTO.setValue(numericCondition.getNumericValue());
-        numericConditionResponseDTO.setNumericField(
+        numericConditionResponseDTO.setField(
                 numericCondition.getNumericField() != null ? NumericFieldMapper.map(numericCondition.getNumericField()) : null);
         numericConditionResponseDTO.setOperator(numericCondition.getNumericOperator());
         return numericConditionResponseDTO;

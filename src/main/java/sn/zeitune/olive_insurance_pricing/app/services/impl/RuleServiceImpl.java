@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.RuleRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.RuleResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.BaseEntity;
 import sn.zeitune.olive_insurance_pricing.app.entities.Rule;
 import sn.zeitune.olive_insurance_pricing.app.mappers.RuleMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.RuleRepository;
@@ -68,7 +69,24 @@ public class RuleServiceImpl implements RuleService {
     public RuleResponseDTO updateByUuid(UUID uuid, RuleRequestDTO ruleRequestDTO) {
         Rule existingRule = ruleRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Règle non trouvée avec l'UUID : " + uuid));
-        
+
+        List<UUID> existingConditionUuids = existingRule.getConditions()
+                .stream()
+                .map(BaseEntity::getUuid)
+                .toList();
+
+        for (UUID conditionUuid : ruleRequestDTO.getConditions()) {
+            if (existingConditionUuids.contains(conditionUuid))
+                continue; // Condition already exists, skip adding it again
+
+            if (selectFieldConditionService.existsByUuid(conditionUuid)) {
+                existingRule.getConditions().add(selectFieldConditionService.getEntityByUuid(conditionUuid));
+            } else if (numericalConditionService.existsByUuid(conditionUuid)) {
+                existingRule.getConditions().add(numericalConditionService.getEntityByUuid(conditionUuid));
+            } else {
+                throw new EntityNotFoundException("Condition non trouvée avec l'UUID : " + conditionUuid);
+            }
+        }
 
         RuleMapper.map(ruleRequestDTO, existingRule);
         Rule updatedRule = ruleRepository.save(existingRule);

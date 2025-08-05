@@ -79,6 +79,22 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public SelectConditionResponseDTO updateByUuid(UUID uuid, SelectConditionRequestDTO selectConditionRequestDTO) {
+//        return selectConditionRepository.findAll();
+        SelectCondition existingSelectCondition = getEntityByUuid(uuid);
+        existingSelectCondition = SelectConditionMapper.map(selectConditionRequestDTO, existingSelectCondition);
+
+        SelectField selectField = selectFieldService.getEntityByUuid(selectConditionRequestDTO.getFieldId());
+        if (selectField == null) throw new RuntimeException(String.format(""));
+
+        SelectFieldOptionValue selectFieldOptionValue = selectFieldOptionValueService.getEntityByUuid(selectConditionRequestDTO.getValue());
+        if (selectFieldOptionValue == null) throw new RuntimeException(String.format("Field with id %s does not exist", selectConditionRequestDTO.getFieldId()));
+
+        if (!selectField.getOptions().getPossibilities().stream().map(SelectFieldOptionValue::getUuid).toList().contains(selectConditionRequestDTO.getValue()))
+            throw new RuntimeException(String.format("Value with id %s does not exist", selectConditionRequestDTO.getValue()));
+
+        existingSelectCondition.setSelectFieldValue(selectFieldOptionValueService.getEntityByUuid(selectConditionRequestDTO.getValue()));
+        existingSelectCondition.setSelectField(selectField);
+
         throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
     }
 

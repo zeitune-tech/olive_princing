@@ -61,7 +61,12 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
 
     @Override
     public NumericConditionResponseDTO updateByUuid(UUID uuid, NumericConditionRequestDTO numericConditionRequestDTO) {
-        throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
+        NumericCondition existingNumericCondition = getEntityByUuid(uuid);
+        NumericConditionMapper.map(numericConditionRequestDTO, existingNumericCondition);
+
+        if (existingNumericCondition.getNumericField().getUuid() != numericConditionRequestDTO.getFieldId())
+            existingNumericCondition.setNumericField(numericFieldService.getEntityByUuid(numericConditionRequestDTO.getFieldId()));
+        return NumericConditionMapper.map(numericConditionRepository.save(existingNumericCondition));
     }
 
     @Override

@@ -14,9 +14,10 @@ import sn.zeitune.olive_insurance_pricing.app.services.NumericalConditionService
 import sn.zeitune.olive_insurance_pricing.enums.NumericOperator;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/app/numerical-conditions")
+@RequestMapping("/app/numeric-conditions")
 @RequiredArgsConstructor
 @Slf4j
 public class NumericalConditionController {
@@ -29,11 +30,11 @@ public class NumericalConditionController {
         return ResponseEntity.ok(numericalConditionService.create(numericConditionRequestDTO));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<NumericConditionResponseDTO> getById(@PathVariable Long id) {
-        log.info("REST request to get condition by ID: {}", id);
-        return null;
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<NumericConditionResponseDTO> getById(@PathVariable Long id) {
+//        log.info("REST request to get condition by ID: {}", id);
+//        return null;
+//    }
 
     @GetMapping
     public ResponseEntity<Page<NumericConditionResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
@@ -41,33 +42,34 @@ public class NumericalConditionController {
         return ResponseEntity.ok(numericalConditionService.findAll(pageable));
     }
 
-    @GetMapping("/by-value/{value}")
-    public ResponseEntity<List<NumericConditionResponseDTO>> getByValue(@PathVariable Double value) {
-        log.info("REST request to get conditions by value: {}", value);
-        return null;
-    }
-
-    @GetMapping("/by-operator/{numericOperator}")
-    public ResponseEntity<List<NumericConditionResponseDTO>> getByOperator(@PathVariable NumericOperator numericOperator) {
-        log.info("REST request to get conditions by operator: {}", numericOperator);
-        return null;
-    }
-
-    @GetMapping("/by-field/{fieldId}")
-    public ResponseEntity<List<NumericConditionResponseDTO>> getByField(@PathVariable Long fieldId) {
-        log.info("REST request to get conditions by field ID: {}", fieldId);
-        return null;
-    }
+//    @GetMapping("/by-value/{value}")
+//    public ResponseEntity<List<NumericConditionResponseDTO>> getByValue(@PathVariable Double value) {
+//        log.info("REST request to get conditions by value: {}", value);
+//        return null;
+//    }
+//
+//    @GetMapping("/by-operator/{numericOperator}")
+//    public ResponseEntity<List<NumericConditionResponseDTO>> getByOperator(@PathVariable NumericOperator numericOperator) {
+//        log.info("REST request to get conditions by operator: {}", numericOperator);
+//        return null;
+//    }
+//
+//    @GetMapping("/by-field/{fieldId}")
+//    public ResponseEntity<List<NumericConditionResponseDTO>> getByField(@PathVariable Long fieldId) {
+//        log.info("REST request to get conditions by field ID: {}", fieldId);
+//        return null;
+//    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NumericConditionResponseDTO> update(@PathVariable Long id, @Valid @RequestBody NumericConditionRequestDTO numericConditionRequestDTO) {
+    public ResponseEntity<NumericConditionResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody NumericConditionRequestDTO numericConditionRequestDTO) {
         log.info("REST request to update condition with ID: {}", id);
-        return null;
+        return ResponseEntity.ok(numericalConditionService.updateByUuid(id, numericConditionRequestDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
         log.info("REST request to delete condition with ID: {}", id);
-        return null;
+        numericalConditionService.deleteByUuid(id);
+        return ResponseEntity.ok().build();
     }
 }

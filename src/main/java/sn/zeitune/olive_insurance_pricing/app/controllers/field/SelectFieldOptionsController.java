@@ -97,4 +97,17 @@ public class SelectFieldOptionsController {
         log.info("REST request to update field value with ID: {}", id);
         return ResponseEntity.ok(selectFieldOptionService.updateByUuid(id, selectFieldOptionRequestDTO));
     }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Supprimer une valeur de champ", description = "Supprime une valeur de champ existante par son ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Valeur de champ supprimée avec succès"),
+            @ApiResponse(responseCode = "404", description = "Valeur de champ non trouvée",
+                    content = @Content)
+    })
+    public ResponseEntity<Void> delete(@Parameter(description = "ID de la valeur de champ") @PathVariable UUID id) {
+        log.info("REST request to delete field value with ID: {}", id);
+        selectFieldOptionService.deleteByUuid(id);
+        return ResponseEntity.noContent().build();
+    }
 }

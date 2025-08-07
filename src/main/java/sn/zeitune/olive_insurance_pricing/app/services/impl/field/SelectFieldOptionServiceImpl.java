@@ -15,10 +15,8 @@ import sn.zeitune.olive_insurance_pricing.app.repositories.field.SelectFieldOpti
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionValueService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionService;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -97,6 +95,8 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
 
         List<SelectFieldOptionValue> existingPossibilities = existingSelectFieldOption.getPossibilities();
 
+        existingPossibilities.removeIf(selectFieldOptionValue -> !selectFieldOptionRequestDTO.getPossibilities().contains(selectFieldOptionValue.getUuid()));
+
         for (UUID possibilityUuid : selectFieldOptionRequestDTO.getPossibilities()) {
             SelectFieldOptionValue selectFieldOptionValue = selectFieldOptionValueService.getEntityByUuid(possibilityUuid);
             if (!existingPossibilities.contains(selectFieldOptionValue)) {
@@ -104,15 +104,15 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
             }
         }
 
-
         SelectFieldOptionsMapper.map(selectFieldOptionRequestDTO, existingSelectFieldOption);
-        SelectFieldOption updatedSelectFieldOption = selectFieldOptionRepository.save(existingSelectFieldOption);
-        return SelectFieldOptionsMapper.map(updatedSelectFieldOption);
+        return SelectFieldOptionsMapper.map(selectFieldOptionRepository.save(existingSelectFieldOption));
     }
 
     @Override
     public void deleteByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("SelectFieldOptions n'utilise pas d'UUID");
+        SelectFieldOption selectFieldOption = selectFieldOptionRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Valeur de champ non trouvée avec l'ID : " + uuid));
+        selectFieldOptionRepository.delete(selectFieldOption);
     }
 
     @Override

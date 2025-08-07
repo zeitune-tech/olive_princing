@@ -1,6 +1,8 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
@@ -37,14 +39,26 @@ public class FormulaServiceImpl implements FormulaService {
             throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.getVariableName() + "' existe déjà");
         }
         
-        Formula formula = FormulaMapper.map(formulaRequestDTO);
+//        Formula formula = FormulaMapper.map(formulaRequestDTO);
+//
+//        ExpressionParser.ParsedExpression parsed = parseExpression(formulaRequestDTO.getExpression());
+//
+//        for (String variable : parsed.variables) {
+//            formula.getVariables().add(variableItemService.findByVariableName(variable));
+//        }
 
-        ExpressionParser.ParsedExpression parsed = parseExpression(formulaRequestDTO.getExpression());
+        Formula formula = FormulaMapper.map(formulaRequestDTO, new Formula());
 
-        for (String variable : parsed.variables) {
-            formula.getVariables().add(variableItemService.findByVariableName(variable));
+        for (UUID variableId : formulaRequestDTO.getVariables()) {
+            if (variableItemService.existsByUuid(variableId)) {
+                formula.getVariables().add(variableItemService.getEntityByUuid(variableId));
+            } else {
+                throw new EntityNotFoundException("Variable non trouvée avec l'UUID : " + variableId);
+            }
         }
 
+        // Vérifier la validité de l'expression
+        // TODO
         formula = formulaRepository.save(formula);
         return FormulaMapper.map(formula);
     }
@@ -130,5 +144,12 @@ public class FormulaServiceImpl implements FormulaService {
     @Override
     public boolean existsByUuid(UUID uuid) {
         return formulaRepository.existsByUuid(uuid);
+    }
+
+    @Override
+    public Formula getEntityByUuid(UUID uuid) {
+        Formula formula = formulaRepository.findByUuid(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'UUID : " + uuid));
+        return formula;
     }
 }

@@ -44,7 +44,8 @@ public class VariableItemServiceImpl implements VariableItemService {
 
     @Override
     public VariableItem getEntityByUuid(UUID uuid) {
-        return null;
+        return variableItemRepository.findByUuid(uuid)
+                .orElseThrow(() -> new RuntimeException("Variable item not found with UUID: " + uuid));
     }
 
     @Override
@@ -54,7 +55,7 @@ public class VariableItemServiceImpl implements VariableItemService {
 
     @Override
     public List<VariableItemResponseDTO> findAll(UUID managementEntity) {
-        return variableItemRepository.findAllByManagementEntity(managementEntity)
+        return variableItemRepository.findAll()
                 .stream()
                 .map(VariableItemMapper::map)
                 .toList();

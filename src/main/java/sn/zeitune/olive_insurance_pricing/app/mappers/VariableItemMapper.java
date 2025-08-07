@@ -4,6 +4,7 @@ package sn.zeitune.olive_insurance_pricing.app.mappers;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableItemResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.Constant;
 import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
+import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
 import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.Field;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.FieldMapper;
@@ -16,6 +17,9 @@ public class VariableItemMapper {
         }
         if (variableItem instanceof Field) {
             return FieldMapper.map((Field) variableItem);
+        }
+        if (variableItem instanceof VariableCondition) {
+            return VariableConditionMapper.map((VariableCondition) variableItem);
         }
         if (variableItem instanceof Formula) {
             return FormulaMapper.map((Formula) variableItem);

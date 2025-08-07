@@ -71,9 +71,10 @@ public class FormulaController {
 //        return null;
 //    }
 //
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Long id) {
-//        log.info("REST request to delete formula with ID: {}", id);
-//        return null;
-//    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        log.info("REST request to delete formula with ID: {}", id);
+        formulaService.deleteByUuid(id);
+        return ResponseEntity.ok().build();
+    }
 }

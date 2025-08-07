@@ -84,7 +84,6 @@ public class VariableConditionServiceImpl implements VariableConditionService {
         VariableCondition existingVariableCondition = variableConditionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'UUID : " + uuid));
         
-        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est la même condition variable)
         if (!existingVariableCondition.getVariableName().equals(variableConditionDto.getVariableName()) &&
             variableConditionRepository.existsByVariableName(variableConditionDto.getVariableName())) {
             throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.getVariableName() + "' existe déjà");

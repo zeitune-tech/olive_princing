@@ -1,9 +1,6 @@
 package sn.zeitune.olive_insurance_pricing.app.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +20,7 @@ public class Formula extends VariableItem {
     @Column(name = "expression", nullable = false, columnDefinition = "TEXT")
     private String expression;
 
-    @OneToMany
+    @ManyToMany
     private List<VariableItem> variables = new ArrayList<>();
 
     private UUID coverage;

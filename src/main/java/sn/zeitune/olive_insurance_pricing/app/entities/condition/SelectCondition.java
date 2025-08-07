@@ -22,6 +22,6 @@ public class SelectCondition extends Condition {
     @ManyToOne
     private SelectField selectField;
     private SelectFieldOperator selectFieldOperator;
-    @OneToOne
+    @ManyToOne
     private SelectFieldOptionValue selectFieldValue;
 }

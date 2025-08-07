@@ -75,10 +75,16 @@ public class RuleServiceImpl implements RuleService {
                 .map(BaseEntity::getUuid)
                 .toList();
 
+        for (UUID conditionUuid : existingConditionUuids) {
+            if (!ruleRequestDTO.getConditions().contains(conditionUuid)) {
+                // Remove condition if it is not in the new request
+                existingRule.getConditions().removeIf(condition -> condition.getUuid().equals(conditionUuid));
+            }
+        }
+
         for (UUID conditionUuid : ruleRequestDTO.getConditions()) {
             if (existingConditionUuids.contains(conditionUuid))
                 continue; // Condition already exists, skip adding it again
-
             if (selectFieldConditionService.existsByUuid(conditionUuid)) {
                 existingRule.getConditions().add(selectFieldConditionService.getEntityByUuid(conditionUuid));
             } else if (numericalConditionService.existsByUuid(conditionUuid)) {

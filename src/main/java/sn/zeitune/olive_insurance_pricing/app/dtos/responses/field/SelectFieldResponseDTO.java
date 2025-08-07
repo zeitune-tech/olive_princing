@@ -8,6 +8,6 @@ import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableItemRespons
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class SelectFieldResponseDTO extends VariableItemResponseDTO {
+public class SelectFieldResponseDTO extends FieldResponseDTO {
     SelectFieldOptionResponseDTO options;
 }

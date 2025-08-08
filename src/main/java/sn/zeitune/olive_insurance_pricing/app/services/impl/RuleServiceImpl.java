@@ -10,6 +10,9 @@ import sn.zeitune.olive_insurance_pricing.app.dtos.requests.RuleRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.RuleResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.BaseEntity;
 import sn.zeitune.olive_insurance_pricing.app.entities.Rule;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.Condition;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectCondition;
 import sn.zeitune.olive_insurance_pricing.app.mappers.RuleMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.RuleRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.NumericalConditionService;
@@ -103,6 +106,13 @@ public class RuleServiceImpl implements RuleService {
     public void deleteByUuid(UUID uuid) {
         Rule rule = ruleRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Règle non trouvée avec l'UUID : " + uuid));
+        for (Condition condition : rule.getConditions()) {
+            if (condition instanceof SelectCondition selectFieldCondition) {
+                selectFieldConditionService.deleteByUuid(selectFieldCondition.getUuid());
+            } else if (condition instanceof NumericCondition numericalCondition) {
+                numericalConditionService.deleteByUuid(numericalCondition.getUuid());
+            }
+        }
         ruleRepository.delete(rule);
     }
 

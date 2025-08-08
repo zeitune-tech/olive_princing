@@ -45,5 +45,16 @@ public class EvaluationRequiredFieldsResponseDTO {
 
     public void addFieldList(List<EvaluationRequiredField> fields) {
         this.requiredFields.addAll(fields);
+
+        // delete all duplicates values
+        for (int i = 0; i < requiredFields.size(); i++) {
+            EvaluationRequiredField field = requiredFields.get(i);
+            for (int j = i + 1; j < requiredFields.size(); j++) {
+                if (field.getName().equals(requiredFields.get(j).getName())) {
+                    requiredFields.remove(j);
+                    j--;
+                }
+            }
+        }
     }
 }

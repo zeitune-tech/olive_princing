@@ -100,7 +100,7 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public void deleteByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
+        selectConditionRepository.delete(getEntityByUuid(uuid));
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.VariableConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableConditionResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.Rule;
 import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
 import sn.zeitune.olive_insurance_pricing.app.mappers.VariableConditionMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.VariableConditionRepository;
@@ -109,6 +110,9 @@ public class VariableConditionServiceImpl implements VariableConditionService {
     public void deleteByUuid(UUID uuid) {
         VariableCondition variableCondition = variableConditionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'UUID : " + uuid));
+        for (Rule rule: variableCondition.getRules() ) {
+            ruleService.deleteByUuid(rule.getUuid());
+        }
         variableConditionRepository.delete(variableCondition);
     }
 

@@ -292,7 +292,6 @@ public class EvaluationServiceImpl implements EvaluationService {
                                     return false; // Condition not met
                                 }
                                 break;
-
                             default:
                                 throw new IllegalStateException("Unexpected value: " + numericCondition.getNumericOperator());
                         }
@@ -371,9 +370,12 @@ public class EvaluationServiceImpl implements EvaluationService {
                 throw new IllegalArgumentException("SelectField " + selectField.getVariableName() + " is required but not provided");
 
             SelectFieldOptionValue selectFieldOptionValue = selectField.getOptions().getPossibilities().stream()
-                    .filter(option -> option.getName().equals(fields.get(selectField.getVariableName())))
+                    .filter(option ->
+                        option.getUuid().toString().equals(fields.get(selectField.getVariableName()))
+                    )
                     .findFirst().orElse(null);
 
+//            System.err.println("SelectFieldOptionValue: " + fields.get(selectField.getVariableName()));
             if (selectFieldOptionValue == null)
                 throw new IllegalArgumentException("SelectField " + selectField.getVariableName() + " is not a valid select value");
 
@@ -411,8 +413,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         Formula formula = formulaService.getEntityByUuid(data.getId());
 
         EvaluateFormula evaluateFormula = new EvaluateFormula(formula, data.getFields());
-
-
 
         EvaluationResultResponseDTO result = new EvaluationResultResponseDTO();
         System.err.println("Final expression to evaluate: " + formula.getExpression() + " => " + evaluateFormula.execute());

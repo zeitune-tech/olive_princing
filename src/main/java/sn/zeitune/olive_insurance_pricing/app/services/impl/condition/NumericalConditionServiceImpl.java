@@ -71,7 +71,7 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
 
     @Override
     public void deleteByUuid(UUID uuid) {
-        throw new UnsupportedOperationException("Condition n'utilise pas d'UUID");
+        numericConditionRepository.delete(getEntityByUuid(uuid));
     }
 
     @Override

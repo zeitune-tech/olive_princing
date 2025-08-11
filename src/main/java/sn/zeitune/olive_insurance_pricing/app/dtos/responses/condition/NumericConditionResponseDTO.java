@@ -16,4 +16,6 @@ public class NumericConditionResponseDTO extends ConditionResponseDTO {
     NumericFieldResponseDTO field;
     NumericOperator operator;
     Double value;
+    Double minValue;
+    Double maxValue;
 }

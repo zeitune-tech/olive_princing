@@ -106,13 +106,6 @@ public class RuleServiceImpl implements RuleService {
     public void deleteByUuid(UUID uuid) {
         Rule rule = ruleRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Règle non trouvée avec l'UUID : " + uuid));
-        for (Condition condition : rule.getConditions()) {
-            if (condition instanceof SelectCondition selectFieldCondition) {
-                selectFieldConditionService.deleteByUuid(selectFieldCondition.getUuid());
-            } else if (condition instanceof NumericCondition numericalCondition) {
-                numericalConditionService.deleteByUuid(numericalCondition.getUuid());
-            }
-        }
         ruleRepository.delete(rule);
     }
 

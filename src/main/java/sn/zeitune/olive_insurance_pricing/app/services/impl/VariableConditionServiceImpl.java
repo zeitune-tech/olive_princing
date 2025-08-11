@@ -51,16 +51,8 @@ public class VariableConditionServiceImpl implements VariableConditionService {
     }
 
     @Override
-    public List<VariableConditionResponseDTO> findAll() {
-        return variableConditionRepository.findAll()
-                .stream()
-                .map(VariableConditionMapper::map)
-                .toList();
-    }
-
-    @Override
-    public Page<VariableConditionResponseDTO> findAll(Pageable pageable) {
-        return variableConditionRepository.findAll(pageable)
+    public Page<VariableConditionResponseDTO> findAll(Pageable pageable, UUID managementEntity) {
+        return variableConditionRepository.findAllByManagementEntity(managementEntity, pageable)
                 .map(VariableConditionMapper::map);
     }
 
@@ -110,9 +102,6 @@ public class VariableConditionServiceImpl implements VariableConditionService {
     public void deleteByUuid(UUID uuid) {
         VariableCondition variableCondition = variableConditionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'UUID : " + uuid));
-        for (Rule rule: variableCondition.getRules() ) {
-            ruleService.deleteByUuid(rule.getUuid());
-        }
         variableConditionRepository.delete(variableCondition);
     }
 

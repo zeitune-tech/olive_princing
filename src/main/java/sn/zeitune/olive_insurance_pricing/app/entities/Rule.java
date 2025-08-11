@@ -22,11 +22,12 @@ public class Rule extends BaseEntity{
     private Double value;
 
     @Builder.Default
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.REMOVE})
     @JoinTable(
             name = "regle_conditions",
             joinColumns = @JoinColumn(name = "code_regle"),
             inverseJoinColumns = @JoinColumn(name = "code_condition")
+
     )
     private Set<Condition> conditions = new HashSet<>();
 }

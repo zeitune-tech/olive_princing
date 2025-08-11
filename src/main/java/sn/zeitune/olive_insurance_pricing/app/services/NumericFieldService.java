@@ -12,13 +12,13 @@ import java.util.UUID;
 
 public interface NumericFieldService {
 
-    NumericFieldResponseDTO create(NumericFieldRequestDTO numericFieldRequestDTO);
+    NumericFieldResponseDTO create(NumericFieldRequestDTO numericFieldRequestDTO, UUID managementEntity);
 
     NumericFieldResponseDTO findByUuid(UUID uuid);
 
     List<NumericFieldResponseDTO> findAll();
 
-    Page<NumericFieldResponseDTO> findAll(Pageable pageable);
+    Page<NumericFieldResponseDTO> findAll(Pageable pageable, UUID managementEntity);
 
     List<NumericFieldResponseDTO> findByProduct(UUID product);
 

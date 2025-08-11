@@ -27,7 +27,7 @@ public class VariableConditionServiceImpl implements VariableConditionService {
     private final RuleService ruleService;
 
     @Override
-    public VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto) {
+    public VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto, UUID managementEntity) {
         // Vérifier si une condition variable avec le même nom de variable existe déjà
         if (variableConditionRepository.existsByVariableName(variableConditionDto.getVariableName()))
             throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.getVariableName() + "' existe déjà");
@@ -39,6 +39,7 @@ public class VariableConditionServiceImpl implements VariableConditionService {
             if (ruleService.existsByUuid(uuid))
                 variableCondition.getRules().add(ruleService.getEntityByUuid(uuid));
         }
+        variableCondition.setManagementEntity(managementEntity);
 
         return VariableConditionMapper.map(variableConditionRepository.save(variableCondition));
     }

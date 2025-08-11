@@ -24,15 +24,15 @@ public class NumericFieldServiceImpl implements NumericFieldService {
     private final NumericFieldRepository fieldRepository;
 
     @Override
-    public NumericFieldResponseDTO create(NumericFieldRequestDTO numericFieldRequestDTO) {
+    public NumericFieldResponseDTO create(NumericFieldRequestDTO numericFieldRequestDTO, UUID managementEntity) {
         // Vérifier si un champ avec le même nom de variable existe déjà
         if (fieldRepository.existsByVariableName(numericFieldRequestDTO.getVariableName())) {
             throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.getVariableName() + "' existe déjà");
         }
         
         NumericField field = NumericFieldMapper.map(numericFieldRequestDTO);
-        field = fieldRepository.save(field);
-        return NumericFieldMapper.map(field);
+        field.setManagementEntity(managementEntity);
+        return NumericFieldMapper.map(fieldRepository.save(field));
     }
 
     @Override
@@ -51,8 +51,8 @@ public class NumericFieldServiceImpl implements NumericFieldService {
     }
 
     @Override
-    public Page<NumericFieldResponseDTO> findAll(Pageable pageable) {
-        return fieldRepository.findAll(pageable)
+    public Page<NumericFieldResponseDTO> findAll(Pageable pageable, UUID managementEntity) {
+        return fieldRepository.findAllByManagementEntity(managementEntity, pageable)
                 .map(NumericFieldMapper::map);
     }
 

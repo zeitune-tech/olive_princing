@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface VariableConditionService {
 
-    VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto);
+    VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto, UUID managementEntity);
 
     VariableConditionResponseDTO findByUuid(UUID uuid);
 

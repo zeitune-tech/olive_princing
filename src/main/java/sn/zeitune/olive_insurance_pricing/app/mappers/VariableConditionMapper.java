@@ -3,6 +3,7 @@ package sn.zeitune.olive_insurance_pricing.app.mappers;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.VariableConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableConditionResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
+import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -23,10 +24,8 @@ public class VariableConditionMapper {
     }
 
     public static VariableCondition map(VariableConditionRequestDTO dto) {
-
         return map(dto, new VariableCondition());
     }
-
 
     public static VariableConditionResponseDTO map(VariableCondition variableCondition) {
         if (variableCondition == null)
@@ -45,7 +44,7 @@ public class VariableConditionMapper {
                         .map(RuleMapper::map)
                         .collect(Collectors.toSet()) :
                 Collections.emptySet());
-
+        variableConditionResponseDTO.setType(TypeOfVariable.VARIABLE_CONDITION);
         return variableConditionResponseDTO;
     }
 

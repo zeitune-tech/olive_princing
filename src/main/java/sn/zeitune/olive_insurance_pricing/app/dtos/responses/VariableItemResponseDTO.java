@@ -2,6 +2,7 @@ package sn.zeitune.olive_insurance_pricing.app.dtos.responses;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
 import java.util.UUID;
 
@@ -34,4 +35,7 @@ public class VariableItemResponseDTO {
 
     @Schema(description = "Couverture associée", example = "123e4567-e89b-12d3-a456-426614174000")
     UUID branch;
+
+    @Schema(description = "Type de variable", example = "SELECT_FIELD")
+    TypeOfVariable type;
 }

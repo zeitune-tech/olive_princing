@@ -43,23 +43,14 @@ public class FormulaMapper {
     public static FormulaResponseDTO map(Formula formula) {
         if (formula == null) return null; // Handle null case if necessary
 
-        FormulaResponseDTO formulaResponseDTO = new FormulaResponseDTO();
-        formulaResponseDTO.setId(formula.getUuid());
-        formulaResponseDTO.setLabel(formula.getLabel());
-        formulaResponseDTO.setDescription(formula.getDescription());
-        formulaResponseDTO.setVariableName(formula.getVariableName());
+        FormulaResponseDTO formulaResponseDTO = (FormulaResponseDTO) VariableItemMapper.map(formula);
         formulaResponseDTO.setExpression(formula.getExpression());
-        formulaResponseDTO.setToReturn(formula.getToReturn());
-        formulaResponseDTO.setManagementEntity(formula.getManagementEntity());
-        formulaResponseDTO.setProduct(formula.getProduct());
-        formulaResponseDTO.setBranch(formula.getBranch());
         formulaResponseDTO.setVariables(
                 formula.getVariables().stream()
                         .map(FormulaMapper::getRealVariable)
                         .toList()
         );
         formulaResponseDTO.setCoverage(formula.getCoverage());
-        formulaResponseDTO.setType(TypeOfVariable.FORMULA);
         return formulaResponseDTO;
     }
 }

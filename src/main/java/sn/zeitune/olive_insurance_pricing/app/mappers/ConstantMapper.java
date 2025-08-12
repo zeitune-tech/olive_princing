@@ -3,6 +3,7 @@ package sn.zeitune.olive_insurance_pricing.app.mappers;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.ConstantRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.ConstantResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.Constant;
+import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
 import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
 public class ConstantMapper {
@@ -23,17 +24,8 @@ public class ConstantMapper {
     }
 
     public static ConstantResponseDTO map(Constant constant) {
-        ConstantResponseDTO dto = new ConstantResponseDTO();
-        dto.setLabel(constant.getLabel());
-        dto.setDescription(constant.getDescription());
-        dto.setVariableName(constant.getVariableName());
+        ConstantResponseDTO dto = (ConstantResponseDTO) VariableItemMapper.map(constant);
         dto.setValue(constant.getValue());
-        dto.setToReturn(constant.getToReturn());
-        dto.setManagementEntity(constant.getManagementEntity());
-        dto.setProduct(constant.getProduct());
-        dto.setBranch(constant.getBranch());
-        dto.setId(constant.getUuid());
-        dto.setType(TypeOfVariable.CONSTANT);
         return dto;
     }
 }

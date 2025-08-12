@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

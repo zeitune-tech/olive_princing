@@ -28,23 +28,14 @@ public class VariableConditionMapper {
     }
 
     public static VariableConditionResponseDTO map(VariableCondition variableCondition) {
-        if (variableCondition == null)
-            return null;
-        VariableConditionResponseDTO variableConditionResponseDTO = new VariableConditionResponseDTO();
-        variableConditionResponseDTO.setId(variableCondition.getUuid());
-        variableConditionResponseDTO.setLabel(variableCondition.getLabel());
-        variableConditionResponseDTO.setDescription(variableCondition.getDescription());
-        variableConditionResponseDTO.setVariableName(variableCondition.getVariableName());
-        variableConditionResponseDTO.setToReturn(variableCondition.getToReturn());
-        variableConditionResponseDTO.setManagementEntity(variableCondition.getManagementEntity() != null ? variableCondition.getManagementEntity() : null);
-        variableConditionResponseDTO.setProduct(variableCondition.getProduct());
-        variableConditionResponseDTO.setBranch(variableCondition.getBranch());
+        if (variableCondition == null) return null;
+        VariableConditionResponseDTO variableConditionResponseDTO = (VariableConditionResponseDTO) VariableItemMapper.map(variableCondition);
+        variableConditionResponseDTO.setCoverage(variableCondition.getCoverage());
         variableConditionResponseDTO.setRules(variableCondition.getRules() != null ?
                 variableCondition.getRules().stream()
                         .map(RuleMapper::map)
                         .collect(Collectors.toSet()) :
                 Collections.emptySet());
-        variableConditionResponseDTO.setType(TypeOfVariable.VARIABLE_CONDITION);
         return variableConditionResponseDTO;
     }
 

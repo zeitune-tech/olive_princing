@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -18,6 +19,9 @@ import java.util.Set;
 @Table(name = "variable_condition")
 public class VariableCondition extends VariableItem {
 
+    @Column(name = "garantie", nullable = false)
+    private UUID coverage;
+
     @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(
@@ -26,4 +30,6 @@ public class VariableCondition extends VariableItem {
             inverseJoinColumns = @JoinColumn(name = "code_regle")
     )
     private Set<Rule> rules = new HashSet<>();
+
+
 }

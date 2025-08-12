@@ -17,4 +17,5 @@ import java.util.UUID;
 public class VariableConditionResponseDTO extends VariableItemResponseDTO {
     @Schema(description = "Règles associées")
     Set<RuleResponseDTO> rules;
+    UUID coverage;
 }

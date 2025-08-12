@@ -2,11 +2,13 @@ package sn.zeitune.olive_insurance_pricing.app.dtos.responses;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
+import java.time.Instant;
 import java.util.UUID;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -38,4 +40,10 @@ public class VariableItemResponseDTO {
 
     @Schema(description = "Type de variable", example = "SELECT_FIELD")
     TypeOfVariable type;
+
+    @Schema(description = "Date de création", example = "2023-10-01T12:00:00Z")
+    Instant createdAt;
+
+    @Schema(description = "Date de mise à jour", example = "2023-10-01T12:00:00Z")
+    Instant updatedAt;
 }

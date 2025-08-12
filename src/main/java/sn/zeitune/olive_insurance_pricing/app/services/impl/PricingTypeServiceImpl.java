@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.PricingTypeRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.PricingTypeResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PricingTypeServiceImpl implements PricingTypeService {
 
     private final PricingTypeRepository pricingTypeRepository;
@@ -34,7 +36,7 @@ public class PricingTypeServiceImpl implements PricingTypeService {
 
     @Override
     public PricingTypeResponseDTO update(UUID id, PricingTypeRequestDTO request) {
-        PricingType pricingType = pricingTypeRepository.findById(id)
+        PricingType pricingType = pricingTypeRepository.findByUuid((id))
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
         PricingTypeMapper.map(request, pricingType);
         return PricingTypeMapper.map(pricingTypeRepository.save(pricingType));
@@ -42,15 +44,15 @@ public class PricingTypeServiceImpl implements PricingTypeService {
 
     @Override
     public void delete(UUID id) {
-        if (!pricingTypeRepository.existsById(id)) {
+        if (!pricingTypeRepository.existsByUuid(id)) {
             throw new ResourceNotFoundException("Type de tarification non trouvé");
         }
-        pricingTypeRepository.deleteById(id);
+        pricingTypeRepository.deleteByUuid(id);
     }
 
     @Override
     public PricingTypeResponseDTO getById(UUID id) {
-        PricingType pricingType = pricingTypeRepository.findById(id)
+        PricingType pricingType = pricingTypeRepository.findByUuid(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
         return PricingTypeMapper.map(pricingType);
     }

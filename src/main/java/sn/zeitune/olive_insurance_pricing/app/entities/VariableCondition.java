@@ -30,6 +30,8 @@ public class VariableCondition extends VariableItem {
             inverseJoinColumns = @JoinColumn(name = "code_regle")
     )
     private Set<Rule> rules = new HashSet<>();
-
+    @ManyToOne
+    @JoinColumn(name = "pricing_type_code_entite_base")
+    private PricingType pricingType;
 
 }

@@ -24,4 +24,8 @@ public class Formula extends VariableItem {
     private List<VariableItem> variables = new ArrayList<>();
 
     private UUID coverage;
+
+    @ManyToOne
+    @JoinColumn(name = "pricing_type_code_entite_base")
+    private PricingType pricingType;
 }

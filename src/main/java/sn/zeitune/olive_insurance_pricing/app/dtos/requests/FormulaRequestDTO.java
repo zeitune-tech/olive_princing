@@ -14,6 +14,6 @@ public class FormulaRequestDTO extends VariableItemRequestDTO {
     @NotNull(message = "Expression is required")
     @NotBlank(message = "Expression must not be blank")
     String expression;
-
     Set<UUID> variables;
+    UUID coverage;
 }

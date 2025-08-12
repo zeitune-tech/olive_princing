@@ -14,4 +14,5 @@ import java.util.UUID;
 public class VariableConditionRequestDTO extends VariableItemRequestDTO {
     @Schema(description = "IDs des règles associées")
     Set<UUID> ruleIds = new HashSet<>();
+    UUID coverage;
 }

@@ -19,6 +19,7 @@ public class VariableConditionMapper {
         variableCondition.setToReturn(dto.getToReturn());
         variableCondition.setProduct(dto.getProduct());
         variableCondition.setBranch(dto.getBranch() != null ? dto.getBranch() : null);
+        variableCondition.setCoverage(dto.getCoverage() != null ? dto.getCoverage() : null);
         // Note: Les règles (ruleIds) doivent être gérées dans le service
         return variableCondition;
     }

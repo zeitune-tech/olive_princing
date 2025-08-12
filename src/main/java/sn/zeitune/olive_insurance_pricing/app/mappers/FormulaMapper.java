@@ -33,6 +33,7 @@ public class FormulaMapper {
         formula.setToReturn(dto.getToReturn());
         formula.setProduct(dto.getProduct());
         formula.setBranch(dto.getBranch());
+        formula.setCoverage(dto.getCoverage());
         return formula;
     }
 

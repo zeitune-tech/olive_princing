@@ -4,8 +4,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.PricingTypeRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.PricingTypeResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface PricingTypeService {
@@ -15,4 +17,5 @@ public interface PricingTypeService {
     PricingTypeResponseDTO getById(UUID id);
     List<PricingTypeResponseDTO> getByProduct(UUID productId);
     Page<PricingTypeResponseDTO> getAll(Pageable pageable);
+    Optional<PricingType> getEntityById(UUID id);
 }

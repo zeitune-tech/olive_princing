@@ -15,6 +15,7 @@ import sn.zeitune.olive_insurance_pricing.app.repositories.PricingTypeRepository
 import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -70,5 +71,10 @@ public class PricingTypeServiceImpl implements PricingTypeService {
         return pricingTypeRepository.findAll(pageable)
                 .map(PricingTypeMapper::map);
 
+    }
+
+    @Override
+    public Optional<PricingType> getEntityById(UUID id) {
+        return pricingTypeRepository.findByUuid(id);
     }
 }

@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.VariableConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableConditionResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
 import sn.zeitune.olive_insurance_pricing.app.entities.Rule;
 import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
 import sn.zeitune.olive_insurance_pricing.app.mappers.VariableConditionMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.VariableConditionRepository;
+import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 import sn.zeitune.olive_insurance_pricing.app.services.RuleService;
 import sn.zeitune.olive_insurance_pricing.app.services.VariableConditionService;
 
@@ -24,6 +26,7 @@ import java.util.UUID;
 public class VariableConditionServiceImpl implements VariableConditionService {
 
     private final VariableConditionRepository variableConditionRepository;
+    private final PricingTypeService pricingTypeService;
     private final RuleService ruleService;
 
     @Override
@@ -32,7 +35,6 @@ public class VariableConditionServiceImpl implements VariableConditionService {
         if (variableConditionRepository.existsByVariableName(variableConditionDto.getVariableName()))
             throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.getVariableName() + "' existe déjà");
 
-        
         VariableCondition variableCondition = VariableConditionMapper.map(variableConditionDto);
 
         for (UUID uuid : variableConditionDto.getRuleIds()) {
@@ -41,6 +43,11 @@ public class VariableConditionServiceImpl implements VariableConditionService {
         }
         variableCondition.setManagementEntity(managementEntity);
 
+        // Vérifier si le PricingType existe
+        PricingType pricingType = pricingTypeService.getEntityById(variableConditionDto.getPricingType())
+                .orElseThrow(() -> new EntityNotFoundException("Type de tarification non trouvé avec l'UUID : " + variableConditionDto.getPricingType()));
+
+        variableCondition.setPricingType(pricingType);
         return VariableConditionMapper.map(variableConditionRepository.save(variableCondition));
     }
 

@@ -13,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FormulaRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FormulaResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
+import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
 import sn.zeitune.olive_insurance_pricing.app.mappers.FormulaMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.FormulaRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.FormulaService;
+import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 import sn.zeitune.olive_insurance_pricing.app.services.VariableItemService;
 import sn.zeitune.olive_insurance_pricing.app.utils.ExpressionParser;
 
@@ -31,6 +33,7 @@ public class FormulaServiceImpl implements FormulaService {
 
     private final FormulaRepository formulaRepository;
     private final VariableItemService variableItemService;
+    private final PricingTypeService pricingTypeService;
 
     @Override
     public FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO) {
@@ -56,6 +59,12 @@ public class FormulaServiceImpl implements FormulaService {
                 throw new EntityNotFoundException("Variable non trouvée avec l'UUID : " + variableId);
             }
         }
+
+        // Vérifier si le PricingType existe
+        PricingType pricingType = pricingTypeService.getEntityById(formulaRequestDTO.getPricingType())
+                .orElseThrow(() -> new EntityNotFoundException("Type de tarification non trouvé avec l'UUID : " + formulaRequestDTO.getPricingType()));
+
+        formula.setPricingType(pricingType);
 
         // Vérifier la validité de l'expression
         // TODO

@@ -1,6 +1,7 @@
 package sn.zeitune.olive_insurance_pricing.app.mappers;
 
 
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.VariableItemRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.ConstantResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FormulaResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableConditionResponseDTO;
@@ -16,41 +17,63 @@ import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
 public class VariableItemMapper {
 
-    private static VariableItemResponseDTO createResponseDTO (VariableItem variableItem) {
-        if (variableItem instanceof Constant)
-            return new ConstantResponseDTO();
+    private static class Utils {;
+        private static VariableItemResponseDTO createResponseDTO (VariableItem variableItem) {
+            if (variableItem instanceof Constant)
+                return new ConstantResponseDTO();
 
-        if (variableItem instanceof Field field)
-            return FieldMapper.createResponseDTO(field);
+            if (variableItem instanceof Field field)
+                return FieldMapper.createResponseDTO(field);
 
-        if (variableItem instanceof VariableCondition)
-            return new VariableConditionResponseDTO();
+            if (variableItem instanceof VariableCondition)
+                return new VariableConditionResponseDTO();
 
-        if (variableItem instanceof Formula)
-            return new FormulaResponseDTO();
+            if (variableItem instanceof Formula)
+                return new FormulaResponseDTO();
 
-        return null;
+            return null;
+        }
+        private static TypeOfVariable getTypeOfVariable(VariableItem variableItem) {
+            if (variableItem instanceof Constant) return TypeOfVariable.CONSTANT;
+            if (variableItem instanceof Field) return FieldMapper.getTypeOfField((Field) variableItem);
+            if (variableItem instanceof VariableCondition) return TypeOfVariable.VARIABLE_CONDITION;
+            if (variableItem instanceof Formula) return TypeOfVariable.FORMULA;
+            throw new IllegalArgumentException("Unknown variable item type: " + variableItem.getClass().getName());
+        }
     }
 
-    private static TypeOfVariable getTypeOfVariable(VariableItem variableItem) {
-        if (variableItem instanceof Constant) return TypeOfVariable.CONSTANT;
-        if (variableItem instanceof Field) return FieldMapper.getTypeOfField((Field) variableItem);
-        if (variableItem instanceof VariableCondition) return TypeOfVariable.VARIABLE_CONDITION;
-        if (variableItem instanceof Formula) return TypeOfVariable.FORMULA;
-        throw new IllegalArgumentException("Unknown variable item type: " + variableItem.getClass().getName());
+    public static void putRequestValue (VariableItemRequestDTO dto, VariableItem variableItem) {
+        if (variableItem == null) return;
+        variableItem.setLabel(dto.getLabel());
+        variableItem.setDescription(dto.getDescription());
+        variableItem.setVariableName(dto.getVariableName());
+        variableItem.setToReturn(dto.getToReturn());
+        variableItem.setProduct(dto.getProduct());
+        variableItem.setBranch(dto.getBranch());
+        variableItem.setCoverage(dto.getCoverage());
+        // Note: The management entity is not set here, it should be handled in the service layer
     }
 
+    /**
+     * Maps a VariableItem entity to a VariableItemResponseDTO.
+     *
+     * @param variableItem the VariableItem entity to map
+     * @return the mapped VariableItemResponseDTO
+     */
     public static VariableItemResponseDTO map(VariableItem variableItem) {
-        VariableItemResponseDTO dto = createResponseDTO(variableItem);
+        if (variableItem == null) return null;
+        VariableItemResponseDTO dto = Utils.createResponseDTO(variableItem);
         dto.setId(variableItem.getUuid());
         dto.setLabel(variableItem.getLabel());
         dto.setDescription(variableItem.getDescription());
         dto.setVariableName(variableItem.getVariableName());
+        dto.setType(Utils.getTypeOfVariable(variableItem));
         dto.setToReturn(variableItem.getToReturn());
         dto.setManagementEntity(variableItem.getManagementEntity() != null ? variableItem.getManagementEntity() : null);
         dto.setProduct(variableItem.getProduct());
-        dto.setBranch(variableItem.getBranch() != null ? variableItem.getBranch() : null);
-        dto.setType(getTypeOfVariable(variableItem));
+        dto.setBranch(variableItem.getBranch());
+        dto.setPricingType(variableItem.getPricingType() != null ? variableItem.getPricingType().getUuid() : null);
+        dto.setCoverage(variableItem.getCoverage());
         dto.setCreatedAt(variableItem.getCreatedAt());
         dto.setUpdatedAt(variableItem.getUpdatedAt());
         return dto;

@@ -17,5 +17,5 @@ public interface PricingTypeService {
     PricingTypeResponseDTO getById(UUID id);
     List<PricingTypeResponseDTO> getByProduct(UUID productId);
     Page<PricingTypeResponseDTO> getAll(Pageable pageable);
-    Optional<PricingType> getEntityById(UUID id);
+    PricingType getEntityById(UUID id);
 }

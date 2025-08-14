@@ -74,7 +74,8 @@ public class PricingTypeServiceImpl implements PricingTypeService {
     }
 
     @Override
-    public Optional<PricingType> getEntityById(UUID id) {
-        return pricingTypeRepository.findByUuid(id);
+    public PricingType getEntityById(UUID id) {
+        return pricingTypeRepository.findByUuid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
     }
 }

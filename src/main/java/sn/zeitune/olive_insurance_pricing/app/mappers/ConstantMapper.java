@@ -8,19 +8,10 @@ import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
 public class ConstantMapper {
 
-    public static Constant map(ConstantRequestDTO dto, Constant constant) {
-        constant.setLabel(dto.getLabel());
-        constant.setDescription(dto.getDescription());
-        constant.setVariableName(dto.getVariableName());
+    public static void putRequestValue(ConstantRequestDTO dto, Constant constant) {
+        if (constant == null) return;
+        VariableItemMapper.putRequestValue(dto, constant);
         constant.setValue(dto.getValue());
-        constant.setToReturn(dto.getToReturn());
-        constant.setProduct(dto.getProduct());
-        constant.setBranch(dto.getBranch());
-        return constant;
-    }
-
-    public static Constant map(ConstantRequestDTO requestDTO) {
-        return map(requestDTO, new Constant());
     }
 
     public static ConstantResponseDTO map(Constant constant) {

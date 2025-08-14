@@ -11,11 +11,14 @@ import sn.zeitune.olive_insurance_pricing.app.clients.AdministrationClient;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.ConstantRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.ConstantResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.Constant;
+import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
 import sn.zeitune.olive_insurance_pricing.app.mappers.ConstantMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.ConstantRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.ConstantService;
+import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,8 +26,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ConstantServiceImpl implements ConstantService {
 
-    @Autowired
     private final ConstantRepository constantRepository;
+    private final PricingTypeService pricingTypeService;
     private final AdministrationClient administrationClient;
 
     @Override
@@ -33,15 +36,16 @@ public class ConstantServiceImpl implements ConstantService {
         if (constantRepository.existsByVariableName(constantRequestDTO.getVariableName())) {
             throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.getVariableName() + "' existe déjà");
         }
-
+        // Vérifier si l'entité de gestion existe
         administrationClient.findManagementEntityByUuid(managementEntity).orElseThrow(
                 () -> new EntityNotFoundException("Entité de gestion non trouvée avec l'UUID : " + managementEntity)
         );
-        
-        Constant constant = ConstantMapper.map(constantRequestDTO);
+        // Persister la constante
+        Constant constant = new Constant();
+        ConstantMapper.putRequestValue(constantRequestDTO, constant);
         constant.setManagementEntity(managementEntity);
-        constant = constantRepository.save(constant);
-        return ConstantMapper.map(constant);
+        constant.setPricingType( pricingTypeService.getEntityById(constantRequestDTO.getPricingType()) );
+        return ConstantMapper.map(constantRepository.save(constant));
     }
 
     @Override
@@ -100,16 +104,15 @@ public class ConstantServiceImpl implements ConstantService {
             throw new IllegalArgumentException("Une constante avec le nom de variable '" + constantRequestDTO.getVariableName() + "' existe déjà");
         }
         
-        ConstantMapper.map(constantRequestDTO, existingConstant);
-        Constant updatedConstant = constantRepository.save(existingConstant);
-        return ConstantMapper.map(updatedConstant);
+        ConstantMapper.putRequestValue(constantRequestDTO, existingConstant);
+        return ConstantMapper.map(constantRepository.save(existingConstant));
     }
 
     @Override
     public void deleteByUuid(UUID uuid) {
-        Constant constant = constantRepository.findByUuid(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("Constante non trouvée avec l'UUID : " + uuid));
-        constantRepository.delete(constant);
+        if (!existsByUuid(uuid))
+            throw new EntityNotFoundException("Constante non trouvée avec l'UUID : " + uuid);
+        constantRepository.findByUuid(uuid).ifPresent(constantRepository::delete);
     }
 
     @Override

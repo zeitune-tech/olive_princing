@@ -25,8 +25,12 @@ public abstract class VariableItem extends BaseEntity {
     private String variableName;
     @Column(name = "to_return")
     private Boolean toReturn;
-    @Column
-    private UUID product;
-    @Column
+    @Column(name = "branch")
     private UUID branch;
+    @Column(name = "produit")
+    private UUID product;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private PricingType pricingType;
+    @Column(name = "garantie")
+    private UUID coverage;
 }

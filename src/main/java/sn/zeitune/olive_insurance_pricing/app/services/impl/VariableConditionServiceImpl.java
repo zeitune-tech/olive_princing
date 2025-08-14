@@ -41,13 +41,9 @@ public class VariableConditionServiceImpl implements VariableConditionService {
             if (ruleService.existsByUuid(uuid))
                 variableCondition.getRules().add(ruleService.getEntityByUuid(uuid));
         }
+
         variableCondition.setManagementEntity(managementEntity);
-
-        // Vérifier si le PricingType existe
-        PricingType pricingType = pricingTypeService.getEntityById(variableConditionDto.getPricingType())
-                .orElseThrow(() -> new EntityNotFoundException("Type de tarification non trouvé avec l'UUID : " + variableConditionDto.getPricingType()));
-
-        variableCondition.setPricingType(pricingType);
+        variableCondition.setPricingType( pricingTypeService.getEntityById(variableConditionDto.getPricingType()) );
         return VariableConditionMapper.map(variableConditionRepository.save(variableCondition));
     }
 

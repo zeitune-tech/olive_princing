@@ -42,14 +42,6 @@ public class FormulaServiceImpl implements FormulaService {
             throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.getVariableName() + "' existe déjà");
         }
         
-//        Formula formula = FormulaMapper.map(formulaRequestDTO);
-//
-//        ExpressionParser.ParsedExpression parsed = parseExpression(formulaRequestDTO.getExpression());
-//
-//        for (String variable : parsed.variables) {
-//            formula.getVariables().add(variableItemService.findByVariableName(variable));
-//        }
-
         Formula formula = FormulaMapper.map(formulaRequestDTO, new Formula());
 
         for (UUID variableId : formulaRequestDTO.getVariables()) {
@@ -60,11 +52,7 @@ public class FormulaServiceImpl implements FormulaService {
             }
         }
 
-        // Vérifier si le PricingType existe
-        PricingType pricingType = pricingTypeService.getEntityById(formulaRequestDTO.getPricingType())
-                .orElseThrow(() -> new EntityNotFoundException("Type de tarification non trouvé avec l'UUID : " + formulaRequestDTO.getPricingType()));
-
-        formula.setPricingType(pricingType);
+        formula.setPricingType( pricingTypeService.getEntityById(formulaRequestDTO.getPricingType()) );
 
         // Vérifier la validité de l'expression
         // TODO

@@ -8,23 +8,13 @@ import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
 public class SelectFieldMapper {
 
-    public static SelectField map(SelectFieldRequestDTO dto, SelectField field) {
-        field.setLabel(dto.getLabel());
-        field.setDescription(dto.getDescription());
-        field.setVariableName(dto.getVariableName());
-        field.setToReturn(dto.getToReturn());
-        field.setProduct(dto.getProduct());
-        field.setBranch(dto.getBranch());
-        return field;
-    }
-
-    public static SelectField map(SelectFieldRequestDTO dto) {
-        return map(dto, new SelectField());
+    public static void putRequestValue(SelectFieldRequestDTO dto, SelectField field) {
+        FieldMapper.putRequestValue(dto, field);
     }
 
     public static SelectFieldResponseDTO map(SelectField field) {
-        SelectFieldResponseDTO ResponseDTO  = (SelectFieldResponseDTO) VariableItemMapper.map(field);
-        ResponseDTO.setOptions(SelectFieldOptionsMapper.map(field.getOptions()));
-        return ResponseDTO;
+        SelectFieldResponseDTO dto  = (SelectFieldResponseDTO) FieldMapper.map(field);
+        dto.setOptions(SelectFieldOptionsMapper.map(field.getOptions()));
+        return dto;
     }
 }

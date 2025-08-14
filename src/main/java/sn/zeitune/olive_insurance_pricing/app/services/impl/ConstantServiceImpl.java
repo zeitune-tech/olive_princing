@@ -105,6 +105,7 @@ public class ConstantServiceImpl implements ConstantService {
         }
         
         ConstantMapper.putRequestValue(constantRequestDTO, existingConstant);
+        existingConstant.setPricingType(pricingTypeService.getEntityById(constantRequestDTO.getPricingType()));
         return ConstantMapper.map(constantRepository.save(existingConstant));
     }
 
@@ -112,7 +113,13 @@ public class ConstantServiceImpl implements ConstantService {
     public void deleteByUuid(UUID uuid) {
         if (!existsByUuid(uuid))
             throw new EntityNotFoundException("Constante non trouvée avec l'UUID : " + uuid);
-        constantRepository.findByUuid(uuid).ifPresent(constantRepository::delete);
+
+        constantRepository.findByUuid(uuid).ifPresent(
+                constant -> {
+                    constant.setPricingType(null);
+                    constantRepository.delete(constant);
+                }
+        );
     }
 
     @Override

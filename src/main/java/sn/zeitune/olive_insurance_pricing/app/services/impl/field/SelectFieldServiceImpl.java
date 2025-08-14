@@ -12,6 +12,7 @@ import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldRe
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.field.SelectFieldRepository;
+import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldService;
 
@@ -26,6 +27,7 @@ public class SelectFieldServiceImpl implements SelectFieldService {
 
     private final SelectFieldRepository selectFieldRepository;
     private final SelectFieldOptionService selectFieldOptionService;
+    private final PricingTypeService pricingTypeService;
 
     @Override
     public SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO) {
@@ -33,20 +35,19 @@ public class SelectFieldServiceImpl implements SelectFieldService {
         if (selectFieldRepository.existsByVariableName(selectFieldRequestDTO.getVariableName()))
             throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.getVariableName() + "' existe déjà");
 
-
         if (selectFieldOptionService.findByUuid(selectFieldRequestDTO.getOptions()) == null)
             throw new IllegalArgumentException("Options are not defined");
 
-        SelectField field = SelectFieldMapper.map(selectFieldRequestDTO);
+        SelectField selectFieldSaving = new SelectField();
+        SelectFieldMapper.putRequestValue(selectFieldRequestDTO, selectFieldSaving);
 
         if (selectFieldRequestDTO.getOptions() != null)
-            field.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
+            selectFieldSaving.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
 
-        System.out.println(field);
-        log.info(field.toString());
+        if (selectFieldRequestDTO.getPricingType() != null)
+            selectFieldSaving.setPricingType(pricingTypeService.getEntityById(selectFieldRequestDTO.getPricingType()));
 
-        field = selectFieldRepository.save(field);
-        return SelectFieldMapper.map(field);
+        return SelectFieldMapper.map(selectFieldRepository.save(selectFieldSaving));
     }
 
     @Override
@@ -100,20 +101,22 @@ public class SelectFieldServiceImpl implements SelectFieldService {
             selectFieldRepository.existsByVariableName(selectFieldRequestDTO.getVariableName())) {
             throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.getVariableName() + "' existe déjà");
         }
-        
-        SelectFieldMapper.map(selectFieldRequestDTO, existingField);
 
         if (selectFieldRequestDTO.getOptions() != null)
             existingField.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
 
-        SelectField updatedField = selectFieldRepository.save(existingField);
-        return SelectFieldMapper.map(updatedField);
+        if (selectFieldRequestDTO.getPricingType() != null)
+            existingField.setPricingType(pricingTypeService.getEntityById(selectFieldRequestDTO.getPricingType()));
+
+        SelectFieldMapper.putRequestValue(selectFieldRequestDTO, existingField);
+        return SelectFieldMapper.map(selectFieldRepository.save(existingField));
     }
 
     @Override
     public void deleteByUuid(UUID uuid) {
         SelectField field = selectFieldRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
+        field.setPricingType(null);
         selectFieldRepository.delete(field);
     }
 

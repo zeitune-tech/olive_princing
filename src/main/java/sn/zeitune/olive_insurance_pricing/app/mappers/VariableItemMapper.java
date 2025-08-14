@@ -23,7 +23,7 @@ public class VariableItemMapper {
                 return new ConstantResponseDTO();
 
             if (variableItem instanceof Field field)
-                return FieldMapper.createResponseDTO(field);
+                return FieldMapper.Utils.createResponseDTO(field);
 
             if (variableItem instanceof VariableCondition)
                 return new VariableConditionResponseDTO();
@@ -35,7 +35,7 @@ public class VariableItemMapper {
         }
         private static TypeOfVariable getTypeOfVariable(VariableItem variableItem) {
             if (variableItem instanceof Constant) return TypeOfVariable.CONSTANT;
-            if (variableItem instanceof Field) return FieldMapper.getTypeOfField((Field) variableItem);
+            if (variableItem instanceof Field) return FieldMapper.Utils.getTypeOfField((Field) variableItem);
             if (variableItem instanceof VariableCondition) return TypeOfVariable.VARIABLE_CONDITION;
             if (variableItem instanceof Formula) return TypeOfVariable.FORMULA;
             throw new IllegalArgumentException("Unknown variable item type: " + variableItem.getClass().getName());
@@ -43,7 +43,7 @@ public class VariableItemMapper {
     }
 
     public static void putRequestValue (VariableItemRequestDTO dto, VariableItem variableItem) {
-        if (variableItem == null) return;
+        if (dto == null || variableItem == null) return;
         variableItem.setLabel(dto.getLabel());
         variableItem.setDescription(dto.getDescription());
         variableItem.setVariableName(dto.getVariableName());

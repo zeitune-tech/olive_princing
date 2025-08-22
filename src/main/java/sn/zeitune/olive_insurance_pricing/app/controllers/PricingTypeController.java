@@ -40,9 +40,9 @@ public class PricingTypeController {
     @GetMapping("/{id}")
     public ResponseEntity<PricingTypeResponseDTO> getById(
             @PathVariable UUID id,
-            @RequestParam(required = false, defaultValue = "false") boolean withVariables
+            @RequestParam(required = false, defaultValue = "false") boolean withDetailed
             ) {
-        if (withVariables) {
+        if (withDetailed) {
             return ResponseEntity.ok(pricingTypeService.getDetailedById(id));
         }
         return ResponseEntity.ok(pricingTypeService.getById(id));

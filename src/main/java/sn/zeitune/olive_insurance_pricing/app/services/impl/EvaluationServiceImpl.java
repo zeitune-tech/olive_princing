@@ -411,12 +411,9 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new IllegalArgumentException("ID is required for evaluation");
 
         Formula formula = formulaService.getEntityByUuid(data.getId());
-
         EvaluateFormula evaluateFormula = new EvaluateFormula(formula, data.getFields());
-
-        EvaluationResultResponseDTO result = new EvaluationResultResponseDTO();
+        EvaluationResultResponseDTO result = new EvaluationResultResponseDTO(evaluateFormula.execute());
         System.err.println("Final expression to evaluate: " + formula.getExpression() + " => " + evaluateFormula.execute());
-
         return result;
     }
 

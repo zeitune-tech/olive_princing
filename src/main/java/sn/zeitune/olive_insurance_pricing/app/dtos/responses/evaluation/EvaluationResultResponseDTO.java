@@ -15,6 +15,7 @@ import java.util.List;
 @Schema(description = "DTO de réponse de l'évaluation d'une formule")
 public class EvaluationResultResponseDTO {
 
+    Double value;
 
     public static class EvaluationResultVariable {
         Double value;

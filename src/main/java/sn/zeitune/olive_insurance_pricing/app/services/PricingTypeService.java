@@ -15,7 +15,9 @@ public interface PricingTypeService {
     PricingTypeResponseDTO update(UUID id, PricingTypeRequestDTO request);
     void delete(UUID id);
     PricingTypeResponseDTO getById(UUID id);
+    PricingTypeResponseDTO getDetailedById(UUID id);
     List<PricingTypeResponseDTO> getByProduct(UUID productId);
     Page<PricingTypeResponseDTO> getAll(Pageable pageable);
     PricingType getEntityById(UUID id);
+
 }

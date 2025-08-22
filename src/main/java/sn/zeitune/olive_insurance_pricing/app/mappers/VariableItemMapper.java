@@ -17,7 +17,7 @@ import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
 public class VariableItemMapper {
 
-    private static class Utils {;
+    public static class Utils {;
         private static VariableItemResponseDTO createResponseDTO (VariableItem variableItem) {
             if (variableItem instanceof Constant)
                 return new ConstantResponseDTO();
@@ -33,7 +33,7 @@ public class VariableItemMapper {
 
             return null;
         }
-        private static TypeOfVariable getTypeOfVariable(VariableItem variableItem) {
+        public static TypeOfVariable getTypeOfVariable(VariableItem variableItem) {
             if (variableItem instanceof Constant) return TypeOfVariable.CONSTANT;
             if (variableItem instanceof Field) return FieldMapper.Utils.getTypeOfField((Field) variableItem);
             if (variableItem instanceof VariableCondition) return TypeOfVariable.VARIABLE_CONDITION;

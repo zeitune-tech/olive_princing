@@ -12,6 +12,8 @@ import java.util.UUID;
 
 @SuperBuilder
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 @Data
-public abstract class FieldResponseDTO extends VariableItemResponseDTO {}
+public abstract class FieldResponseDTO extends VariableItemResponseDTO {
+    private String controlName;
+}

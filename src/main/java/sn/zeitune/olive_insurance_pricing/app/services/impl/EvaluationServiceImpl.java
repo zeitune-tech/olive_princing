@@ -131,7 +131,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             return List.of(
                     EvaluationRequiredFieldsResponseDTO.EvaluationRequiredNumericField.builder()
                             .name(getName())
-                            .type(FieldType.NUMBER.getType())
+                            .type(FieldType.NUMBER.getTypes().get(0))
                             .build()
             );
         }
@@ -151,7 +151,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             return List.of(
                     EvaluationRequiredFieldsResponseDTO.EvaluationRequiredSelectField.builder()
                             .name(getName())
-                            .type(FieldType.SELECT.getType())
+                            .type(FieldType.SELECT.getTypes().get(0))
                             .options(
                                     selectField.getOptions().getPossibilities().stream()
                                             .map(SelectFieldOptionValueMapper::map)

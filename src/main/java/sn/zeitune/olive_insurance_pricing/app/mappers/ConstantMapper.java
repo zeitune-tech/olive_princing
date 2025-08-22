@@ -15,6 +15,7 @@ public class ConstantMapper {
     }
 
     public static ConstantResponseDTO map(Constant constant) {
+        if (constant == null) return null;
         ConstantResponseDTO dto = (ConstantResponseDTO) VariableItemMapper.map(constant);
         dto.setValue(constant.getValue());
         return dto;

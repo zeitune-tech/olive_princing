@@ -20,7 +20,6 @@ import java.util.UUID;
 public class PricingType extends BaseEntity {
     private String name;
     private String description;
-
     private UUID product;
     private UUID branch;
 }

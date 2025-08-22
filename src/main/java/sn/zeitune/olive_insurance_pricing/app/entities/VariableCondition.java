@@ -18,10 +18,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "variable_condition")
 public class VariableCondition extends VariableItem {
-
-    @Column(name = "garantie", nullable = false)
-    private UUID coverage;
-
     @Builder.Default
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(
@@ -29,9 +25,5 @@ public class VariableCondition extends VariableItem {
             joinColumns = @JoinColumn(name = "code_variable"),
             inverseJoinColumns = @JoinColumn(name = "code_regle")
     )
-    private Set<Rule> rules = new HashSet<>();
-    @ManyToOne
-    @JoinColumn(name = "pricing_type_code_entite_base")
-    private PricingType pricingType;
-
+    private Set<Rule> rules = new HashSet<Rule>();
 }

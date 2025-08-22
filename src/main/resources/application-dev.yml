@@ -6,6 +6,7 @@ server:
 services:
     olive-insurance-auth-service: ${OLIVE_DEV_AUTH_SERVICE_URL}
     olive-insurance-administration-service: ${OLIVE_DEV_ADMINISTRATION_SERVICE_URL}
+    olive-insurance-exploitation-service: http://localhost:8040/api/v1
     olive-insurance-settings-service: ${OLIVE_DEV_SETTINGS_SERVICE_URL}
 
 spring:

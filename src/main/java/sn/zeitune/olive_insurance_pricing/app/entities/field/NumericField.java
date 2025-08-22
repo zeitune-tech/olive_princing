@@ -14,5 +14,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @DiscriminatorValue("champ_numerique")
 public class NumericField extends Field {
-//    private Double value;
 }

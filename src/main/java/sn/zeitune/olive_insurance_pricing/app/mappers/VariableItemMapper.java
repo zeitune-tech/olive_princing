@@ -72,8 +72,8 @@ public class VariableItemMapper {
         dto.setManagementEntity(variableItem.getManagementEntity() != null ? variableItem.getManagementEntity() : null);
         dto.setProduct(variableItem.getProduct());
         dto.setBranch(variableItem.getBranch());
-        dto.setPricingType(variableItem.getPricingType() != null ? variableItem.getPricingType().getUuid() : null);
         dto.setCoverage(variableItem.getCoverage());
+        dto.setPricingType(variableItem.getPricingType() != null ? variableItem.getPricingType().getUuid() : null);
         dto.setCreatedAt(variableItem.getCreatedAt());
         dto.setUpdatedAt(variableItem.getUpdatedAt());
         return dto;

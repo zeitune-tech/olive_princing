@@ -19,13 +19,6 @@ import java.util.UUID;
 public class Formula extends VariableItem {
     @Column(name = "expression", nullable = false, columnDefinition = "TEXT")
     private String expression;
-
     @ManyToMany
     private List<VariableItem> variables = new ArrayList<>();
-
-    private UUID coverage;
-
-    @ManyToOne
-    @JoinColumn(name = "pricing_type_code_entite_base")
-    private PricingType pricingType;
 }

@@ -20,7 +20,6 @@ public class Rule extends BaseEntity{
     private String label;
     private String name;
     private Double value;
-
     @Builder.Default
     @ManyToMany(cascade = {CascadeType.REMOVE})
     @JoinTable(

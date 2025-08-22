@@ -15,11 +15,4 @@ public class FormulaRequestDTO extends VariableItemRequestDTO {
     @NotBlank(message = "Expression must not be blank")
     String expression;
     Set<UUID> variables;
-    @NotNull(message = "Coverage is required")
-    @NotBlank(message = "Coverage must not be blank")
-    UUID coverage;
-    @NotNull(message = "Pricing type is required")
-    @NotBlank(message = "Pricing type must not be blank")
-    UUID pricingType;
-
 }

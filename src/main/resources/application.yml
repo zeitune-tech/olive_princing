@@ -6,6 +6,7 @@ server:
 services:
     olive-insurance-auth-service: http://localhost:8010/api/v1
     olive-insurance-administration-service: http://localhost:8020/api/v1
+    olive-insurance-exploitation-service: http://localhost:8040/api/v1
     olive-insurance-settings-service: http://localhost:8030/api/v1
 
 spring:

@@ -17,9 +17,5 @@ public class VariableConditionRequestDTO extends VariableItemRequestDTO {
     @Schema(description = "IDs des règles associées")
     Set<UUID> ruleIds = new HashSet<>();
     @NotNull(message = "Coverage is required")
-    @NotBlank(message = "Coverage must not be blank")
     UUID coverage;
-    @NotNull(message = "Pricing type is required")
-    @NotBlank(message = "Pricing type must not be blank")
-    UUID pricingType;
 }

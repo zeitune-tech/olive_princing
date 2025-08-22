@@ -135,6 +135,8 @@ public class FormulaServiceImpl implements FormulaService {
     public void deleteByUuid(UUID uuid) {
         Formula formula = formulaRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'UUID : " + uuid));
+        formula.setVariables(null);
+        formula.setPricingType(null);
         formulaRepository.delete(formula);
     }
 

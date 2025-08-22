@@ -1,19 +1,23 @@
 package sn.zeitune.olive_insurance_pricing.enums;
 
-public enum FieldType {
-    SELECT("SELECT"),
-    NUMBER("NUMBER");
+import lombok.Getter;
 
-    private final String type;
-    FieldType(String type) {
-        this.type = type;
+import java.util.Arrays;
+import java.util.List;
+
+@Getter
+public enum FieldType {
+    SELECT("SELECT", "TEXT", "REFERENCE"),
+    NUMBER("NUMBER", "NUMERIC");
+
+    private final List<String> types;
+    FieldType(String... types) {
+        this.types = Arrays.asList(types);
     }
-    public String getType() {
-        return type;
-    }
+
     public static FieldType fromString(String type) {
         for (FieldType fieldType : FieldType.values()) {
-            if (fieldType.getType().equalsIgnoreCase(type)) {
+            if (fieldType.getTypes().contains(type)) {
                 return fieldType;
             }
         }

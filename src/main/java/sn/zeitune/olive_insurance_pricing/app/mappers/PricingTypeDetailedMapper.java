@@ -23,7 +23,7 @@ public class PricingTypeDetailedMapper {
     private static Map<UUID, List<VariableItemResponseDTO>> getVariableItemMap(List<VariableItem> variableItemList) {
         return variableItemList.stream()
                 .filter(variableItem -> (variableItem instanceof NumericField || variableItem instanceof SelectField || variableItem instanceof Constant))
-                .map(VariableItemMapper::map)
+                .map(VariableItemMapper.getInstance()::map)
                 .collect(Collectors.groupingBy(VariableItemResponseDTO::getCoverage));
     }
 

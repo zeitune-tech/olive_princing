@@ -15,7 +15,18 @@ import sn.zeitune.olive_insurance_pricing.app.entities.field.Field;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.FieldMapper;
 import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
-public class VariableItemMapper {
+public class VariableItemMapper extends GenericMapper<VariableItem, VariableItemRequestDTO, VariableItemResponseDTO> {
+
+    private static VariableItemMapper instance;
+
+    private  VariableItemMapper() {}
+
+    public static VariableItemMapper getInstance() {
+        if (instance == null) {
+            instance = new VariableItemMapper();
+        }
+        return instance;
+    }
 
     public static class Utils {;
         private static VariableItemResponseDTO createResponseDTO (VariableItem variableItem) {
@@ -42,7 +53,7 @@ public class VariableItemMapper {
         }
     }
 
-    public static void putRequestValue (VariableItemRequestDTO dto, VariableItem variableItem) {
+    public void putRequestValue (VariableItemRequestDTO dto, VariableItem variableItem) {
         if (dto == null || variableItem == null) return;
         variableItem.setLabel(dto.getLabel());
         variableItem.setDescription(dto.getDescription());
@@ -60,7 +71,7 @@ public class VariableItemMapper {
      * @param variableItem the VariableItem entity to map
      * @return the mapped VariableItemResponseDTO
      */
-    public static VariableItemResponseDTO map(VariableItem variableItem) {
+    public VariableItemResponseDTO map(VariableItem variableItem) {
         if (variableItem == null) return null;
         VariableItemResponseDTO dto = Utils.createResponseDTO(variableItem);
         dto.setId(variableItem.getUuid());

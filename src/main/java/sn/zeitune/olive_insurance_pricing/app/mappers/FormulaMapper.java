@@ -21,8 +21,8 @@ public class FormulaMapper {
         if (variableItem instanceof VariableCondition) return VariableConditionMapper.map((VariableCondition) variableItem);
         if (variableItem instanceof NumericField) return NumericFieldMapper.map((NumericField) variableItem);
         if (variableItem instanceof SelectField) return SelectFieldMapper.map((SelectField) variableItem);
-        if (variableItem instanceof Constant) return ConstantMapper.map((Constant) variableItem);
-        throw new IllegalArgumentException("Unknown variable item type: " + variableItem.getClass().getName());
+        if (variableItem instanceof Constant) return ConstantMapper.getInstance().map((Constant) variableItem);
+        return VariableItemMapper.getInstance().map(variableItem);
     }
 
     public static Formula map(FormulaRequestDTO dto, Formula formula) {
@@ -44,7 +44,7 @@ public class FormulaMapper {
     public static FormulaResponseDTO map(Formula formula) {
         if (formula == null) return null; // Handle null case if necessary
 
-        FormulaResponseDTO formulaResponseDTO = (FormulaResponseDTO) VariableItemMapper.map(formula);
+        FormulaResponseDTO formulaResponseDTO = (FormulaResponseDTO) VariableItemMapper.getInstance().map(formula);
         formulaResponseDTO.setExpression(formula.getExpression());
         formulaResponseDTO.setVariables(
                 formula.getVariables().stream()

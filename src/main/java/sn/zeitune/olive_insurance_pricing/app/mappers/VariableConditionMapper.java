@@ -14,13 +14,13 @@ public class VariableConditionMapper {
 
     public static void putRequestValue(VariableConditionRequestDTO dto, VariableCondition variableCondition) {
         if (variableCondition == null || dto == null) return;
-        VariableItemMapper.putRequestValue(dto, variableCondition);
+        VariableItemMapper.getInstance().putRequestValue(dto, variableCondition);
         // Note: Les règles (ruleIds) doivent être gérées dans le service
     }
 
     public static VariableConditionResponseDTO map(VariableCondition variableCondition) {
         if (variableCondition == null) return null;
-        VariableConditionResponseDTO variableConditionResponseDTO = (VariableConditionResponseDTO) VariableItemMapper.map(variableCondition);
+        VariableConditionResponseDTO variableConditionResponseDTO = (VariableConditionResponseDTO) VariableItemMapper.getInstance().map(variableCondition);
         variableConditionResponseDTO.setRules(variableCondition.getRules() != null ?
                 variableCondition.getRules().stream()
                         .map(RuleMapper::map)

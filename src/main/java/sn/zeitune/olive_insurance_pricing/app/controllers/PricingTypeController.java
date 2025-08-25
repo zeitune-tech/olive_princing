@@ -6,10 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.PricingTypeRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.PricingTypeResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
+import sn.zeitune.olive_insurance_pricing.security.Employee;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,10 +42,11 @@ public class PricingTypeController {
     @GetMapping("/{id}")
     public ResponseEntity<PricingTypeResponseDTO> getById(
             @PathVariable UUID id,
-            @RequestParam(required = false, defaultValue = "false") boolean withDetailed
-            ) {
+            @RequestParam(required = false, defaultValue = "false") boolean withDetailed,
+            Authentication authentication
+    ) {
         if (withDetailed) {
-            return ResponseEntity.ok(pricingTypeService.getDetailedById(id));
+            return ResponseEntity.ok(pricingTypeService.getDetailedById(id, ((Employee) authentication.getPrincipal()).getManagementEntity()));
         }
         return ResponseEntity.ok(pricingTypeService.getById(id));
     }

@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface FormulaService {
 
-    FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO);
+    FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO, UUID managementEntity);
 
     FormulaResponseDTO findByUuid(UUID uuid);
 
@@ -25,7 +25,7 @@ public interface FormulaService {
 
     List<FormulaResponseDTO> searchByExpression(String expression);
 
-    FormulaResponseDTO updateByUuid(UUID uuid, FormulaRequestDTO formulaRequestDTO);
+    FormulaResponseDTO updateByUuid(UUID uuid, FormulaRequestDTO formulaRequestDTO, UUID managementEntity);
 
     void deleteByUuid(UUID uuid);
 

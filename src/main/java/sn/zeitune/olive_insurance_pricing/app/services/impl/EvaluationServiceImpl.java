@@ -397,7 +397,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             Matcher matcher = Pattern.compile("\\{\\{(.*?)}}").matcher(formula.getExpression());
             while (matcher.find()) {
                 String variableName = matcher.group(1).trim();
-                GetRequiredFieldsForVariableItem getRequiredFieldsForVariableItem = GetRequiredFieldsForVariableItem.create(variableItemService.findByVariableName(variableName));
+                GetRequiredFieldsForVariableItem getRequiredFieldsForVariableItem = GetRequiredFieldsForVariableItem.create(variableItemService.getEntityByVariableName(variableName, formula.getCoverage(), formula.getPricingType(), formula.getManagementEntity()));
                 dto.addFieldList(getRequiredFieldsForVariableItem.execute());
             }
         }

@@ -34,12 +34,12 @@ public class FieldMapper {
     }
 
     public static void putRequestValue(FieldRequestDTO fieldRequestDTO, Field field) {
-        VariableItemMapper.putRequestValue(fieldRequestDTO, field);
+        VariableItemMapper.getInstance().putRequestValue(fieldRequestDTO, field);
     }
 
     public static FieldResponseDTO map(Field field) {
         if (field == null) return null;
-        return (FieldResponseDTO) VariableItemMapper.map(field);
+        return (FieldResponseDTO) VariableItemMapper.getInstance().map(field);
     }
 
 }

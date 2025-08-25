@@ -1,9 +1,12 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sn.zeitune.olive_insurance_pricing.app.dtos.requests.VariableItemRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableItemResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
 import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
 import sn.zeitune.olive_insurance_pricing.app.mappers.VariableItemMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.VariableItemRepository;
@@ -15,50 +18,18 @@ import java.util.UUID;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
-public class VariableItemServiceImpl implements VariableItemService {
+public class VariableItemServiceImpl extends RetrieveGenericServiceImpl<VariableItem, VariableItemRequestDTO, VariableItemResponseDTO> implements VariableItemService {
 
     private final VariableItemRepository variableItemRepository;
 
-    @Override
-    public VariableItemResponseDTO findByUuid(UUID uuid) {
-        VariableItem variableItem = variableItemRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RuntimeException("Variable item not found"));
-        return VariableItemMapper.map(variableItem);
+    public VariableItemServiceImpl (VariableItemRepository variableItemRepository) {
+        super(variableItemRepository, VariableItemMapper.getInstance());
+        this.variableItemRepository = variableItemRepository;
     }
 
     @Override
-    public List<VariableItemResponseDTO> findByProduct(UUID product) {
-        return List.of();
+    public VariableItem getEntityByVariableName(String variableName, UUID coverage, PricingType pricingType, UUID managementEntity) {
+        return variableItemRepository.findByManagementEntityBeforeAndPricingType_UuidAndCoverageAndVariableName(managementEntity, pricingType.getUuid(), coverage, variableName)
+                .orElseThrow(() -> new EntityNotFoundException(VariableItem.class.getSimpleName() + " with name " + variableName + " not found."));
     }
-
-    @Override
-    public List<VariableItemResponseDTO> searchByLabel(String label) {
-        return List.of();
-    }
-
-    @Override
-    public boolean existsByUuid(UUID uuid) {
-        return variableItemRepository.existsByUuid(uuid);
-    }
-
-    @Override
-    public VariableItem getEntityByUuid(UUID uuid) {
-        return variableItemRepository.findByUuid(uuid)
-                .orElseThrow(() -> new RuntimeException("Variable item not found with UUID: " + uuid));
-    }
-
-    @Override
-    public VariableItem findByVariableName(String variable) {
-        return variableItemRepository.findByVariableName(variable).orElseThrow(() -> new RuntimeException("Variable not found"));
-    }
-
-    @Override
-    public List<VariableItemResponseDTO> findAll(UUID managementEntity) {
-        return variableItemRepository.findAll()
-                .stream()
-                .map(VariableItemMapper::map)
-                .toList();
-    }
-
 }

@@ -36,7 +36,7 @@ public class FormulaServiceImpl implements FormulaService {
     private final PricingTypeService pricingTypeService;
 
     @Override
-    public FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO) {
+    public FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO, UUID managementEntity) {
         // Vérifier si une formule avec le même nom de variable existe déjà
         if (formulaRepository.existsByVariableName(formulaRequestDTO.getVariableName())) {
             throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.getVariableName() + "' existe déjà");
@@ -45,11 +45,7 @@ public class FormulaServiceImpl implements FormulaService {
         Formula formula = FormulaMapper.map(formulaRequestDTO, new Formula());
 
         for (UUID variableId : formulaRequestDTO.getVariables()) {
-            if (variableItemService.existsByUuid(variableId)) {
-                formula.getVariables().add(variableItemService.getEntityByUuid(variableId));
-            } else {
-                throw new EntityNotFoundException("Variable non trouvée avec l'UUID : " + variableId);
-            }
+            formula.getVariables().add(variableItemService.getEntityByUuid(variableId, managementEntity));
         }
 
         formula.setPricingType( pricingTypeService.getEntityById(formulaRequestDTO.getPricingType()) );
@@ -106,7 +102,7 @@ public class FormulaServiceImpl implements FormulaService {
     }
 
     @Override
-    public FormulaResponseDTO updateByUuid(UUID uuid, FormulaRequestDTO formulaRequestDTO) {
+    public FormulaResponseDTO updateByUuid(UUID uuid, FormulaRequestDTO formulaRequestDTO, UUID managementEntity) {
         Formula existingFormula = formulaRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'UUID : " + uuid));
         

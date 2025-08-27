@@ -29,7 +29,8 @@ public class VariableItemServiceImpl extends RetrieveGenericServiceImpl<Variable
 
     @Override
     public VariableItem getEntityByVariableName(String variableName, UUID coverage, PricingType pricingType, UUID managementEntity) {
-        return variableItemRepository.findByManagementEntityBeforeAndPricingType_UuidAndCoverageAndVariableName(managementEntity, pricingType.getUuid(), coverage, variableName)
+        System.err.printf("%s - %s - %s - %s\n",variableName,coverage,pricingType,managementEntity);
+        return variableItemRepository.findByManagementEntityAndPricingType_UuidAndCoverageAndVariableName(managementEntity, pricingType.getUuid(), coverage, variableName)
                 .orElseThrow(() -> new EntityNotFoundException(VariableItem.class.getSimpleName() + " with name " + variableName + " not found."));
     }
 }

@@ -28,7 +28,7 @@ public  class VariableItemPreparationServiceImpl implements VariableItemPreparat
             throw new IllegalArgumentException("Le nom de la variable ne peut pas être nul ou vide");
         }
         if (variableItemRepository.existsByVariableNameAndManagementEntity(variableItemRequestDTO.getVariableName(), managementEntity)) return true;
-        Optional<VariableItem> variableItemWithSameCoverage = variableItemRepository.findByManagementEntityBeforeAndPricingType_UuidAndCoverageAndVariableName(managementEntity, variableItemRequestDTO.getPricingType(), variableItemRequestDTO.getCoverage(), variableItemRequestDTO.getVariableName());
+        Optional<VariableItem> variableItemWithSameCoverage = variableItemRepository.findByManagementEntityAndPricingType_UuidAndCoverageAndVariableName(managementEntity, variableItemRequestDTO.getPricingType(), variableItemRequestDTO.getCoverage(), variableItemRequestDTO.getVariableName());
         return variableItemWithSameCoverage.isPresent();
     }
 

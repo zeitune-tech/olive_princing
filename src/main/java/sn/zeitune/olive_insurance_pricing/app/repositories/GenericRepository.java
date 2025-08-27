@@ -16,7 +16,7 @@ public interface GenericRepository<V extends VariableItem> extends JpaRepository
     Optional<V> findByUuidAndManagementEntity(UUID uuid, UUID managementEntity);
 
     boolean existsByVariableNameAndManagementEntity(String variableName, UUID managementEntity);
-    Optional<V> findByManagementEntityBeforeAndPricingType_UuidAndCoverageAndVariableName(UUID managementEntity, UUID PricingType_Uuid, UUID coverage, String variableName);
+    Optional<V> findByManagementEntityAndPricingType_UuidAndCoverageAndVariableName(UUID managementEntity, UUID PricingType_Uuid, UUID coverage, String variableName);
 
     Page<V> findAllByManagementEntity(UUID managementEntity, Pageable pageable);
     List<V> findAllByManagementEntity(UUID managementEntity);

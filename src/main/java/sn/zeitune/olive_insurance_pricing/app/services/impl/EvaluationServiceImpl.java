@@ -49,8 +49,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 return new GetRequiredFieldsForNumericField(variableItem);
             } else if (variableItem instanceof SelectField) {
                 return new GetRequiredFieldsForSelectField(variableItem);
-            }
-            else {
+            } else {
                 throw new IllegalArgumentException("Unsupported variable item : " + variableItem.getVariableName());
             }
         }
@@ -68,7 +67,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         public abstract List<EvaluationRequiredFieldsResponseDTO.EvaluationRequiredField> execute();
     }
 
-    private static  class GetRequiredFieldsForFormula extends GetRequiredFieldsForVariableItem {
+    private static class GetRequiredFieldsForFormula extends GetRequiredFieldsForVariableItem {
 
         private final Formula formula;
 
@@ -121,7 +120,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
     }
 
-    private static class GetRequiredFieldsForNumericField extends  GetRequiredFieldsForVariableItem {
+    private static class GetRequiredFieldsForNumericField extends GetRequiredFieldsForVariableItem {
         public GetRequiredFieldsForNumericField(VariableItem variableItem) {
             super(variableItem);
         }
@@ -180,7 +179,7 @@ public class EvaluationServiceImpl implements EvaluationService {
         public abstract Double execute();
     }
 
-    private static class EvaluateFormula extends  EvaluateNumericResultVariable {
+    private static class EvaluateFormula extends EvaluateNumericResultVariable {
 
         Formula formula;
         Map<String, Object> fields;
@@ -202,16 +201,16 @@ public class EvaluationServiceImpl implements EvaluationService {
                     throw new IllegalArgumentException("Variable " + variableItem.getVariableName() + " is not defined");
                 }
                 // Replace the variable in the formula expression with its value
-                System.err.print("Expression to evaluate: "+ formula.getExpression());
+                System.err.print("Expression to evaluate: " + formula.getExpression());
                 formula.setExpression(formula.getExpression().replace("{{" + variableItem.getVariableName() + "}}", String.valueOf(value)));
-                System.err.println(" => "  + formula.getExpression());
+                System.err.println(" => " + formula.getExpression());
             }
             Expression expression = new ExpressionBuilder(formula.getExpression()).build();
             return expression.evaluate();
         }
     }
 
-    private static class EvaluateVariableCondition extends  EvaluateNumericResultVariable {
+    private static class EvaluateVariableCondition extends EvaluateNumericResultVariable {
 
         final VariableCondition variableCondition;
         final Map<String, Object> fields;
@@ -223,10 +222,10 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         @Override
         public Double execute() {
-            for ( Rule rule : variableCondition.getRules() ) {
+            for (Rule rule : variableCondition.getRules()) {
                 if (isRuleValid(rule)) {
                     // If the rule is valid, we can return the value of the variable condition
-                    System.err.println("Rule is valid: " + rule.toString() + " " + rule.getValue());
+                    System.err.println("Rule is valid: " + rule + " " + rule.getValue());
                     return rule.getValue();
                 }
             }
@@ -296,8 +295,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                                 throw new IllegalStateException("Unexpected value: " + numericCondition.getNumericOperator());
                         }
                     }
-                }
-                else if (condition instanceof SelectCondition selectCondition) {
+                } else if (condition instanceof SelectCondition selectCondition) {
                     if (fields.containsKey(selectCondition.getSelectField().getVariableName())) {
                         EvaluateSelectField evaluateSelectField = new EvaluateSelectField(selectCondition.getSelectField(), fields);
                         SelectFieldOptionValue fieldValue = evaluateSelectField.execute();
@@ -329,7 +327,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
 
-    private static class EvaluateNumericField extends  EvaluateNumericResultVariable {
+    private static class EvaluateNumericField extends EvaluateNumericResultVariable {
 
         final NumericField numericField;
         final Map<String, Object> fields;
@@ -355,7 +353,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     }
 
-    private static class EvaluateSelectField  {
+    private static class EvaluateSelectField {
 
         final SelectField selectField;
         final Map<String, Object> fields;
@@ -371,7 +369,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
             SelectFieldOptionValue selectFieldOptionValue = selectField.getOptions().getPossibilities().stream()
                     .filter(option ->
-                        option.getUuid().toString().equals(fields.get(selectField.getVariableName()))
+                            option.getName().equals(fields.get(selectField.getVariableName()))
                     )
                     .findFirst().orElse(null);
 
@@ -383,7 +381,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
     }
-
 
 
     @Override

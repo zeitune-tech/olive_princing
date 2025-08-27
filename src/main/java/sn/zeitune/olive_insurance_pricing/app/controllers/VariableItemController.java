@@ -24,10 +24,10 @@ public class VariableItemController {
 
     private final VariableItemService variableItemService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<VariableItemResponseDTO> getById(@PathVariable UUID id) {
-        return ResponseEntity.ok(variableItemService.findByUuid(id));
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<VariableItemResponseDTO> getById(@PathVariable UUID id) {
+//        return ResponseEntity.ok(variableItemService.findByUuid(id));
+//    }
 
     @GetMapping("/all")
     public ResponseEntity<List<VariableItemResponseDTO>> getAll(
@@ -37,14 +37,14 @@ public class VariableItemController {
         return ResponseEntity.ok(variableItemService.findAll(employee.getManagementEntity()));
     }
 
-    @GetMapping("/by-product/{product}")
-    public ResponseEntity<List<VariableItemResponseDTO>> getByProduct(@PathVariable UUID product) {
-        return ResponseEntity.ok(variableItemService.findByProduct(product));
-    }
+//    @GetMapping("/by-product/{product}")
+//    public ResponseEntity<List<VariableItemResponseDTO>> getByProduct(@PathVariable UUID product) {
+//        return ResponseEntity.ok(variableItemService.findByProduct(product));
+//    }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<VariableItemResponseDTO>> searchByLabel(@RequestParam String label) {
-        return ResponseEntity.ok(variableItemService.searchByLabel(label));
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<List<VariableItemResponseDTO>> searchByLabel(@RequestParam String label) {
+//        return ResponseEntity.ok(variableItemService.searchByLabel(label));
+//    }
 
 }

@@ -8,10 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.VariableConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableConditionResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.VariableConditionService;
+import sn.zeitune.olive_insurance_pricing.security.Employee;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,9 +33,13 @@ public class VariableConditionController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<VariableConditionResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<VariableConditionResponseDTO>> getAll
+            (
+                    @PageableDefault(size = 20) Pageable pageable,
+                    Authentication authentication
+            ) {
         log.info("REST request to get all variable conditions with pagination");
-        return ResponseEntity.ok(variableConditionService.findAll(pageable));
+        return ResponseEntity.ok(variableConditionService.findAll(pageable, ((Employee)authentication.getPrincipal()).getManagementEntity()));
     }
 
 //    @GetMapping("/by-product/{product}")

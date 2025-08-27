@@ -11,6 +11,7 @@ import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.NumericFieldMapper;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldMapper;
+import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
 public class FormulaMapper {
 
@@ -40,9 +41,8 @@ public class FormulaMapper {
     }
 
     public static FormulaResponseDTO map(Formula formula) {
-        if (formula == null) {
-            return null; // Handle null case if necessary
-        }
+        if (formula == null) return null; // Handle null case if necessary
+
         FormulaResponseDTO formulaResponseDTO = new FormulaResponseDTO();
         formulaResponseDTO.setId(formula.getUuid());
         formulaResponseDTO.setLabel(formula.getLabel());
@@ -58,8 +58,8 @@ public class FormulaMapper {
                         .map(FormulaMapper::getRealVariable)
                         .toList()
         );
-
         formulaResponseDTO.setCoverage(formula.getCoverage());
+        formulaResponseDTO.setType(TypeOfVariable.FORMULA);
         return formulaResponseDTO;
     }
 }

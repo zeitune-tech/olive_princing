@@ -14,9 +14,7 @@ public interface VariableConditionService {
 
     VariableConditionResponseDTO findByUuid(UUID uuid);
 
-    List<VariableConditionResponseDTO> findAll();
-
-    Page<VariableConditionResponseDTO> findAll(Pageable pageable);
+    Page<VariableConditionResponseDTO> findAll(Pageable pageable, UUID managementEntity);
 
     List<VariableConditionResponseDTO> findByProduct(UUID product);
 

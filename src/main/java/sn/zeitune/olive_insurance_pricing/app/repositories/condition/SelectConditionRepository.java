@@ -22,4 +22,6 @@ public interface SelectConditionRepository extends JpaRepository<SelectCondition
     Optional<SelectCondition> findByUuid(UUID uuid);
 
     boolean existsByUuid(UUID uuid);
+
+    void deleteByUuid(UUID uuid);
 }

@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table(name = "entite_base")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class   BaseEntity {
+public abstract class BaseEntity {
     @Id
     @Column(name = "code_entite_base")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "entite_base_seq")

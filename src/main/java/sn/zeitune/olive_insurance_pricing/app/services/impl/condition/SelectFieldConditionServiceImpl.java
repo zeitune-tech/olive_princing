@@ -100,7 +100,7 @@ public class SelectFieldConditionServiceImpl implements SelectFieldConditionServ
 
     @Override
     public void deleteByUuid(UUID uuid) {
-        selectConditionRepository.delete(getEntityByUuid(uuid));
+        selectConditionRepository.deleteByUuid(uuid);
     }
 
     @Override

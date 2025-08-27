@@ -14,6 +14,7 @@ public class NumericConditionRequestDTO extends ConditionRequestDTO {
     @NotNull(message = "Operator is required")
     NumericOperator numericOperator;
 
-    @NotNull(message = "Value is required")
     double value;
+    double minValue;
+    double maxValue;
 }

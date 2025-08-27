@@ -3,6 +3,7 @@ package sn.zeitune.olive_insurance_pricing.app.mappers.field;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.NumericFieldRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.NumericFieldResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
+import sn.zeitune.olive_insurance_pricing.enums.TypeOfVariable;
 
 public class NumericFieldMapper {
 
@@ -33,6 +34,7 @@ public class NumericFieldMapper {
         dto.setManagementEntity(field.getManagementEntity());
         dto.setProduct(field.getProduct());
         dto.setBranch(field.getBranch());
+        dto.setType(TypeOfVariable.NUMERIC_FIELD);
         return dto;
     }
 }

@@ -10,8 +10,9 @@ public class NumericConditionMapper {
 
     public static NumericCondition map(NumericConditionRequestDTO dto, NumericField field, NumericCondition numericCondition) {
         numericCondition.setNumericValue(dto.getValue());
+        numericCondition.setMaximum(dto.getMaxValue());
+        numericCondition.setMinimum(dto.getMinValue());
         numericCondition.setNumericOperator(dto.getNumericOperator());
-
         numericCondition.setNumericField(field);
         return numericCondition;
     }
@@ -26,12 +27,13 @@ public class NumericConditionMapper {
 
     public static NumericConditionResponseDTO map(NumericCondition numericCondition) {
 
-        if (numericCondition == null) {
-            return null; // Handle null case if necessary
-        }
+        if (numericCondition == null) return null;
+
         NumericConditionResponseDTO numericConditionResponseDTO = new NumericConditionResponseDTO();
         numericConditionResponseDTO.setId(numericCondition.getUuid());
         numericConditionResponseDTO.setValue(numericCondition.getNumericValue());
+        numericConditionResponseDTO.setMinValue(numericCondition.getMinimum());
+        numericConditionResponseDTO.setMaxValue(numericCondition.getMaximum());
         numericConditionResponseDTO.setField(
                 numericCondition.getNumericField() != null ? NumericFieldMapper.map(numericCondition.getNumericField()) : null);
         numericConditionResponseDTO.setOperator(numericCondition.getNumericOperator());

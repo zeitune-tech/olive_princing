@@ -18,8 +18,6 @@ public interface FormulaRepository extends JpaRepository<Formula, Long> {
     
     List<Formula> findByProduct(UUID product);
 
-    List<Formula> findAllByPricingType(PricingType pricingType);
-    
     boolean existsByVariableName(String variableName);
     
     Optional<Formula> findByUuid(UUID uuid);

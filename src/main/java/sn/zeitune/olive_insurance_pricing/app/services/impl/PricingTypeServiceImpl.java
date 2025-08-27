@@ -70,6 +70,7 @@ public class PricingTypeServiceImpl implements PricingTypeService {
     public PricingTypeResponseDTO getDetailedById(UUID id, UUID managementEntity) {
         PricingType pricingType = pricingTypeRepository.findByUuid(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
+
         return PricingTypeDetailedMapper.map(pricingType, variableItemRepository.findAllByPricingTypeAndManagementEntity(pricingType, managementEntity));
     }
 

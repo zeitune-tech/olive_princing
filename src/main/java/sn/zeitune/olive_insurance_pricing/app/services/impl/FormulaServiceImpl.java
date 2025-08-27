@@ -50,6 +50,7 @@ public class FormulaServiceImpl implements FormulaService {
 
         formula.setPricingType( pricingTypeService.getEntityById(formulaRequestDTO.getPricingType()) );
 
+        formula.setManagementEntity(managementEntity);
         // Vérifier la validité de l'expression
         // TODO
         formula = formulaRepository.save(formula);

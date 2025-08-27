@@ -7,7 +7,7 @@ import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOption;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class SelectFieldOptionsMapper {
+public class SelectFieldOptionMapper {
 
     // Backward compatibility
     public static SelectFieldOption map(SelectFieldOptionRequestDTO requestDTO, SelectFieldOption selectFieldOption) {

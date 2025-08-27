@@ -10,13 +10,12 @@ import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldOpt
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldOptionResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOption;
-import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldOptionsMapper;
+import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldOptionMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.field.SelectFieldOptionRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionValueService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -28,12 +27,13 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
 
     @Override
     public SelectFieldOptionResponseDTO create(SelectFieldOptionRequestDTO selectFieldOptionRequestDTO) {
-        // Vérifier si une valeur de champ avec le même nom existe déjà
-        if (selectFieldOptionRepository.existsByName(selectFieldOptionRequestDTO.getName())) {
-            throw new IllegalArgumentException("Une valeur de champ avec le nom '" + selectFieldOptionRequestDTO.getName() + "' existe déjà");
+
+        Optional<SelectFieldOption> optionalSelectFieldOption = selectFieldOptionRepository.findByName(selectFieldOptionRequestDTO.getName());
+        if (optionalSelectFieldOption.isPresent()) {
+            return SelectFieldOptionMapper.map(optionalSelectFieldOption.get());
         }
 
-        SelectFieldOption selectFieldOption = SelectFieldOptionsMapper.map(selectFieldOptionRequestDTO);
+        SelectFieldOption selectFieldOption = SelectFieldOptionMapper.map(selectFieldOptionRequestDTO);
 
         for (UUID possibility : selectFieldOptionRequestDTO.getPossibilities()) {
             SelectFieldOptionValue selectFieldOptionValue = selectFieldOptionValueService.getEntityByUuid(possibility);
@@ -41,7 +41,7 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
         }
 
         selectFieldOption = selectFieldOptionRepository.save(selectFieldOption);
-        return SelectFieldOptionsMapper.map(selectFieldOption);
+        return SelectFieldOptionMapper.map(selectFieldOption);
     }
 
     @Override
@@ -52,33 +52,33 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
 
     @Override
     public SelectFieldOptionResponseDTO findByUuid(UUID uuid) {
-        return SelectFieldOptionsMapper.map(getEntityByUuid(uuid));
+        return SelectFieldOptionMapper.map(getEntityByUuid(uuid));
     }
 
     @Override
     public List<SelectFieldOptionResponseDTO> findAll() {
         return selectFieldOptionRepository.findAll()
                 .stream()
-                .map(SelectFieldOptionsMapper::map)
+                .map(SelectFieldOptionMapper::map)
                 .toList();
     }
 
     @Override
     public Page<SelectFieldOptionResponseDTO> findAll(Pageable pageable) {
-        return selectFieldOptionRepository.findAll(pageable).map(SelectFieldOptionsMapper::map);
+        return selectFieldOptionRepository.findAll(pageable).map(SelectFieldOptionMapper::map);
     }
 
     @Override
     public Optional<SelectFieldOptionResponseDTO> findByName(String name) {
         return selectFieldOptionRepository.findByName(name)
-                .map(SelectFieldOptionsMapper::map);
+                .map(SelectFieldOptionMapper::map);
     }
 
     @Override
     public List<SelectFieldOptionResponseDTO> searchByName(String name) {
         return selectFieldOptionRepository.findByNameContainingIgnoreCase(name)
                 .stream()
-                .map(SelectFieldOptionsMapper::map)
+                .map(SelectFieldOptionMapper::map)
                 .toList();
     }
 
@@ -104,8 +104,8 @@ public class SelectFieldOptionServiceImpl implements SelectFieldOptionService {
             }
         }
 
-        SelectFieldOptionsMapper.map(selectFieldOptionRequestDTO, existingSelectFieldOption);
-        return SelectFieldOptionsMapper.map(selectFieldOptionRepository.save(existingSelectFieldOption));
+        SelectFieldOptionMapper.map(selectFieldOptionRequestDTO, existingSelectFieldOption);
+        return SelectFieldOptionMapper.map(selectFieldOptionRepository.save(existingSelectFieldOption));
     }
 
     @Override

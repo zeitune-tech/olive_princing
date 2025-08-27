@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface SelectFieldService {
 
-    SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO);
+    SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO, UUID managementEntity);
 
     SelectFieldResponseDTO findByUuid(UUID uuid);
 

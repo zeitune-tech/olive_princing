@@ -7,10 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldService;
+import sn.zeitune.olive_insurance_pricing.security.Employee;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,8 +26,11 @@ public class SelectFieldController {
     private final SelectFieldService selectFieldService;
 
     @PostMapping
-    public ResponseEntity<SelectFieldResponseDTO> create(@Valid @RequestBody SelectFieldRequestDTO selectFieldRequestDTO) {
-        return ResponseEntity.ok(selectFieldService.create(selectFieldRequestDTO));
+    public ResponseEntity<SelectFieldResponseDTO> create(
+            @Valid @RequestBody SelectFieldRequestDTO selectFieldRequestDTO,
+            Authentication authentication
+            ) {
+        return ResponseEntity.ok(selectFieldService.create(selectFieldRequestDTO, ((Employee)authentication.getPrincipal()).getManagementEntity()));
     }
 
     @GetMapping("/{id}")

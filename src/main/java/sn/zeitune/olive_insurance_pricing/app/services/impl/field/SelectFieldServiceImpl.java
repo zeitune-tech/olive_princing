@@ -10,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.SelectFieldRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
+import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOption;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.field.SelectFieldRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldOptionService;
 import sn.zeitune.olive_insurance_pricing.app.services.SelectFieldService;
+import sn.zeitune.olive_insurance_pricing.app.services.VariableItemPreparationService;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,26 +29,16 @@ public class SelectFieldServiceImpl implements SelectFieldService {
 
     private final SelectFieldRepository selectFieldRepository;
     private final SelectFieldOptionService selectFieldOptionService;
-    private final PricingTypeService pricingTypeService;
+    private final VariableItemPreparationService variableItemPreparationService;
 
     @Override
-    public SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO) {
-        // Vérifier si un champ avec le même nom de variable existe déjà
-        if (selectFieldRepository.existsByVariableName(selectFieldRequestDTO.getVariableName()))
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.getVariableName() + "' existe déjà");
-
-        if (selectFieldOptionService.findByUuid(selectFieldRequestDTO.getOptions()) == null)
+    public SelectFieldResponseDTO create(SelectFieldRequestDTO selectFieldRequestDTO, UUID managementEntity) {
+        SelectFieldOption selectFieldOption = selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions());
+        if (selectFieldOption == null)
             throw new IllegalArgumentException("Options are not defined");
-
-        SelectField selectFieldSaving = new SelectField();
+        SelectField selectFieldSaving = (SelectField) variableItemPreparationService.prepareCreationEntity(selectFieldRequestDTO, new SelectField(), managementEntity);
         SelectFieldMapper.putRequestValue(selectFieldRequestDTO, selectFieldSaving);
-
-        if (selectFieldRequestDTO.getOptions() != null)
-            selectFieldSaving.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
-
-        if (selectFieldRequestDTO.getPricingType() != null)
-            selectFieldSaving.setPricingType(pricingTypeService.getEntityById(selectFieldRequestDTO.getPricingType()));
-
+        selectFieldSaving.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
         return SelectFieldMapper.map(selectFieldRepository.save(selectFieldSaving));
     }
 
@@ -93,23 +85,7 @@ public class SelectFieldServiceImpl implements SelectFieldService {
 
     @Override
     public SelectFieldResponseDTO updateByUuid(UUID uuid, SelectFieldRequestDTO selectFieldRequestDTO) {
-        SelectField existingField = selectFieldRepository.findByUuid(uuid)
-                .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
-        
-        // Vérifier si le nouveau nom de variable existe déjà (sauf si c'est le même champ)
-        if (!existingField.getVariableName().equals(selectFieldRequestDTO.getVariableName()) &&
-            selectFieldRepository.existsByVariableName(selectFieldRequestDTO.getVariableName())) {
-            throw new IllegalArgumentException("Un champ avec le nom de variable '" + selectFieldRequestDTO.getVariableName() + "' existe déjà");
-        }
-
-        if (selectFieldRequestDTO.getOptions() != null)
-            existingField.setOptions(selectFieldOptionService.getEntityByUuid(selectFieldRequestDTO.getOptions()));
-
-        if (selectFieldRequestDTO.getPricingType() != null)
-            existingField.setPricingType(pricingTypeService.getEntityById(selectFieldRequestDTO.getPricingType()));
-
-        SelectFieldMapper.putRequestValue(selectFieldRequestDTO, existingField);
-        return SelectFieldMapper.map(selectFieldRepository.save(existingField));
+        throw new UnsupportedOperationException("Not supported.");
     }
 
     @Override

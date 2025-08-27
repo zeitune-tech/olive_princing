@@ -31,6 +31,12 @@ public class VariableItemRequestDTO {
     @Schema(description = "Produit associé", example = "123e4567-e89b-12d3-a456-426614174000")
     UUID product;
 
-    @Schema(description = "Couverture associée", example = "123e4567-e89b-12d3-a456-426614174000")
+    @Schema(description = "Branch associée", example = "123e4567-e89b-12d3-a456-426614174000")
     UUID branch;
+
+    @Schema(description = "Type de tarification", example = "123e4567-e89b-12d3-a456-426614174000")
+    UUID pricingType;
+
+    @Schema(description = "Couverture associée", example = "123e4567-e89b-12d3-a456-426614174000")
+    UUID coverage;
 }

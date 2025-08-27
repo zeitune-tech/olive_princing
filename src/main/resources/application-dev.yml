@@ -6,6 +6,7 @@ server:
 services:
     olive-insurance-auth-service: ${OLIVE_DEV_AUTH_SERVICE_URL}
     olive-insurance-administration-service: ${OLIVE_DEV_ADMINISTRATION_SERVICE_URL}
+    olive-insurance-exploitation-service: ${OLIVE_DEV_EXPLOITATION_SERVICE_URL}
     olive-insurance-settings-service: ${OLIVE_DEV_SETTINGS_SERVICE_URL}
 
 spring:
@@ -20,7 +21,7 @@ spring:
 
     jpa:
         hibernate:
-            ddl-auto: update
+            ddl-auto: create
         show-sql: false
         properties:
             hibernate:

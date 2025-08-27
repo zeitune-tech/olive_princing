@@ -21,8 +21,8 @@ public class FormulaMapper {
         if (variableItem instanceof VariableCondition) return VariableConditionMapper.map((VariableCondition) variableItem);
         if (variableItem instanceof NumericField) return NumericFieldMapper.map((NumericField) variableItem);
         if (variableItem instanceof SelectField) return SelectFieldMapper.map((SelectField) variableItem);
-        if (variableItem instanceof Constant) return ConstantMapper.map((Constant) variableItem);
-        throw new IllegalArgumentException("Unknown variable item type: " + variableItem.getClass().getName());
+        if (variableItem instanceof Constant) return ConstantMapper.getInstance().map((Constant) variableItem);
+        return VariableItemMapper.getInstance().map(variableItem);
     }
 
     public static Formula map(FormulaRequestDTO dto, Formula formula) {
@@ -33,6 +33,7 @@ public class FormulaMapper {
         formula.setToReturn(dto.getToReturn());
         formula.setProduct(dto.getProduct());
         formula.setBranch(dto.getBranch());
+        formula.setCoverage(dto.getCoverage());
         return formula;
     }
 
@@ -43,23 +44,14 @@ public class FormulaMapper {
     public static FormulaResponseDTO map(Formula formula) {
         if (formula == null) return null; // Handle null case if necessary
 
-        FormulaResponseDTO formulaResponseDTO = new FormulaResponseDTO();
-        formulaResponseDTO.setId(formula.getUuid());
-        formulaResponseDTO.setLabel(formula.getLabel());
-        formulaResponseDTO.setDescription(formula.getDescription());
-        formulaResponseDTO.setVariableName(formula.getVariableName());
+        FormulaResponseDTO formulaResponseDTO = (FormulaResponseDTO) VariableItemMapper.getInstance().map(formula);
         formulaResponseDTO.setExpression(formula.getExpression());
-        formulaResponseDTO.setToReturn(formula.getToReturn());
-        formulaResponseDTO.setManagementEntity(formula.getManagementEntity());
-        formulaResponseDTO.setProduct(formula.getProduct());
-        formulaResponseDTO.setBranch(formula.getBranch());
         formulaResponseDTO.setVariables(
                 formula.getVariables().stream()
                         .map(FormulaMapper::getRealVariable)
                         .toList()
         );
         formulaResponseDTO.setCoverage(formula.getCoverage());
-        formulaResponseDTO.setType(TypeOfVariable.FORMULA);
         return formulaResponseDTO;
     }
 }

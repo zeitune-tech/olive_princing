@@ -15,4 +15,5 @@ import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
 @Table(name = "champ")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-public abstract class Field extends VariableItem {}
+public abstract class Field extends VariableItem {
+}

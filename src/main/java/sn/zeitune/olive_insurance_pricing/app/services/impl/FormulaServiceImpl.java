@@ -13,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FormulaRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FormulaResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
+import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
 import sn.zeitune.olive_insurance_pricing.app.mappers.FormulaMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.FormulaRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.FormulaService;
+import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 import sn.zeitune.olive_insurance_pricing.app.services.VariableItemService;
 import sn.zeitune.olive_insurance_pricing.app.utils.ExpressionParser;
 
@@ -31,31 +33,22 @@ public class FormulaServiceImpl implements FormulaService {
 
     private final FormulaRepository formulaRepository;
     private final VariableItemService variableItemService;
+    private final PricingTypeService pricingTypeService;
 
     @Override
-    public FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO) {
+    public FormulaResponseDTO create(FormulaRequestDTO formulaRequestDTO, UUID managementEntity) {
         // Vérifier si une formule avec le même nom de variable existe déjà
         if (formulaRepository.existsByVariableName(formulaRequestDTO.getVariableName())) {
             throw new IllegalArgumentException("Une formule avec le nom de variable '" + formulaRequestDTO.getVariableName() + "' existe déjà");
         }
         
-//        Formula formula = FormulaMapper.map(formulaRequestDTO);
-//
-//        ExpressionParser.ParsedExpression parsed = parseExpression(formulaRequestDTO.getExpression());
-//
-//        for (String variable : parsed.variables) {
-//            formula.getVariables().add(variableItemService.findByVariableName(variable));
-//        }
-
         Formula formula = FormulaMapper.map(formulaRequestDTO, new Formula());
 
         for (UUID variableId : formulaRequestDTO.getVariables()) {
-            if (variableItemService.existsByUuid(variableId)) {
-                formula.getVariables().add(variableItemService.getEntityByUuid(variableId));
-            } else {
-                throw new EntityNotFoundException("Variable non trouvée avec l'UUID : " + variableId);
-            }
+            formula.getVariables().add(variableItemService.getEntityByUuid(variableId, managementEntity));
         }
+
+        formula.setPricingType( pricingTypeService.getEntityById(formulaRequestDTO.getPricingType()) );
 
         // Vérifier la validité de l'expression
         // TODO
@@ -109,7 +102,7 @@ public class FormulaServiceImpl implements FormulaService {
     }
 
     @Override
-    public FormulaResponseDTO updateByUuid(UUID uuid, FormulaRequestDTO formulaRequestDTO) {
+    public FormulaResponseDTO updateByUuid(UUID uuid, FormulaRequestDTO formulaRequestDTO, UUID managementEntity) {
         Formula existingFormula = formulaRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'UUID : " + uuid));
         
@@ -138,6 +131,8 @@ public class FormulaServiceImpl implements FormulaService {
     public void deleteByUuid(UUID uuid) {
         Formula formula = formulaRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'UUID : " + uuid));
+        formula.setVariables(null);
+        formula.setPricingType(null);
         formulaRepository.delete(formula);
     }
 

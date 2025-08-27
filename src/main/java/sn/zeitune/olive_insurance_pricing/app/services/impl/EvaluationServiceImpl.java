@@ -131,7 +131,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             return List.of(
                     EvaluationRequiredFieldsResponseDTO.EvaluationRequiredNumericField.builder()
                             .name(getName())
-                            .type(FieldType.NUMBER.getType())
+                            .type(FieldType.NUMBER.getTypes().get(0))
                             .build()
             );
         }
@@ -151,7 +151,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             return List.of(
                     EvaluationRequiredFieldsResponseDTO.EvaluationRequiredSelectField.builder()
                             .name(getName())
-                            .type(FieldType.SELECT.getType())
+                            .type(FieldType.SELECT.getTypes().get(0))
                             .options(
                                     selectField.getOptions().getPossibilities().stream()
                                             .map(SelectFieldOptionValueMapper::map)
@@ -397,7 +397,7 @@ public class EvaluationServiceImpl implements EvaluationService {
             Matcher matcher = Pattern.compile("\\{\\{(.*?)}}").matcher(formula.getExpression());
             while (matcher.find()) {
                 String variableName = matcher.group(1).trim();
-                GetRequiredFieldsForVariableItem getRequiredFieldsForVariableItem = GetRequiredFieldsForVariableItem.create(variableItemService.findByVariableName(variableName));
+                GetRequiredFieldsForVariableItem getRequiredFieldsForVariableItem = GetRequiredFieldsForVariableItem.create(variableItemService.getEntityByVariableName(variableName, formula.getCoverage(), formula.getPricingType(), formula.getManagementEntity()));
                 dto.addFieldList(getRequiredFieldsForVariableItem.execute());
             }
         }
@@ -411,12 +411,9 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new IllegalArgumentException("ID is required for evaluation");
 
         Formula formula = formulaService.getEntityByUuid(data.getId());
-
         EvaluateFormula evaluateFormula = new EvaluateFormula(formula, data.getFields());
-
-        EvaluationResultResponseDTO result = new EvaluationResultResponseDTO();
+        EvaluationResultResponseDTO result = new EvaluationResultResponseDTO(evaluateFormula.execute());
         System.err.println("Final expression to evaluate: " + formula.getExpression() + " => " + evaluateFormula.execute());
-
         return result;
     }
 

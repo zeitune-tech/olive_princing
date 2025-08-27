@@ -7,10 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.field.NumericFieldRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.NumericFieldResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.NumericFieldService;
+import sn.zeitune.olive_insurance_pricing.security.Employee;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,8 +26,11 @@ public class NumericFieldController {
     private final NumericFieldService numericFieldService;
 
     @PostMapping
-    public ResponseEntity<NumericFieldResponseDTO> create(@Valid @RequestBody NumericFieldRequestDTO selectFieldRequestDTO) {
-        return ResponseEntity.ok(numericFieldService.create(selectFieldRequestDTO));
+    public ResponseEntity<NumericFieldResponseDTO> create(
+            @Valid @RequestBody NumericFieldRequestDTO selectFieldRequestDTO,
+            Authentication authentication
+            ) {
+        return ResponseEntity.ok(numericFieldService.create(selectFieldRequestDTO, ((Employee)authentication.getPrincipal()).getManagementEntity()));
     }
 
     @GetMapping("/{id}")
@@ -34,8 +39,11 @@ public class NumericFieldController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<NumericFieldResponseDTO>> getAll(@PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(numericFieldService.findAll(pageable));
+    public ResponseEntity<Page<NumericFieldResponseDTO>> getAll(
+            @PageableDefault(size = 20) Pageable pageable,
+            Authentication authentication
+            ) {
+        return ResponseEntity.ok(numericFieldService.findAll(pageable, ((Employee)authentication.getPrincipal()).getManagementEntity()));
     }
 
     @GetMapping("/by-product/{product}")

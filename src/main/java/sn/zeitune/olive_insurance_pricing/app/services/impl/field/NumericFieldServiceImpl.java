@@ -12,6 +12,7 @@ import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.NumericFieldMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.field.NumericFieldRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.NumericFieldService;
+import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,17 +23,19 @@ import java.util.UUID;
 public class NumericFieldServiceImpl implements NumericFieldService {
 
     private final NumericFieldRepository fieldRepository;
+    private final PricingTypeService pricingTypeService;
 
     @Override
-    public NumericFieldResponseDTO create(NumericFieldRequestDTO numericFieldRequestDTO) {
+    public NumericFieldResponseDTO create(NumericFieldRequestDTO numericFieldRequestDTO, UUID managementEntity) {
         // Vérifier si un champ avec le même nom de variable existe déjà
-        if (fieldRepository.existsByVariableName(numericFieldRequestDTO.getVariableName())) {
+        if (fieldRepository.existsByVariableName(numericFieldRequestDTO.getVariableName()))
             throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.getVariableName() + "' existe déjà");
-        }
-        
-        NumericField field = NumericFieldMapper.map(numericFieldRequestDTO);
-        field = fieldRepository.save(field);
-        return NumericFieldMapper.map(field);
+
+        NumericField fieldSaving = new NumericField();
+        NumericFieldMapper.putRequestValue(numericFieldRequestDTO, fieldSaving);
+        fieldSaving.setManagementEntity(managementEntity);
+        fieldSaving.setPricingType(pricingTypeService.getEntityById(numericFieldRequestDTO.getPricingType()));
+        return NumericFieldMapper.map(fieldRepository.save(fieldSaving));
     }
 
     @Override
@@ -51,8 +54,8 @@ public class NumericFieldServiceImpl implements NumericFieldService {
     }
 
     @Override
-    public Page<NumericFieldResponseDTO> findAll(Pageable pageable) {
-        return fieldRepository.findAll(pageable)
+    public Page<NumericFieldResponseDTO> findAll(Pageable pageable, UUID managementEntity) {
+        return fieldRepository.findAllByManagementEntity(managementEntity, pageable)
                 .map(NumericFieldMapper::map);
     }
 
@@ -83,16 +86,17 @@ public class NumericFieldServiceImpl implements NumericFieldService {
             fieldRepository.existsByVariableName(numericFieldRequestDTO.getVariableName())) {
             throw new IllegalArgumentException("Un champ avec le nom de variable '" + numericFieldRequestDTO.getVariableName() + "' existe déjà");
         }
-        
-        NumericFieldMapper.map(numericFieldRequestDTO, existingField);
-        NumericField updatedField = fieldRepository.save(existingField);
-        return NumericFieldMapper.map(updatedField);
+
+        NumericFieldMapper.putRequestValue(numericFieldRequestDTO, existingField);
+        existingField.setPricingType(pricingTypeService.getEntityById(numericFieldRequestDTO.getPricingType()));
+        return NumericFieldMapper.map(fieldRepository.save(existingField));
     }
 
     @Override
     public void deleteByUuid(UUID uuid) {
         NumericField field = fieldRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Champ non trouvé avec l'UUID : " + uuid));
+        field.setPricingType(null);
         fieldRepository.delete(field);
     }
 

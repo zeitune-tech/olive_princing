@@ -8,14 +8,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.VariableConditionRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableConditionResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
 import sn.zeitune.olive_insurance_pricing.app.entities.Rule;
 import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
 import sn.zeitune.olive_insurance_pricing.app.mappers.VariableConditionMapper;
 import sn.zeitune.olive_insurance_pricing.app.repositories.VariableConditionRepository;
+import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 import sn.zeitune.olive_insurance_pricing.app.services.RuleService;
 import sn.zeitune.olive_insurance_pricing.app.services.VariableConditionService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -24,22 +27,23 @@ import java.util.UUID;
 public class VariableConditionServiceImpl implements VariableConditionService {
 
     private final VariableConditionRepository variableConditionRepository;
+    private final PricingTypeService pricingTypeService;
     private final RuleService ruleService;
 
     @Override
-    public VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto) {
+    public VariableConditionResponseDTO create(VariableConditionRequestDTO variableConditionDto, UUID managementEntity) {
         // Vérifier si une condition variable avec le même nom de variable existe déjà
         if (variableConditionRepository.existsByVariableName(variableConditionDto.getVariableName()))
             throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.getVariableName() + "' existe déjà");
 
-        
-        VariableCondition variableCondition = VariableConditionMapper.map(variableConditionDto);
-
+        VariableCondition variableCondition = new VariableCondition();
+        VariableConditionMapper.putRequestValue(variableConditionDto, variableCondition);
         for (UUID uuid : variableConditionDto.getRuleIds()) {
             if (ruleService.existsByUuid(uuid))
                 variableCondition.getRules().add(ruleService.getEntityByUuid(uuid));
         }
-
+        variableCondition.setManagementEntity(managementEntity);
+        variableCondition.setPricingType( pricingTypeService.getEntityById(variableConditionDto.getPricingType()) );
         return VariableConditionMapper.map(variableConditionRepository.save(variableCondition));
     }
 
@@ -76,26 +80,20 @@ public class VariableConditionServiceImpl implements VariableConditionService {
     public VariableConditionResponseDTO updateByUuid(UUID uuid, VariableConditionRequestDTO variableConditionDto) {
         VariableCondition existingVariableCondition = variableConditionRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Condition variable non trouvée avec l'UUID : " + uuid));
-        
         if (!existingVariableCondition.getVariableName().equals(variableConditionDto.getVariableName()) &&
             variableConditionRepository.existsByVariableName(variableConditionDto.getVariableName())) {
             throw new IllegalArgumentException("Une condition variable avec le nom de variable '" + variableConditionDto.getVariableName() + "' existe déjà");
         }
-        
-        update(existingVariableCondition, variableConditionDto);
-        VariableCondition updatedVariableCondition = variableConditionRepository.save(existingVariableCondition);
-        return VariableConditionMapper.map(updatedVariableCondition);
-    }
-
-    private void update (VariableCondition variableCondition, VariableConditionRequestDTO variableConditionRequestDTO) {
-        if (variableCondition == null) return;
-        variableCondition.setLabel(variableConditionRequestDTO.getLabel());
-        variableCondition.setDescription(variableConditionRequestDTO.getDescription());
-        variableCondition.setVariableName(variableConditionRequestDTO.getVariableName());
-        variableCondition.setToReturn(variableConditionRequestDTO.getToReturn());
-        variableCondition.setProduct(variableConditionRequestDTO.getProduct());
-        variableCondition.setBranch(variableConditionRequestDTO.getBranch());
-
+        VariableConditionMapper.putRequestValue(variableConditionDto, existingVariableCondition);
+        // Supprimer les règles qui ne sont plus dans la liste
+        Set<UUID> incomingRuleIds = variableConditionDto.getRuleIds();
+        existingVariableCondition.getRules().removeIf(r -> !incomingRuleIds.contains(r.getUuid()));
+        // Ajouter les nouvelles règles
+        for (UUID ruleUuid : variableConditionDto.getRuleIds()) {
+            Rule ruleEntity = ruleService.getEntityByUuid(ruleUuid);
+            existingVariableCondition.getRules().add(ruleEntity);
+        }
+        return VariableConditionMapper.map(variableConditionRepository.save(existingVariableCondition));
     }
 
     @Override

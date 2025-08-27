@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FormulaRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FormulaResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.services.FormulaService;
+import sn.zeitune.olive_insurance_pricing.security.Employee;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class FormulaController {
             Authentication authentication
         ) {
         log.info("REST request to create formula: {}", formulaDto.getLabel());
-        return ResponseEntity.ok(formulaService.create(formulaDto));
+        return ResponseEntity.ok(formulaService.create(formulaDto, ((Employee)authentication.getPrincipal()).getManagementEntity()));
     }
 
     @GetMapping

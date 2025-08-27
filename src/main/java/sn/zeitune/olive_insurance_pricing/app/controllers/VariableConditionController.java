@@ -27,9 +27,12 @@ public class VariableConditionController {
     private final VariableConditionService variableConditionService;
 
     @PostMapping
-    public ResponseEntity<VariableConditionResponseDTO> create(@Valid @RequestBody VariableConditionRequestDTO variableConditionRequestDTO) {
+    public ResponseEntity<VariableConditionResponseDTO> create(
+            @Valid @RequestBody VariableConditionRequestDTO variableConditionRequestDTO,
+            Authentication authentication
+            ) {
         log.info("REST request to create variable condition: {}", variableConditionRequestDTO.getLabel());
-        return ResponseEntity.ok(variableConditionService.create(variableConditionRequestDTO));
+        return ResponseEntity.ok(variableConditionService.create(variableConditionRequestDTO, ((Employee)authentication.getPrincipal()).getManagementEntity()));
     }
 
     @GetMapping

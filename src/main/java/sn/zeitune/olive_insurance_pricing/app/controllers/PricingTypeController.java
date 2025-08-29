@@ -1,5 +1,6 @@
 package sn.zeitune.olive_insurance_pricing.app.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,18 +25,35 @@ public class PricingTypeController {
     private final PricingTypeService pricingTypeService;
 
     @PostMapping
-    public ResponseEntity<PricingTypeResponseDTO> create(@RequestBody PricingTypeRequestDTO request) {
-        return new ResponseEntity<>(pricingTypeService.create(request), HttpStatus.CREATED);
+    public ResponseEntity<PricingTypeResponseDTO> create(
+            @Valid @RequestBody PricingTypeRequestDTO request,
+            Authentication authentication
+    ) {
+        return new ResponseEntity<>(pricingTypeService.create(
+                request,
+                ((Employee) authentication.getPrincipal()).getManagementEntity()
+        ), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PricingTypeResponseDTO> update(@PathVariable UUID id, @RequestBody PricingTypeRequestDTO request) {
-        return ResponseEntity.ok(pricingTypeService.update(id, request));
+    public ResponseEntity<PricingTypeResponseDTO> update(
+            @PathVariable UUID id,
+            @RequestBody PricingTypeRequestDTO request,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(pricingTypeService.update(
+                id,
+                request,
+                ((Employee) authentication.getPrincipal()).getManagementEntity()
+        ));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        pricingTypeService.delete(id);
+    public ResponseEntity<Void> delete(
+            @PathVariable UUID id,
+            Authentication authentication
+    ) {
+        pricingTypeService.delete(id, ((Employee) authentication.getPrincipal()).getManagementEntity());
         return ResponseEntity.noContent().build();
     }
 
@@ -46,20 +64,36 @@ public class PricingTypeController {
             Authentication authentication
     ) {
         if (withDetailed) {
-            return ResponseEntity.ok(pricingTypeService.getDetailedById(id, ((Employee) authentication.getPrincipal()).getManagementEntity()));
+            return ResponseEntity.ok(pricingTypeService.getDetailedById(
+                    id,
+                    ((Employee) authentication.getPrincipal()).getManagementEntity())
+            );
         }
-        return ResponseEntity.ok(pricingTypeService.getById(id));
+        return ResponseEntity.ok(pricingTypeService.getById(
+                id,
+                ((Employee) authentication.getPrincipal()).getManagementEntity())
+        );
     }
 
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<PricingTypeResponseDTO>> getByProduct(@PathVariable UUID productId) {
-        return ResponseEntity.ok(pricingTypeService.getByProduct(productId));
+    public ResponseEntity<List<PricingTypeResponseDTO>> getByProduct(
+            @PathVariable UUID productId,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(pricingTypeService.getByProduct(
+                productId,
+                ((Employee) authentication.getPrincipal()).getManagementEntity()
+        ));
     }
 
     @GetMapping
     public ResponseEntity<Page<PricingTypeResponseDTO>> getAll(
-            @PageableDefault(size = 20) Pageable pageable
+            @PageableDefault(size = 20) Pageable pageable,
+            Authentication authentication
     ) {
-        return ResponseEntity.ok(pricingTypeService.getAll(pageable));
+        return ResponseEntity.ok(pricingTypeService.getAllActive(
+                pageable,
+                ((Employee) authentication.getPrincipal()).getManagementEntity())
+        );
     }
 }

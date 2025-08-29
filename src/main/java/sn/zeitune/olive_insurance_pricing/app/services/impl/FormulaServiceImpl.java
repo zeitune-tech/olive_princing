@@ -48,7 +48,7 @@ public class FormulaServiceImpl implements FormulaService {
             formula.getVariables().add(variableItemService.getEntityByUuid(variableId, managementEntity));
         }
 
-        formula.setPricingType( pricingTypeService.getEntityById(formulaRequestDTO.getPricingType()) );
+        formula.setPricingType( pricingTypeService.getEntityById( formulaRequestDTO.getPricingType(), formula.getManagementEntity()) );
 
         formula.setManagementEntity(managementEntity);
         // Vérifier la validité de l'expression

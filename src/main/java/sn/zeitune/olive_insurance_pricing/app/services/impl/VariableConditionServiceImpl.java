@@ -43,7 +43,7 @@ public class VariableConditionServiceImpl implements VariableConditionService {
                 variableCondition.getRules().add(ruleService.getEntityByUuid(uuid));
         }
         variableCondition.setManagementEntity(managementEntity);
-        variableCondition.setPricingType( pricingTypeService.getEntityById(variableConditionDto.getPricingType()) );
+        variableCondition.setPricingType( pricingTypeService.getEntityById(variableConditionDto.getPricingType(), managementEntity) );
         return VariableConditionMapper.map(variableConditionRepository.save(variableCondition));
     }
 

@@ -11,13 +11,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PricingTypeService {
-    PricingTypeResponseDTO create(PricingTypeRequestDTO request);
-    PricingTypeResponseDTO update(UUID id, PricingTypeRequestDTO request);
-    void delete(UUID id);
-    PricingTypeResponseDTO getById(UUID id);
+    PricingTypeResponseDTO create(PricingTypeRequestDTO request, UUID managementEntity);
+    PricingTypeResponseDTO update(UUID id, PricingTypeRequestDTO request, UUID managementEntity);
+    void delete(UUID id, UUID managementEntity);
+    PricingTypeResponseDTO getById(UUID id, UUID managementEntity);
     PricingTypeResponseDTO getDetailedById(UUID id, UUID managementEntity);
-    List<PricingTypeResponseDTO> getByProduct(UUID productId);
-    Page<PricingTypeResponseDTO> getAll(Pageable pageable);
-    PricingType getEntityById(UUID id);
+    List<PricingTypeResponseDTO> getByProduct(UUID productId, UUID managementEntity);
+    Page<PricingTypeResponseDTO> getAllActive(Pageable pageable, UUID managementEntity);
+    PricingType getEntityById(UUID id, UUID managementEntity);
 
 }

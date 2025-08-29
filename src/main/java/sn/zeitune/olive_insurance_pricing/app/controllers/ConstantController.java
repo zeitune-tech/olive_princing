@@ -32,7 +32,10 @@ public class ConstantController {
             Authentication authentication
     ) {
         log.info("REST request to create constant: {}", constantRequestDTO);
-        ConstantResponseDTO response = constantService.create(constantRequestDTO, ((Employee) authentication.getPrincipal()).getManagementEntity());
+        ConstantResponseDTO response = constantService.create(
+                constantRequestDTO,
+                ((Employee) authentication.getPrincipal()).getManagementEntity()
+        );
         log.info("Created constant with ID: {}", response.getId());
         return ResponseEntity.ok(response);
     }

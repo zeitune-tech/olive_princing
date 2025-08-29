@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -20,6 +21,8 @@ public class PricingTypeResponseDTO {
     private String description;
     private UUID product;
     private  UUID branch;
+    private LocalDate dateEffective;
+    private boolean effective;
 
     @Schema(description = "Date de création", example = "2023-10-01T12:00:00Z")
     Instant createdAt;

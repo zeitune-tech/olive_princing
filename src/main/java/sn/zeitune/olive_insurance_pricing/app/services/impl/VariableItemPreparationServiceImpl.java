@@ -43,7 +43,7 @@ public  class VariableItemPreparationServiceImpl implements VariableItemPreparat
                 () -> new EntityNotFoundException("Entité de gestion non trouvée avec l'UUID : " + managementEntity)
         );
         variableItem.setManagementEntity(managementEntity);
-        variableItem.setPricingType( pricingTypeService.getEntityById(variableItemRequestDTO.getPricingType()) );
+        variableItem.setPricingType( pricingTypeService.getEntityById(variableItemRequestDTO.getPricingType(), managementEntity) );
         return variableItem;
     }
 
@@ -57,7 +57,7 @@ public  class VariableItemPreparationServiceImpl implements VariableItemPreparat
            }
        }
        // TODO: Réfléchir si on doit vérifier l'existence de l'entité de gestion
-       variableItem.setPricingType( pricingTypeService.getEntityById(variableItemRequestDTO.getPricingType()) );
+       variableItem.setPricingType( pricingTypeService.getEntityById(variableItemRequestDTO.getPricingType(), managementEntity) );
        return variableItem;
     }
 

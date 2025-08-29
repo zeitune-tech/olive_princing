@@ -34,48 +34,85 @@ public class PricingTypeServiceImpl implements PricingTypeService {
     private final VariableItemRepository variableItemRepository;
 
     @Override
-    public PricingTypeResponseDTO create(PricingTypeRequestDTO request) {
+    public PricingTypeResponseDTO create(PricingTypeRequestDTO request, UUID managementEntity) {
         if (pricingTypeRepository.existsByNameAndProduct(request.getName(), request.getProduct())) {
             throw new ValidationException("Un type de tarification avec ce nom existe déjà pour ce produit");
         }
+
         PricingType pricingType = new PricingType();
-        PricingTypeMapper.putRequestValue(request, pricingType);
-        return PricingTypeMapper.map(pricingTypeRepository.save(pricingType), false);
-    }
+        boolean isPricingTypeRepositoryEmpty = pricingTypeRepository.findAllByManagementEntityAndProductAndDeletedIsFalse(managementEntity, request.getProduct()).isEmpty();
+        if (!isPricingTypeRepositoryEmpty) {
+            PricingType effectivePricingType = pricingTypeRepository.findByManagementEntityAndProductAndEffectiveIsTrue(managementEntity, request.getProduct())
+                    .orElseThrow(() -> new ResourceNotFoundException("Aucun type de tarification effectif trouvé"));
 
-    @Override
-    public PricingTypeResponseDTO update(UUID id, PricingTypeRequestDTO request) {
-        PricingType pricingType = pricingTypeRepository.findByUuid((id))
-                .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
-        PricingTypeMapper.putRequestValue(request, pricingType);
-        return PricingTypeMapper.map(pricingTypeRepository.save(pricingType), false);
-    }
+            System.err.println("effectivePricingType.getDateEffective().isBefore(request.getDateEffective()): " + effectivePricingType.getDateEffective().isBefore(request.getDateEffective()));
+            System.err.println("effectivePricingType.getDateEffective().isEqual(request.getDateEffective()): " + effectivePricingType.getDateEffective().isEqual(request.getDateEffective()));
 
-    @Override
-    public void delete(UUID id) {
-        if (!pricingTypeRepository.existsByUuid(id)) {
-            throw new ResourceNotFoundException("Type de tarification non trouvé");
+            if ( effectivePricingType.getDateEffective().isBefore(request.getDateEffective()) || effectivePricingType.getDateEffective().isEqual(request.getDateEffective()) ) {
+                effectivePricingType.setEffective(false);
+                pricingTypeRepository.save(effectivePricingType);
+                pricingType.setEffective(true);
+            } else {
+                pricingType.setEffective(false);
+            }
+        }else {
+            System.err.println("is empty");
+            pricingType.setEffective(true);
         }
-        pricingTypeRepository.deleteByUuid(id);
+
+        PricingTypeMapper.putRequestValue(request, pricingType);
+        pricingType.setManagementEntity(managementEntity);
+        return PricingTypeMapper.map(pricingTypeRepository.save(pricingType), false);
     }
 
     @Override
-    public PricingTypeResponseDTO getById(UUID id) {
+    public PricingTypeResponseDTO update(UUID id, PricingTypeRequestDTO request, UUID managementEntity) {
+        PricingType updatingPricingType = pricingTypeRepository.findByUuidAndManagementEntity(id, managementEntity)
+                .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
+
+        PricingType effectivePricingType = pricingTypeRepository.findByManagementEntityAndProductAndEffectiveIsTrue(managementEntity, request.getProduct())
+                        .orElseThrow(() -> new ResourceNotFoundException("Aucun type de tarification effectif trouvé"));
+
+        if (!updatingPricingType.getUuid().equals(effectivePricingType.getUuid())) {
+            if ( effectivePricingType.getDateEffective().isBefore(request.getDateEffective()) || effectivePricingType.getDateEffective().isEqual(request.getDateEffective()) ) {
+                effectivePricingType.setEffective(false);
+                updatingPricingType.setEffective(true);
+                pricingTypeRepository.save(effectivePricingType);
+            } else {
+                updatingPricingType.setEffective(false);
+            }
+        }
+
+        PricingTypeMapper.putRequestValue(request, updatingPricingType);
+        return PricingTypeMapper.map(pricingTypeRepository.save(updatingPricingType), false);
+    }
+
+    @Override
+    public void delete(UUID id, UUID managementEntity) {
         PricingType pricingType = pricingTypeRepository.findByUuid(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
+        pricingType.setEffective(false);
+        pricingType.setDeleted(true);
+        pricingTypeRepository.save(pricingType);
+    }
+
+    @Override
+    public PricingTypeResponseDTO getById(UUID id, UUID managementEntity) {
+        PricingType pricingType = pricingTypeRepository.findByUuidAndManagementEntity(id, managementEntity)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
         return PricingTypeMapper.map(pricingType, false);
     }
 
     @Override
     public PricingTypeResponseDTO getDetailedById(UUID id, UUID managementEntity) {
-        PricingType pricingType = pricingTypeRepository.findByUuid(id)
+        PricingType pricingType = pricingTypeRepository.findByUuidAndManagementEntity(id, managementEntity)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
 
         return PricingTypeDetailedMapper.map(pricingType, variableItemRepository.findAllByPricingTypeAndManagementEntity(pricingType, managementEntity));
     }
 
     @Override
-    public List<PricingTypeResponseDTO> getByProduct(UUID productId) {
+    public List<PricingTypeResponseDTO> getByProduct(UUID productId, UUID managementEntity) {
         return pricingTypeRepository.findByProduct(productId)
                 .stream()
                 .map(pricingType ->  PricingTypeMapper.map(pricingType, false))
@@ -83,15 +120,15 @@ public class PricingTypeServiceImpl implements PricingTypeService {
     }
 
     @Override
-    public Page<PricingTypeResponseDTO> getAll(Pageable pageable) {
-        return pricingTypeRepository.findAll(pageable)
+    public Page<PricingTypeResponseDTO> getAllActive(Pageable pageable, UUID managementEntity) {
+        return pricingTypeRepository.findAllByManagementEntityAndDeletedIsFalse(managementEntity, pageable)
                 .map(pricingType ->  PricingTypeMapper.map(pricingType, false));
 
     }
 
     @Override
-    public PricingType getEntityById(UUID id) {
-        return pricingTypeRepository.findByUuid(id)
+    public PricingType getEntityById(UUID id, UUID managementEntity) {
+        return pricingTypeRepository.findByUuidAndManagementEntity(id, managementEntity)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
     }
 }

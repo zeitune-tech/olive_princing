@@ -1,6 +1,8 @@
 package sn.zeitune.olive_insurance_pricing.app.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -22,4 +26,8 @@ public class PricingType extends BaseEntity {
     private String description;
     private UUID product;
     private UUID branch;
+    @Column(name = "date_effective", nullable = false)
+    private LocalDate dateEffective;
+    private boolean effective;
+    private boolean deleted;
 }

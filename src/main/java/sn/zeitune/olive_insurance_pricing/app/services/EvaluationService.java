@@ -11,5 +11,8 @@ import java.util.UUID;
 public interface EvaluationService {
 
     EvaluationRequiredFieldsResponseDTO getRequiredFields(UUID id);
-    EvaluationResultResponseDTO doEvaluation(UUID pricingTypeId, EvaluationRequestDTO data, UUID managementEntity);
+    EvaluationResultResponseDTO doEvaluation(
+            UUID pricingTypeId, EvaluationRequestDTO data,
+            UUID managementEntity
+    );
 }

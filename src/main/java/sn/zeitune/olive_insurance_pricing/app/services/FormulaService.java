@@ -33,5 +33,5 @@ public interface FormulaService {
     boolean existsByUuid(UUID uuid);
 
     Formula getEntityByUuid(UUID uuid);
-    Formula getEffectiveEntityByPricingType(PricingType pricingType, UUID managementEntity);
+    Formula getAllEffectiveEntityByPricingType(PricingType pricingType, UUID managementEntity);
 }

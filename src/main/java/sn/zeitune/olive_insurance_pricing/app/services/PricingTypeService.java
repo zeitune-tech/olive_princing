@@ -2,6 +2,7 @@ package sn.zeitune.olive_insurance_pricing.app.services;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.PricingTypeRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.PricingTypeResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
@@ -16,7 +17,9 @@ public interface PricingTypeService {
     void delete(UUID id, UUID managementEntity);
     PricingTypeResponseDTO getById(UUID id, UUID managementEntity);
     PricingTypeResponseDTO getDetailedById(UUID id, UUID managementEntity);
-    List<PricingTypeResponseDTO> getByProduct(UUID productId, UUID managementEntity);
+    List<PricingTypeResponseDTO> getAllActiveByProduct(UUID productId, UUID managementEntity);
+    PricingTypeResponseDTO getPricingTypeForProduct(UUID productId, UUID managementEntity);
+
     Page<PricingTypeResponseDTO> getAllActive(Pageable pageable, UUID managementEntity);
     PricingType getEntityById(UUID id, UUID managementEntity);
 

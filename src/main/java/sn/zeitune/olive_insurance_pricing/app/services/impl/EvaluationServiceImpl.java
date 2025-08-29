@@ -3,15 +3,14 @@ package sn.zeitune.olive_insurance_pricing.app.services.impl;
 import lombok.RequiredArgsConstructor;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.evaluation.EvaluationRequestDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.PricingTypeResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.evaluation.EvaluationRequiredFieldsResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.evaluation.EvaluationResultResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
-import sn.zeitune.olive_insurance_pricing.app.entities.Rule;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
+import sn.zeitune.olive_insurance_pricing.app.entities.*;
 import sn.zeitune.olive_insurance_pricing.app.entities.condition.Condition;
 import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericCondition;
 import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectCondition;
@@ -19,8 +18,10 @@ import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
 import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
 import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldOptionValueMapper;
+import sn.zeitune.olive_insurance_pricing.app.repositories.PricingTypeRepository;
 import sn.zeitune.olive_insurance_pricing.app.services.EvaluationService;
 import sn.zeitune.olive_insurance_pricing.app.services.FormulaService;
+import sn.zeitune.olive_insurance_pricing.app.services.PricingTypeService;
 import sn.zeitune.olive_insurance_pricing.app.services.VariableItemService;
 import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 
@@ -37,6 +38,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private final FormulaService formulaService;
     private final VariableItemService variableItemService;
+    private final PricingTypeRepository pricingTypeRepository;
 
     private static abstract class GetRequiredFieldsForVariableItem {
 
@@ -403,11 +405,12 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
-    public EvaluationResultResponseDTO doEvaluation(EvaluationRequestDTO data) {
-        if (data.getId() == null)
+    public EvaluationResultResponseDTO doEvaluation(UUID pricingTypeId, EvaluationRequestDTO data, UUID managementEntity) {
+        if (pricingTypeId == null)
             throw new IllegalArgumentException("ID is required for evaluation");
+        PricingType pricingType = pricingTypeRepository.findByUuidAndManagementEntityAndDeletedIsFalse(pricingTypeId, managementEntity).orElse(null);
 
-        Formula formula = formulaService.getEntityByUuid(data.getId());
+        Formula formula = formulaService.getEffectiveEntityByPricingType(pricingType, managementEntity);
         EvaluateFormula evaluateFormula = new EvaluateFormula(formula, data.getFields());
         EvaluationResultResponseDTO result = new EvaluationResultResponseDTO(evaluateFormula.execute());
         System.err.println("Final expression to evaluate: " + formula.getExpression() + " => " + evaluateFormula.execute());

@@ -76,18 +76,30 @@ public class PricingTypeController {
     }
 
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<PricingTypeResponseDTO>> getByProduct(
+    public ResponseEntity<List<PricingTypeResponseDTO>> getAllActiveByProduct(
             @PathVariable UUID productId,
             Authentication authentication
     ) {
-        return ResponseEntity.ok(pricingTypeService.getByProduct(
+        return ResponseEntity.ok(pricingTypeService.getAllActiveByProduct(
                 productId,
                 ((Employee) authentication.getPrincipal()).getManagementEntity()
         ));
     }
 
+    @GetMapping("/product/effective/{productId}")
+    public ResponseEntity<PricingTypeResponseDTO> getEffectiveByProduct (
+            @PathVariable UUID productId,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(pricingTypeService.getPricingTypeForProduct(
+                productId,
+                ((Employee) authentication.getPrincipal()).getManagementEntity()
+        ));
+
+    }
+
     @GetMapping
-    public ResponseEntity<Page<PricingTypeResponseDTO>> getAll(
+    public ResponseEntity<Page<PricingTypeResponseDTO>> getAllActive(
             @PageableDefault(size = 20) Pageable pageable,
             Authentication authentication
     ) {

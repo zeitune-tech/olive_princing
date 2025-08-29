@@ -48,7 +48,7 @@ public class FormulaServiceImpl implements FormulaService {
             formula.getVariables().add(variableItemService.getEntityByUuid(variableId, managementEntity));
         }
 
-        formula.setPricingType( pricingTypeService.getEntityById( formulaRequestDTO.getPricingType(), formula.getManagementEntity()) );
+        formula.setPricingType( pricingTypeService.getEntityById( formulaRequestDTO.getPricingType(), managementEntity) );
 
         formula.setManagementEntity(managementEntity);
         // Vérifier la validité de l'expression
@@ -144,8 +144,14 @@ public class FormulaServiceImpl implements FormulaService {
 
     @Override
     public Formula getEntityByUuid(UUID uuid) {
-        Formula formula = formulaRepository.findByUuid(uuid)
+        return formulaRepository.findByUuid(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("Formule non trouvée avec l'UUID : " + uuid));
-        return formula;
+    }
+
+    @Override
+    public Formula getEffectiveEntityByPricingType(PricingType pricingType, UUID managementEntity) {
+        return formulaRepository.findByManagementEntityAndPricingType(managementEntity, pricingType)
+                .stream().findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Aucune formule trouvée pour ce type de tarification"));
     }
 }

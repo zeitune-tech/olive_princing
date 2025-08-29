@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.FormulaRequestDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FormulaResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
+import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
 
 import java.util.List;
 import java.util.UUID;
@@ -32,4 +33,5 @@ public interface FormulaService {
     boolean existsByUuid(UUID uuid);
 
     Formula getEntityByUuid(UUID uuid);
+    Formula getEffectiveEntityByPricingType(PricingType pricingType, UUID managementEntity);
 }

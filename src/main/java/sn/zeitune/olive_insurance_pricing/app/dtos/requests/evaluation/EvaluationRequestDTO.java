@@ -39,7 +39,7 @@ public class EvaluationRequestDTO {
 //        private UUID option;
 //    }
 
-    UUID id;
+//    UUID id;
     Map<String, Object> fields = new HashMap<>();
 
 }

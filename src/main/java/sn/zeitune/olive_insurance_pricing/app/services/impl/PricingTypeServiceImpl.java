@@ -4,6 +4,7 @@ import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.zeitune.olive_insurance_pricing.app.dtos.requests.PricingTypeRequestDTO;
@@ -35,7 +36,7 @@ public class PricingTypeServiceImpl implements PricingTypeService {
 
     @Override
     public PricingTypeResponseDTO create(PricingTypeRequestDTO request, UUID managementEntity) {
-        if (pricingTypeRepository.existsByNameAndProduct(request.getName(), request.getProduct())) {
+        if (pricingTypeRepository.existsByNameAndProductAndDeletedIsFalse(request.getName(), request.getProduct())) {
             throw new ValidationException("Un type de tarification avec ce nom existe déjà pour ce produit");
         }
 
@@ -67,7 +68,7 @@ public class PricingTypeServiceImpl implements PricingTypeService {
 
     @Override
     public PricingTypeResponseDTO update(UUID id, PricingTypeRequestDTO request, UUID managementEntity) {
-        PricingType updatingPricingType = pricingTypeRepository.findByUuidAndManagementEntity(id, managementEntity)
+        PricingType updatingPricingType = pricingTypeRepository.findByUuidAndManagementEntityAndDeletedIsFalse(id, managementEntity)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
 
         PricingType effectivePricingType = pricingTypeRepository.findByManagementEntityAndProductAndEffectiveIsTrue(managementEntity, request.getProduct())
@@ -89,7 +90,7 @@ public class PricingTypeServiceImpl implements PricingTypeService {
 
     @Override
     public void delete(UUID id, UUID managementEntity) {
-        PricingType pricingType = pricingTypeRepository.findByUuid(id)
+        PricingType pricingType = pricingTypeRepository.findByUuidAndManagementEntityAndDeletedIsFalse(id, managementEntity)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
         pricingType.setEffective(false);
         pricingType.setDeleted(true);
@@ -98,25 +99,33 @@ public class PricingTypeServiceImpl implements PricingTypeService {
 
     @Override
     public PricingTypeResponseDTO getById(UUID id, UUID managementEntity) {
-        PricingType pricingType = pricingTypeRepository.findByUuidAndManagementEntity(id, managementEntity)
+        PricingType pricingType = pricingTypeRepository.findByUuidAndManagementEntityAndDeletedIsFalse(id, managementEntity)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
         return PricingTypeMapper.map(pricingType, false);
     }
 
     @Override
     public PricingTypeResponseDTO getDetailedById(UUID id, UUID managementEntity) {
-        PricingType pricingType = pricingTypeRepository.findByUuidAndManagementEntity(id, managementEntity)
+        PricingType pricingType = pricingTypeRepository.findByUuidAndManagementEntityAndDeletedIsFalse(id, managementEntity)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
 
         return PricingTypeDetailedMapper.map(pricingType, variableItemRepository.findAllByPricingTypeAndManagementEntity(pricingType, managementEntity));
     }
 
     @Override
-    public List<PricingTypeResponseDTO> getByProduct(UUID productId, UUID managementEntity) {
-        return pricingTypeRepository.findByProduct(productId)
+    public List<PricingTypeResponseDTO> getAllActiveByProduct(UUID productId, UUID managementEntity) {
+        return pricingTypeRepository.findAllByManagementEntityAndProductAndDeletedIsFalse(managementEntity, productId)
                 .stream()
                 .map(pricingType ->  PricingTypeMapper.map(pricingType, false))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public PricingTypeResponseDTO getPricingTypeForProduct(UUID productId, UUID managementEntity) {
+        PricingType pricingType = pricingTypeRepository.findByManagementEntityAndProductAndEffectiveIsTrue(managementEntity, productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Aucun type de tarification effectif trouvé pour ce produit"));
+        return PricingTypeMapper.map(pricingType, false);
+
     }
 
     @Override
@@ -128,7 +137,9 @@ public class PricingTypeServiceImpl implements PricingTypeService {
 
     @Override
     public PricingType getEntityById(UUID id, UUID managementEntity) {
-        return pricingTypeRepository.findByUuidAndManagementEntity(id, managementEntity)
+        System.err.println("getEntityById id: " + id);
+        System.err.println("getEntityById ma: " + managementEntity);
+        return pricingTypeRepository.findByUuidAndManagementEntityAndDeletedIsFalse(id, managementEntity)
                 .orElseThrow(() -> new ResourceNotFoundException("Type de tarification non trouvé"));
     }
 }

@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -33,6 +34,10 @@ public abstract class BaseEntity {
 
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    private boolean deleted = false;
+
+
 
     @PrePersist
     protected void onCreate() {

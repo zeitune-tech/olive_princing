@@ -8,8 +8,8 @@ import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import sn.zeitune.olive_insurance_pricing.app.clients.AdministrationClient;
-import sn.zeitune.olive_insurance_pricing.app.dtos.externals.ManagementEntityResponse;
-import sn.zeitune.olive_insurance_pricing.app.dtos.externals.ProductResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.externals.ManagementEntityExternalDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.externals.ProductExternalDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,58 +38,58 @@ public class AdministrationClientImpl  implements AdministrationClient {
     }
 
     @Override
-    public List<ProductResponseDTO> getByManagementEntity(UUID uuid) {
+    public List<ProductExternalDTO> getByManagementEntity(UUID uuid) {
         return administrationWebClient.get()
                 .uri("/interservices/products/{uuid}", uuid)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, this::handleError)
-                .bodyToFlux(ProductResponseDTO.class)
+                .bodyToFlux(ProductExternalDTO.class)
                 .collectList()
                 .block();
     }
 
     @Override
-    public List<ManagementEntityResponse> getManagementEntities(List<UUID> uuids) {
+    public List<ManagementEntityExternalDTO> getManagementEntities(List<UUID> uuids) {
         return administrationWebClient.post()
                 .uri("/interservices/management-entities")
                 .bodyValue(uuids)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, this::handleError)
-                .bodyToFlux(ManagementEntityResponse.class)
+                .bodyToFlux(ManagementEntityExternalDTO.class)
                 .collectList()
                 .block();
     }
 
     @Override
-    public List<ProductResponseDTO> getProductsByIds(List<UUID> uuids) {
+    public List<ProductExternalDTO> getProductsByIds(List<UUID> uuids) {
         return administrationWebClient.post()
                 .uri("/interservices/products")
                 .bodyValue(uuids)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, this::handleError)
-                .bodyToFlux(ProductResponseDTO.class)
+                .bodyToFlux(ProductExternalDTO.class)
                 .collectList()
                 .block();
     }
 
     @Override
-    public Optional<ManagementEntityResponse> findManagementEntityByUuid(UUID ownerUuid) {
+    public Optional<ManagementEntityExternalDTO> findManagementEntityByUuid(UUID ownerUuid) {
         return administrationWebClient.get()
                 .uri("/interservices/management-entities/{uuid}", ownerUuid)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, this::handleError)
-                .bodyToMono(ManagementEntityResponse.class)
+                .bodyToMono(ManagementEntityExternalDTO.class)
                 .blockOptional();
     }
 
     @Override
-    public List<ManagementEntityResponse> findManagementEntityByUuidIn(Set<UUID> companyUuids) {
+    public List<ManagementEntityExternalDTO> findManagementEntityByUuidIn(Set<UUID> companyUuids) {
         return administrationWebClient.post()
                 .uri("/interservices/management-entities/find-by-uuids")
                 .bodyValue(companyUuids)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, this::handleError)
-                .bodyToFlux(ManagementEntityResponse.class)
+                .bodyToFlux(ManagementEntityExternalDTO.class)
                 .collectList()
                 .block();
     }

@@ -1,9 +1,9 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl.evaluation.requiredFieldsForVariableItem;
 
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.evaluation.EvaluationRequiredFieldsResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
-import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
-import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldOptionValueMapper;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.VariableItem;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.field.SelectField;
+import sn.zeitune.olive_insurance_pricing.app.mappers.variableItem.field.SelectFieldOptionValueMapper;
 import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 
 import java.util.List;

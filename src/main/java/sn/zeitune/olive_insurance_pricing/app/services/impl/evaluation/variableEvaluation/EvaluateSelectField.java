@@ -1,7 +1,7 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl.evaluation.variableEvaluation;
 
-import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
-import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.field.SelectField;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.field.SelectFieldOptionValue;
 
 import java.util.Map;
 

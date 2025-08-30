@@ -1,10 +1,10 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl.evaluation.requiredFieldsForVariableItem;
 
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.evaluation.EvaluationRequiredFieldsResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericCondition;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.variableCondition.VariableCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.VariableItem;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.variableCondition.condition.NumericCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.variableCondition.condition.SelectCondition;
 
 import java.util.ArrayList;
 import java.util.List;

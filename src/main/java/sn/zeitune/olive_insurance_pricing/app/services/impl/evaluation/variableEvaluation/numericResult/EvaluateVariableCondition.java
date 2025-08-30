@@ -1,11 +1,11 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl.evaluation.variableEvaluation.numericResult;
 
-import sn.zeitune.olive_insurance_pricing.app.entities.Rule;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.Condition;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.NumericCondition;
-import sn.zeitune.olive_insurance_pricing.app.entities.condition.SelectCondition;
-import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectFieldOptionValue;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.variableCondition.Rule;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.variableCondition.VariableCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.variableCondition.condition.Condition;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.variableCondition.condition.NumericCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.variableCondition.condition.SelectCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.field.SelectFieldOptionValue;
 import sn.zeitune.olive_insurance_pricing.app.services.impl.evaluation.variableEvaluation.EvaluateSelectField;
 
 import java.util.Map;

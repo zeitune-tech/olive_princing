@@ -22,11 +22,8 @@ public class PricingTypeResponseDTO {
     private UUID product;
     private  UUID branch;
     private LocalDate dateEffective;
-    private boolean effective;
-
     @Schema(description = "Date de création", example = "2023-10-01T12:00:00Z")
     Instant createdAt;
-
     @Schema(description = "Date de mise à jour", example = "2023-10-01T12:00:00Z")
     Instant updatedAt;
 }

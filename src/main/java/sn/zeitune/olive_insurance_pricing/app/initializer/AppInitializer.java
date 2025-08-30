@@ -5,8 +5,7 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.ConstantRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.services.ConstantService;
+import sn.zeitune.olive_insurance_pricing.app.services.variableItem.ConstantService;
 import sn.zeitune.olive_insurance_pricing.enums.FieldType;
 
 @Component

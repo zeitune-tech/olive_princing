@@ -91,11 +91,10 @@ public class PricingTypeController {
             @PathVariable UUID productId,
             Authentication authentication
     ) {
-        return ResponseEntity.ok(pricingTypeService.getPricingTypeForProduct(
+        return ResponseEntity.ok(pricingTypeService.getEffectivePricingTypeForProduct(
                 productId,
                 ((Employee) authentication.getPrincipal()).getManagementEntity()
         ));
-
     }
 
     @GetMapping

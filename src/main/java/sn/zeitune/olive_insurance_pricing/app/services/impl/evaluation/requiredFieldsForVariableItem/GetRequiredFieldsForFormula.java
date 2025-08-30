@@ -1,8 +1,8 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl.evaluation.requiredFieldsForVariableItem;
 
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.evaluation.EvaluationRequiredFieldsResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.Formula;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.VariableItem;
 
 import java.util.ArrayList;
 import java.util.List;

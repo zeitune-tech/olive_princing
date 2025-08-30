@@ -1,19 +1,16 @@
 package sn.zeitune.olive_insurance_pricing.app.mappers;
 
-import sn.zeitune.olive_insurance_pricing.app.dtos.requests.PricingTypeRequestDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.FormulaResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.variableItem.FormulaResponseDTO;
 import sn.zeitune.olive_insurance_pricing.app.dtos.responses.PricingTypeDetailedResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.PricingTypeResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.VariableItemResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.FieldResponseDTO;
-import sn.zeitune.olive_insurance_pricing.app.entities.Constant;
-import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
+import sn.zeitune.olive_insurance_pricing.app.dtos.responses.variableItem.VariableItemResponseDTO;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.Constant;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.Formula;
 import sn.zeitune.olive_insurance_pricing.app.entities.PricingType;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
-import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
-import sn.zeitune.olive_insurance_pricing.app.entities.field.SelectField;
-import sn.zeitune.olive_insurance_pricing.app.mappers.field.NumericFieldMapper;
-import sn.zeitune.olive_insurance_pricing.app.mappers.field.SelectFieldMapper;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.VariableItem;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.field.NumericField;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.field.SelectField;
+import sn.zeitune.olive_insurance_pricing.app.mappers.variableItem.FormulaMapper;
+import sn.zeitune.olive_insurance_pricing.app.mappers.variableItem.VariableItemMapper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,7 +27,7 @@ public class PricingTypeDetailedMapper {
     private static Map<UUID, List<FormulaResponseDTO>> getFormulaMap(List<VariableItem> variableItemList) {
         return variableItemList.stream()
                 .filter(variableItem -> variableItem instanceof Formula)
-                .map(variableItem -> FormulaMapper.map((Formula) variableItem))
+                .map(variableItem -> FormulaMapper.getInstance().map((Formula) variableItem))
                 .collect(Collectors.groupingBy(FormulaResponseDTO::getCoverage));
     }
 

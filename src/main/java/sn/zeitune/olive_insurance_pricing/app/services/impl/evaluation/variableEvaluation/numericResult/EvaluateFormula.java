@@ -2,10 +2,10 @@ package sn.zeitune.olive_insurance_pricing.app.services.impl.evaluation.variable
 
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
-import sn.zeitune.olive_insurance_pricing.app.entities.Formula;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableCondition;
-import sn.zeitune.olive_insurance_pricing.app.entities.VariableItem;
-import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.Formula;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.variableCondition.VariableCondition;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.VariableItem;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.field.NumericField;
 
 import java.util.Map;
 

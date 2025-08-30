@@ -2,20 +2,19 @@ package sn.zeitune.olive_insurance_pricing.app.dtos.responses.evaluation;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import sn.zeitune.olive_insurance_pricing.app.dtos.responses.field.SelectFieldOptionValueResponseDTO;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
+@Builder
 @Data
 @Schema(description = "DTO de réponse de l'évaluation d'une formule")
 public class EvaluationResultResponseDTO {
 
     Double value;
+    UUID coverage;
 
     public static class EvaluationResultVariable {
         Double value;

@@ -30,7 +30,6 @@ public class PricingTypeMapper {
         pricingTypeResponseDTO.setProduct(pricingType.getProduct());
         pricingTypeResponseDTO.setBranch(pricingType.getBranch());
         pricingTypeResponseDTO.setDateEffective(pricingType.getDateEffective());
-        pricingTypeResponseDTO.setEffective(pricingType.isEffective());
         pricingTypeResponseDTO.setCreatedAt(pricingType.getCreatedAt());
         pricingTypeResponseDTO.setUpdatedAt(pricingType.getUpdatedAt());
         return pricingTypeResponseDTO;

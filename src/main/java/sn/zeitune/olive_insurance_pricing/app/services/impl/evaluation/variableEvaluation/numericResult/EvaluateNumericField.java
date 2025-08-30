@@ -1,6 +1,6 @@
 package sn.zeitune.olive_insurance_pricing.app.services.impl.evaluation.variableEvaluation.numericResult;
 
-import sn.zeitune.olive_insurance_pricing.app.entities.field.NumericField;
+import sn.zeitune.olive_insurance_pricing.app.entities.variableItem.field.NumericField;
 
 import java.util.Map;
 

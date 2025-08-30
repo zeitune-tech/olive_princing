@@ -1,6 +1,5 @@
 package sn.zeitune.olive_insurance_pricing.security;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -13,12 +12,11 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import sn.zeitune.olive_insurance_pricing.enums.UserRole;
-import sn.zeitune.olive_insurance_pricing.security.Admin;
-import sn.zeitune.olive_insurance_pricing.security.Employee;
 import sn.zeitune.olive_insurance_pricing.security.JwtService;
 
 import java.io.IOException;
@@ -61,7 +59,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String username = jwtService.extractUsername(token, userType);
             Claims claims = jwtService.extractAllClaims(token, userType);
             List<SimpleGrantedAuthority> authorities = jwtService.extractAuthorities(claims);
-
             UserDetails userDetails;
             if (userType == UserRole.ADMIN) {
                 userDetails = Admin.builder()

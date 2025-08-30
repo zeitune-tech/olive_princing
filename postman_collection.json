@@ -1,0 +1,570 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+		"name": "Olive Insurance Pricing API",
+		"description": "API complète pour le système de tarification d'assurance Olive. Cette collection contient tous les endpoints pour gérer les règles de tarification, les formules de calcul, les champs de saisie, et les conditions d'évaluation.",
+		"version": "1.0.0",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pricing",
+			"description": "Endpoints pour la tarification d'assurance et la santé du service.",
+			"item": [
+				{
+					"name": "Health Check",
+					"description": "Vérifie l'état de santé du service de tarification. Doit retourner un statut 200 OK si le service est opérationnel.",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/pricing/health"
+					}
+				},
+				{
+					"name": "Service Info",
+					"description": "Récupère les informations de base sur le service, comme la version de l'application.",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/pricing/info"
+					}
+				}
+			]
+		},
+		{
+			"name": "App",
+			"item": [
+				{
+					"name": "Numerical Conditions",
+					"description": "Gère les conditions logiques (ex: age > 18) qui sont utilisées pour construire des règles de tarification complexes.",
+					"item": [
+						{
+							"name": "Create Condition",
+							"description": "Crée une nouvelle condition. Une condition est composée d'un champ, d'un opérateur et d'une valeur.",
+							"request": {
+								"method": "POST",
+								"url": "{{baseUrl}}/app/numerical-conditions",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"value\": 100.5,\n  \"fieldId\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"operator\": \"EQUALS\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Get Condition By Id",
+							"description": "Récupère une condition spécifique par son identifiant unique (ID).",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/numerical-conditions/1"}
+						},
+						{
+							"name": "Get All Conditions",
+							"description": "Récupère la liste de toutes les conditions existantes.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/numerical-conditions"}
+						},
+						{
+							"name": "Get By Value",
+							"description": "Recherche et retourne les conditions correspondant à une valeur spécifique.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/numerical-conditions/by-value/100"}
+						},
+						{
+							"name": "Get By Operator",
+							"description": "Recherche et retourne les conditions utilisant un opérateur spécifique (ex: EQUALS, GREATER_THAN).",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/numerical-conditions/by-operator/EQUAL"}
+						},
+						{
+							"name": "Get By Field",
+							"description": "Recherche et retourne les conditions associées à un champ spécifique par son ID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/numerical-conditions/by-field/1"}
+						},
+						{
+							"name": "Update Condition",
+							"description": "Met à jour une condition existante en utilisant son ID.",
+							"request": {
+								"method": "PUT",
+								"url": "{{baseUrl}}/app/numerical-conditions/1",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"value\": 200.0,\n  \"fieldId\": \"123e4567-e89b-12d3-a456-426614174001\",\n  \"operator\": \"GREATER_THAN\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Delete Condition",
+							"description": "Supprime une condition par son ID. Attention, cette action est irréversible.",
+							"request": {"method": "DELETE", "url": "{{baseUrl}}/app/numerical-conditions/1"}
+						}
+					]
+				},
+				{
+					"name": "Constants",
+					"description": "Gère les constantes numériques ou textuelles (ex: taux de taxe, valeur fixe) utilisées dans les calculs de tarification.",
+					"item": [
+						{
+							"name": "Create Constant",
+							"description": "Crée une nouvelle constante avec une étiquette, un nom de variable, une valeur et des métadonnées associées.",
+							"request": {
+								"method": "POST",
+								"url": "{{baseUrl}}/app/constants",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"My Constant\",\n  \"description\": \"Description of my constant\",\n  \"variableName\": \"MY_CONSTANT\",\n  \"value\": 123.45,\n  \"toReturn\": true,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Get Constant By Id",
+							"description": "Récupère une constante par son identifiant unique (UUID).",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/constants/uuid-goes-here"}
+						},
+						{
+							"name": "Get All Constants",
+							"description": "Récupère la liste de toutes les constantes.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/constants"}
+						},
+						{
+							"name": "Get Constants By Value",
+							"description": "Recherche des constantes par leur valeur exacte.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/constants/by-value/123.45"}
+						},
+						{
+							"name": "Get Constants By Value Range",
+							"description": "Recherche des constantes dont la valeur se situe dans une plage spécifiée (min/max).",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/constants/by-value-range?minValue=100&maxValue=200"}
+						},
+						{
+							"name": "Search Constants By Label",
+							"description": "Recherche des constantes dont l'étiquette (label) contient le texte fourni.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/constants/search?label=My"}
+						},
+						{
+							"name": "Update Constant",
+							"description": "Met à jour une constante existante identifiée par son UUID.",
+							"request": {
+								"method": "PUT",
+								"url": "{{baseUrl}}/app/constants/uuid-goes-here",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Updated Constant\",\n  \"description\": \"Updated description\",\n  \"variableName\": \"UPDATED_CONSTANT\",\n  \"value\": 543.21,\n  \"toReturn\": false,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Delete Constant",
+							"description": "Supprime une constante par son UUID. Attention, cette action est irréversible.",
+							"request": {"method": "DELETE", "url": "{{baseUrl}}/app/constants/uuid-goes-here"}
+						}
+					]
+				},
+				{
+					"name": "Select Field Option Values",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"url": "{{baseUrl}}/app/select-field-option-values",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Car\",\n  \"name\": \"car\",\n  \"group\": \"vehicle_type\"\n}"
+								}
+							}
+						},
+						{"name": "Get By Id", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-option-values/uuid-goes-here"}},
+						{"name": "Get All", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-option-values"}},
+						{"name": "Get By Name", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-option-values/by-name/some-name"}},
+						{"name": "Get By Group", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-option-values/by-group/some-group"}},
+						{"name": "Search By Label", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-option-values/search?label=some-label"}},
+						{"name": "Search By Name", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-option-values/search-name?name=some-name"}},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"url": "{{baseUrl}}/app/select-field-option-values/uuid-goes-here",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Updated Car\",\n  \"name\": \"updated_car\",\n  \"group\": \"updated_vehicle_type\"\n}"
+								}
+							}
+						},
+						{"name": "Delete", "request": {"method": "DELETE", "url": "{{baseUrl}}/app/select-field-option-values/uuid-goes-here"}}
+					]
+				},
+				{
+					"name": "Select Field Options",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"method": "POST",
+								"url": "{{baseUrl}}/app/select-field-options",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Vehicle Options\",\n  \"name\": \"vehicle_options\",\n  \"description\": \"Available options for vehicle types\",\n  \"possibilities\": [\n    \"123e4567-e89b-12d3-a456-426614174000\",\n    \"987fcdeb-51a2-43d7-b789-123456789abc\"\n  ]\n}"
+								}
+							}
+						},
+						{"name": "Get By Id", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-options/1"}},
+						{"name": "Get All", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-options"}},
+						{"name": "Get By Name", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-options/by-name/some-name"}},
+						{"name": "Search By Name", "request": {"method": "GET", "url": "{{baseUrl}}/app/select-field-options/search?name=some-name"}},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PUT",
+								"url": "{{baseUrl}}/app/select-field-options/uuid-goes-here",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Updated Vehicle Options\",\n  \"name\": \"updated_vehicle_options\",\n  \"description\": \"Updated available options for vehicle types\",\n  \"possibilities\": [\n    \"123e4567-e89b-12d3-a456-426614174000\"\n  ]\n}"
+								}
+							}
+						},
+						{"name": "Delete", "request": {"method": "DELETE", "url": "{{baseUrl}}/app/select-field-options/1"}}
+					]
+				},
+				{
+					"name": "Formulas",
+					"description": "Gère les formules de calcul mathématiques (ex: prime = base * facteur) qui sont au cœur du moteur de tarification.",
+					"item": [
+						{
+							"name": "Create Formula",
+							"description": "Crée une nouvelle formule de calcul. L'expression peut contenir des noms de variables d'autres objets (Constantes, Champs, etc.).",
+							"request": {
+								"method": "POST",
+								"url": "{{baseUrl}}/app/formulas",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Premium Calculation\",\n  \"description\": \"Formula to calculate insurance premium\",\n  \"variableName\": \"PREMIUM_CALC\",\n  \"expression\": \"basePremium * riskFactor + fixedCost\",\n  \"toReturn\": true,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Get Formula By Id",
+							"description": "Récupère une formule par son ID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/formulas/1"}
+						},
+						{
+							"name": "Get All Formulas",
+							"description": "Récupère la liste de toutes les formules.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/formulas"}
+						},
+						{
+							"name": "Get Formulas By Product",
+							"description": "Récupère toutes les formules associées à un produit spécifique via son UUID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/formulas/by-product/uuid-goes-here"}
+						},
+						{
+							"name": "Search Formulas By Label",
+							"description": "Recherche des formules dont l'étiquette contient le texte fourni.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/formulas/search?label=some-label"}
+						},
+						{
+							"name": "Search Formulas By Expression",
+							"description": "Recherche des formules dont l'expression mathématique contient le texte fourni.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/formulas/search-expression?expression=some-expression"}
+						},
+						{
+							"name": "Update Formula",
+							"description": "Met à jour une formule existante via son ID.",
+							"request": {
+								"method": "PUT",
+								"url": "{{baseUrl}}/app/formulas/1",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Updated Premium Calculation\",\n  \"description\": \"Updated formula to calculate insurance premium\",\n  \"variableName\": \"UPDATED_PREMIUM_CALC\",\n  \"expression\": \"basePremium * updatedRiskFactor + newFixedCost\",\n  \"toReturn\": false,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Delete Formula",
+							"description": "Supprime une formule par son ID. Attention, cette action est irréversible.",
+							"request": {"method": "DELETE", "url": "{{baseUrl}}/app/formulas/1"}
+						}
+					]
+				},
+				{
+					"name": "Numeric Fields",
+					"description": "Gère les champs de saisie numériques (ex: âge, kilométrage) qui servent d'entrées pour les calculs de tarification.",
+					"item": [
+						{
+							"name": "Create Numeric Field",
+							"description": "Crée un nouveau champ numérique.",
+							"request": {
+								"method": "POST",
+								"url": "{{baseUrl}}/app/numeric-fields",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Age Field\",\n  \"description\": \"Numeric field for age input\",\n  \"variableName\": \"AGE_FIELD\",\n  \"toReturn\": true,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Get Numeric Field By Id",
+							"description": "Récupère un champ numérique par son UUID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/numeric-fields/uuid-goes-here"}
+						},
+						{
+							"name": "Get All Numeric Fields",
+							"description": "Récupère la liste de tous les champs numériques.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/numeric-fields"}
+						},
+						{
+							"name": "Get Numeric Fields By Product",
+							"description": "Récupère les champs numériques associés à un produit spécifique via son UUID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/numeric-fields/by-product/uuid-goes-here"}
+						},
+						{
+							"name": "Search Numeric Fields By Label",
+							"description": "Recherche des champs numériques dont l'étiquette contient le texte fourni.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/numeric-fields/search?label=some-label"}
+						},
+						{
+							"name": "Update Numeric Field",
+							"description": "Met à jour un champ numérique existant via son UUID.",
+							"request": {
+								"method": "PUT",
+								"url": "{{baseUrl}}/app/numeric-fields/uuid-goes-here",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Updated Age Field\",\n  \"description\": \"Updated numeric field for age input\",\n  \"variableName\": \"UPDATED_AGE_FIELD\",\n  \"toReturn\": false,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Delete Numeric Field",
+							"description": "Supprime un champ numérique par son UUID. Attention, cette action est irréversible.",
+							"request": {"method": "DELETE", "url": "{{baseUrl}}/app/numeric-fields/uuid-goes-here"}
+						}
+					]
+				},
+				{
+					"name": "Rules",
+					"description": "Gère les règles de tarification qui déterminent les montants en fonction de conditions spécifiques.",
+					"item": [
+						{
+							"name": "Create Rule",
+							"description": "Crée une nouvelle règle de tarification avec ses conditions associées.",
+							"request": {
+								"method": "POST",
+								"url": "{{baseUrl}}/app/rules",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Age Rule\",\n  \"description\": \"Rule for age-based pricing\",\n  \"variableName\": \"AGE_RULE\",\n  \"value\": 25.0,\n  \"toReturn\": true,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"conditions\": [\n    {\n      \"value\": 18.0,\n      \"fieldId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"operator\": \"GREATER_OR_EQUAL\"\n    }\n  ]\n}"
+								}
+							}
+						},
+						{
+							"name": "Get Rule By Id",
+							"description": "Récupère une règle par son UUID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/rules/uuid-goes-here"}
+						},
+						{
+							"name": "Get All Rules",
+							"description": "Récupère la liste de toutes les règles.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/rules"}
+						},
+						{
+							"name": "Get Rules By Value",
+							"description": "Récupère les règles ayant une valeur spécifique.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/rules/by-value/100"}
+						},
+						{
+							"name": "Get Rules By Product",
+							"description": "Récupère les règles associées à un produit via son UUID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/rules/by-product/uuid-goes-here"}
+						},
+						{
+							"name": "Search Rules By Label",
+							"description": "Recherche des règles dont l'étiquette contient le texte fourni.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/rules/search?label=some-label"}
+						},
+						{
+							"name": "Update Rule",
+							"description": "Met à jour une règle existante via son UUID.",
+							"request": {
+								"method": "PUT",
+								"url": "{{baseUrl}}/app/rules/uuid-goes-here",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Updated Age Rule\",\n  \"description\": \"Updated rule for age-based pricing\",\n  \"variableName\": \"UPDATED_AGE_RULE\",\n  \"value\": 30.0,\n  \"toReturn\": false,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"conditions\": [\n    {\n      \"value\": 21.0,\n      \"fieldId\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"operator\": \"GREATER_THAN\"\n    }\n  ]\n}"
+								}
+							}
+						},
+						{
+							"name": "Delete Rule",
+							"description": "Supprime une règle par son UUID. Attention, cette action est irréversible.",
+							"request": {"method": "DELETE", "url": "{{baseUrl}}/app/rules/uuid-goes-here"}
+						}
+					]
+				},
+				{
+					"name": "Select Fields",
+					"description": "Gère les champs de sélection (listes déroulantes) utilisés dans les formulaires de tarification.",
+					"item": [
+						{
+							"name": "Create Select Field",
+							"description": "Crée un nouveau champ de sélection.",
+							"request": {
+								"method": "POST",
+								"url": "{{baseUrl}}/app/select-fields",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Vehicle Type\",\n  \"description\": \"Select field for vehicle type\",\n  \"variableName\": \"VEHICLE_TYPE\",\n  \"toReturn\": true,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"options\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Get Select Field By Id",
+							"description": "Récupère un champ de sélection par son UUID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/select-fields/uuid-goes-here"}
+						},
+						{
+							"name": "Get All Select Fields",
+							"description": "Récupère la liste de tous les champs de sélection.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/select-fields"}
+						},
+						{
+							"name": "Get Select Fields By Product",
+							"description": "Récupère les champs de sélection associés à un produit via son UUID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/select-fields/by-product/uuid-goes-here"}
+						},
+						{
+							"name": "Search Select Fields By Label",
+							"description": "Recherche des champs de sélection dont l'étiquette contient le texte fourni.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/select-fields/search?label=some-label"}
+						},
+						{
+							"name": "Update Select Field",
+							"description": "Met à jour un champ de sélection existant via son UUID.",
+							"request": {
+								"method": "PUT",
+								"url": "{{baseUrl}}/app/select-fields/uuid-goes-here",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Updated Vehicle Type\",\n  \"description\": \"Updated select field for vehicle type\",\n  \"variableName\": \"UPDATED_VEHICLE_TYPE\",\n  \"toReturn\": false,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"options\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+								}
+							}
+						},
+						{
+							"name": "Delete Select Field",
+							"description": "Supprime un champ de sélection par son UUID. Attention, cette action est irréversible.",
+							"request": {"method": "DELETE", "url": "{{baseUrl}}/app/select-fields/uuid-goes-here"}
+						}
+					]
+				},
+				{
+					"name": "Variable Conditions",
+					"description": "Gère les conditions variables qui regroupent plusieurs règles pour évaluer des scénarios complexes.",
+					"item": [
+						{
+							"name": "Create Variable Condition",
+							"description": "Crée une nouvelle condition variable en associant un ensemble de règles.",
+							"request": {
+								"method": "POST",
+								"url": "{{baseUrl}}/app/variable-conditions",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Age Condition\",\n  \"description\": \"Variable condition for age verification\",\n  \"variableName\": \"AGE_CONDITION\",\n  \"toReturn\": true,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"ruleIds\": [\n    \"123e4567-e89b-12d3-a456-426614174000\",\n    \"987fcdeb-51a2-43d7-b789-123456789abc\"\n  ]\n}"
+								}
+							}
+						},
+						{
+							"name": "Get Variable Condition By Id",
+							"description": "Récupère une condition variable par son UUID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/variable-conditions/uuid-goes-here"}
+						},
+						{
+							"name": "Get All Variable Conditions",
+							"description": "Récupère la liste de toutes les conditions variables.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/variable-conditions"}
+						},
+						{
+							"name": "Get Variable Conditions By Product",
+							"description": "Récupère les conditions variables associées à un produit via son UUID.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/variable-conditions/by-product/uuid-goes-here"}
+						},
+						{
+							"name": "Search Variable Conditions By Label",
+							"description": "Recherche des conditions variables dont l'étiquette contient le texte fourni.",
+							"request": {"method": "GET", "url": "{{baseUrl}}/app/variable-conditions/search?label=some-label"}
+						},
+						{
+							"name": "Update Variable Condition",
+							"description": "Met à jour une condition variable existante via son UUID.",
+							"request": {
+								"method": "PUT",
+								"url": "{{baseUrl}}/app/variable-conditions/uuid-goes-here",
+								"header": [
+									{"key": "Content-Type", "value": "application/json"}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"label\": \"Updated Age Condition\",\n  \"description\": \"Updated variable condition for age verification\",\n  \"variableName\": \"UPDATED_AGE_CONDITION\",\n  \"toReturn\": false,\n  \"managementEntity\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"product\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"coverage\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"ruleIds\": [\n    \"123e4567-e89b-12d3-a456-426614174000\"\n  ]\n}"
+								}
+							}
+						},
+						{
+							"name": "Delete Variable Condition",
+							"description": "Supprime une condition variable par son UUID. Attention, cette action est irréversible.",
+							"request": {"method": "DELETE", "url": "{{baseUrl}}/app/variable-conditions/uuid-goes-here"}
+						}
+					]
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

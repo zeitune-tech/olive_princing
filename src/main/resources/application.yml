@@ -1,0 +1,78 @@
+server:
+  port: 8060
+  servlet:
+    context-path: /api/v1/
+
+services:
+  olive-insurance-auth-service:
+    base-url: http://localhost:8080/auth
+  olive-insurance-administration-service:
+    base-url: http://localhost:8080/admin
+  olive-insurance-insured-service:
+    base-url: http://localhost:8080/insured
+  olive-insurance-pricing-service:
+    base-url: http://localhost:8080/pricing
+  olive-insurance-attestation-service:
+    base-url: http://localhost:8080/attestations
+  olive-insurance-settings-service:
+    base-url: http://localhost:8080/settings
+  olive-insurance-exploitation-service:
+    base-url: http://localhost:8080/exploitation
+    
+spring:
+  application:
+    name: olive-insurance-princing-service
+  config:
+    import: "optional:consul:"
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5680/pricing_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:olive_password_2024}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  cloud:
+    consul:
+      host: ${SPRING_CLOUD_CONSUL_HOST:localhost}
+      port: ${SPRING_CLOUD_CONSUL_PORT:8500}
+      discovery:
+        register: ${SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER:true}
+        deregister: ${SPRING_CLOUD_CONSUL_DISCOVERY_DEREGISTER:true}
+        health-check-path: ${SPRING_CLOUD_CONSUL_DISCOVERY_HEALTHCHECKPATH:/api/v1/actuator/health}
+        prefer-ip-address: ${SPRING_CLOUD_CONSUL_DISCOVERY_PREFER_IP_ADDRESS:true}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+
+logging:
+  level:
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.security: DEBUG
+    sn.zeitune: DEBUG
+
+jwt:
+  user:
+    public-key: classpath:keys/public-user.pem
+    expiration: 900000 # 15 min
+
+  admin:
+    public-key: classpath:keys/public-admin.pem
+    expiration: 300000 # 5 min

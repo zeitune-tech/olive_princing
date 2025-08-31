@@ -22,22 +22,15 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "entite_base_seq")
     @SequenceGenerator(name = "entite_base_seq", sequenceName = "entite_base_sequence", allocationSize = 1)
     private Long id;
-
     @Column(name = "uuid", nullable = false, unique = true, updatable = false)
     private UUID uuid;
-
     @Column(name = "management_entity")
     private UUID managementEntity;
-
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
-
     @Column(name = "updated_at")
     private Instant updatedAt;
-
     private boolean deleted = false;
-
-
 
     @PrePersist
     protected void onCreate() {

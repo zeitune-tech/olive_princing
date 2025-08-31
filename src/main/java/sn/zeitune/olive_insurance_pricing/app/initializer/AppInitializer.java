@@ -14,16 +14,13 @@ public class AppInitializer implements CommandLineRunner {
 
     private final ConstantService constantService;
 
-
     @Override
     public void run(String... args) {
         try {
-            testFieldType();
         }catch (Exception e){}
     }
 
     void testExpression() {
-
         try {
             Expression expression = new ExpressionBuilder("x + y * 3 +").variables("x", "y").build();
             System.out.println("Expression valide");

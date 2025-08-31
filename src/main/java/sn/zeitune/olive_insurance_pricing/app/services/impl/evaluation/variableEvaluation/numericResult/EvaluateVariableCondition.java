@@ -27,95 +27,67 @@ public class EvaluateVariableCondition extends EvaluateNumericResultVariable {
                 // If the rule is valid, we can return the value of the variable condition
                 System.err.println("Rule is valid: " + rule + " " + rule.getValue());
                 return rule.getValue();
+            }else {
+//                System.err.println("Rule is not valid: " + rule + " " + rule.getValue());
             }
         }
-
         return 0.;
     }
 
     private boolean isRuleValid(Rule rule) {
         for (Condition condition : rule.getConditions()) {
             if (condition instanceof NumericCondition numericCondition) {
-                if (fields.containsKey(numericCondition.getNumericField().getVariableName())) {
-                    EvaluateNumericField evaluateNumericField = new EvaluateNumericField(numericCondition.getNumericField(), fields);
-                    double fieldValue = evaluateNumericField.execute();
+                EvaluateNumericField evaluateNumericField = new EvaluateNumericField(numericCondition.getNumericField(), fields);
+                double fieldValue = evaluateNumericField.execute();
+                if (!numericCondition.getNumericValue().isNaN()) {
+                    System.err.println("Checking operator for " + numericCondition.getNumericField().getVariableName() + " value: " + fieldValue + " condition value: " + numericCondition.getNumericValue() + " operator: " + numericCondition.getNumericOperator());
                     switch (numericCondition.getNumericOperator()) {
                         case EQUALS:
-                            if (numericCondition.getNumericValue() == null) {
-                                throw new IllegalArgumentException("Numeric condition value is required for EQUALS operator");
-                            }
-                            if (fieldValue != numericCondition.getNumericValue()) {
+                            if (fieldValue != numericCondition.getNumericValue())
                                 return false; // Condition not met
-                            }
                             break;
                         case NOT_EQUALS:
-                            if (numericCondition.getNumericValue() == null) {
-                                throw new IllegalArgumentException("Numeric condition value is required for NOT_EQUALS operator");
-                            }
-                            if (fieldValue == numericCondition.getNumericValue()) {
+                            if (fieldValue == numericCondition.getNumericValue())
                                 return false; // Condition not met
-                            }
                             break;
-
                         case LESS_THAN:
-                            if (numericCondition.getNumericValue() == null) {
-                                throw new IllegalArgumentException("Numeric condition value is required for LESS_THAN operator");
-                            }
-                            if (fieldValue >= numericCondition.getNumericValue()) {
+                            if (fieldValue >= numericCondition.getNumericValue())
                                 return false; // Condition not met
-                            }
                             break;
                         case LESS_OR_EQUAL:
-                            if (numericCondition.getNumericValue() == null) {
-                                throw new IllegalArgumentException("Numeric condition value is required for LESS_THAN_OR_EQUAL operator");
-                            }
-                            if (fieldValue > numericCondition.getNumericValue()) {
+                            if (fieldValue > numericCondition.getNumericValue())
                                 return false; // Condition not met
-                            }
                             break;
-
                         case GREATER_THAN:
-                            if (numericCondition.getNumericValue() == null) {
-                                throw new IllegalArgumentException("Numeric condition value is required for GREATER_THAN operator");
-                            }
-                            if (fieldValue <= numericCondition.getNumericValue()) {
+                            if (fieldValue <= numericCondition.getNumericValue())
                                 return false; // Condition not met
-                            }
                             break;
-
                         case GREATER_OR_EQUAL:
-                            if (numericCondition.getNumericValue() == null) {
-                                throw new IllegalArgumentException("Numeric condition value is required for GREATER_THAN_OR_EQUAL operator");
-                            }
-                            if (fieldValue < numericCondition.getNumericValue()) {
+                            if (fieldValue < numericCondition.getNumericValue())
                                 return false; // Condition not met
-                            }
                             break;
                         default:
                             throw new IllegalStateException("Unexpected value: " + numericCondition.getNumericOperator());
                     }
+                } else {
+                    System.err.println("Checking min/max for " + numericCondition.getNumericField().getVariableName() + " value: " + fieldValue + " min: " + numericCondition.getMinimum() + " max: " + numericCondition.getMaximum());
+                    if (fieldValue > numericCondition.getMaximum()) return false;
+                    if (fieldValue < numericCondition.getMinimum()) return false;
                 }
             } else if (condition instanceof SelectCondition selectCondition) {
-                if (fields.containsKey(selectCondition.getSelectField().getVariableName())) {
-                    EvaluateSelectField evaluateSelectField = new EvaluateSelectField(selectCondition.getSelectField(), fields);
-                    SelectFieldOptionValue fieldValue = evaluateSelectField.execute();
-                    switch (selectCondition.getSelectFieldOperator()) {
-                        case EQUALS:
-                            if (selectCondition.getSelectFieldValue() == null)
-                                throw new IllegalArgumentException("Select condition value is required for EQUALS operator");
-                            if (!fieldValue.getName().equals(selectCondition.getSelectFieldValue().getName()))
-                                return false; // Condition not met
-
-                            break;
-                        case NOT_EQUALS:
-                            if (selectCondition.getSelectFieldValue() == null)
-                                throw new IllegalArgumentException("Select condition value is required for NOT_EQUALS operator");
-                            if (fieldValue.getName().equals(selectCondition.getSelectFieldValue().getName()))
-                                return false; // Condition not met
-                            break;
-                        default:
-                            throw new IllegalStateException("Unexpected value: " + selectCondition.getSelectFieldOperator());
-                    }
+                EvaluateSelectField evaluateSelectField = new EvaluateSelectField(selectCondition.getSelectField(), fields);
+                SelectFieldOptionValue fieldValue = evaluateSelectField.execute();
+                switch (selectCondition.getSelectFieldOperator()) {
+                    case EQUALS:
+                        if (!fieldValue.getName().equals(selectCondition.getSelectFieldValue().getName()))
+                            return false; // Condition not met
+                        break;
+                    case NOT_EQUALS:
+                        if (fieldValue.getName().equals(selectCondition.getSelectFieldValue().getName()))
+                            return false; // Condition not met
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + selectCondition.getSelectFieldOperator());
                 }
             } else {
                 throw new IllegalArgumentException("Unsupported condition type: " + condition.getClass().getName());
@@ -125,4 +97,3 @@ public class EvaluateVariableCondition extends EvaluateNumericResultVariable {
         return true; // All conditions are met
     }
 }
-

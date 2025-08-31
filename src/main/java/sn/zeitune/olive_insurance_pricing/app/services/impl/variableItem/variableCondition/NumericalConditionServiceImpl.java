@@ -28,10 +28,10 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
 
     @Override
     public NumericConditionResponseDTO create(NumericConditionRequestDTO numericConditionRequestDTO) {
-        NumericCondition numericCondition = NumericConditionMapper.map(numericConditionRequestDTO);
+        NumericCondition numericCondition = new NumericCondition();
         NumericField numericField = numericFieldRepository.findByUuidAndDeletedIsFalse(numericConditionRequestDTO.getFieldId())
                 .orElseThrow(() -> ErrorManager.sayEntityNotFound(NumericField.class, "id: " + numericConditionRequestDTO.getFieldId()));
-        numericCondition.setNumericField(numericField);
+        NumericConditionMapper.putRequestValue(numericConditionRequestDTO, numericField, numericCondition);
         return NumericConditionMapper.map(numericConditionRepository.save(numericCondition));
     }
 
@@ -61,13 +61,16 @@ public class NumericalConditionServiceImpl implements NumericalConditionService 
     public NumericConditionResponseDTO updateByUuid(UUID uuid, NumericConditionRequestDTO numericConditionRequestDTO) {
         NumericCondition existingNumericCondition = numericConditionRepository.findByUuid(uuid)
                 .orElseThrow(() -> ErrorManager.sayEntityNotFound(NumericCondition.class, "uuid: " + uuid)
-        );
-        NumericConditionMapper.map(numericConditionRequestDTO, existingNumericCondition);
+                );
+        NumericField numericField = existingNumericCondition.getNumericField();
         if (existingNumericCondition.getNumericField().getUuid() != numericConditionRequestDTO.getFieldId())
-            existingNumericCondition.setNumericField(
-                    numericFieldRepository.findByUuidAndDeletedIsFalse(numericConditionRequestDTO.getFieldId())
-                            .orElseThrow(() -> ErrorManager.sayEntityNotFound(NumericField.class, "id: " + numericConditionRequestDTO.getFieldId()))
-            );
+            numericField = numericFieldRepository.findByUuidAndDeletedIsFalse(numericConditionRequestDTO.getFieldId())
+                    .orElseThrow(() -> ErrorManager.sayEntityNotFound(NumericField.class, "id: " + numericConditionRequestDTO.getFieldId()));
+        NumericConditionMapper.putRequestValue(
+                numericConditionRequestDTO,
+                numericField,
+                existingNumericCondition
+        );
         return NumericConditionMapper.map(numericConditionRepository.save(existingNumericCondition));
     }
 

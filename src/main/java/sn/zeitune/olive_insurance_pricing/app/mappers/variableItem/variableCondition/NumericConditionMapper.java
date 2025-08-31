@@ -8,30 +8,24 @@ import sn.zeitune.olive_insurance_pricing.app.mappers.variableItem.field.Numeric
 
 public class NumericConditionMapper {
 
-    public static NumericCondition map(NumericConditionRequestDTO dto, NumericField field, NumericCondition numericCondition) {
-        numericCondition.setNumericValue(dto.getValue());
+    public static void putRequestValue(NumericConditionRequestDTO dto, NumericField field, NumericCondition numericCondition) {
+        if (numericCondition == null || dto == null || field == null) return;
+        if (dto.getMaxValue() != 0 || dto.getMinValue() != 0) {
+            numericCondition.setNumericValue(Double.NaN);
+        }else {
+            numericCondition.setNumericValue(dto.getValue());
+        }
         numericCondition.setMaximum(dto.getMaxValue());
         numericCondition.setMinimum(dto.getMinValue());
         numericCondition.setNumericOperator(dto.getNumericOperator());
         numericCondition.setNumericField(field);
-        return numericCondition;
-    }
-
-    public static NumericCondition map(NumericConditionRequestDTO dto, NumericCondition numericCondition) {
-        return map(dto, numericCondition.getNumericField(), numericCondition);
-    }
-
-    public static NumericCondition map(NumericConditionRequestDTO dto) {
-        return map(dto, new NumericCondition());
     }
 
     public static NumericConditionResponseDTO map(NumericCondition numericCondition) {
-
         if (numericCondition == null) return null;
-
         NumericConditionResponseDTO numericConditionResponseDTO = new NumericConditionResponseDTO();
         numericConditionResponseDTO.setId(numericCondition.getUuid());
-        numericConditionResponseDTO.setValue(numericCondition.getNumericValue());
+        numericConditionResponseDTO.setValue(Double.isNaN(numericCondition.getNumericValue()) ? 0. : numericCondition.getNumericValue());
         numericConditionResponseDTO.setMinValue(numericCondition.getMinimum());
         numericConditionResponseDTO.setMaxValue(numericCondition.getMaximum());
         numericConditionResponseDTO.setField(

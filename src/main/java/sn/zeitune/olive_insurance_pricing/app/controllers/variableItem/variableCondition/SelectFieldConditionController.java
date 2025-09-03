@@ -67,7 +67,9 @@ public class SelectFieldConditionController {
     @PutMapping("/{id}")
     public ResponseEntity<SelectConditionResponseDTO> update(@PathVariable UUID id, @Valid @RequestBody SelectConditionRequestDTO selectConditionRequestDTO) {
         log.info("REST request to update condition with ID: {}", id);
-        return null;
+        return ResponseEntity.ok(
+                selectFieldConditionService.updateByUuid(id, selectConditionRequestDTO)
+        );
     }
 
     @DeleteMapping("/{id}")
